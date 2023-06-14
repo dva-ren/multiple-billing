@@ -46,13 +46,24 @@
     </view>
     <view mt-4>
       <view text-xl font-bold mb-2>Recent Split</view>
-      <view bg-white p="x2 y1" flex gap-2 items-center justify-between>
+      <view
+        v-for="i in 4"
+        :key="i"
+        bg-white
+        p="x2 y1"
+        my-2
+        flex
+        gap-2
+        items-center
+        justify-between
+        rounded
+      >
         <view h-60 w-60 rounded-full bg-gray-4></view>
         <view flex-1>
-          <view> Burger Date </view>
-          <view py-2>14 Jun,2021</view>
+          <view font-bold> Burger Date </view>
+          <view text="~ xs gray-600" py-1>14 Jun,2021</view>
         </view>
-        <view> 200RMB </view>
+        <view> 200 RMB </view>
       </view>
     </view>
   </view>
