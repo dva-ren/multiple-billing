@@ -2,6 +2,7 @@
   "name": "uni-vue3-ts-template",
   "version": "0.0.0",
   "private": true,
+  "description": "multi-person billing applet, built through uniapp",
   "scripts": {
     "dev:app": "uni -p app",
     "dev:custom": "uni -p",
