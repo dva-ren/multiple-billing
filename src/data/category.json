@@ -1,0 +1,32 @@
+{
+  "food":{
+    "tag": "food",
+    "name": "食物",
+    "color": "#f4bee9",
+    "icon": "https://api.iconify.design/material-symbols:fastfood.svg"
+  },
+  "life":{
+    "tag": "life",
+    "name": "生活缴费",
+    "color": "#fecc66",
+    "icon": "https://api.iconify.design/lucide:life-buoy.svg"
+  },
+  "electric":{
+    "tag": "electric",
+    "name": "电费",
+    "color": "#f4bee9",
+    "icon": "https://api.iconify.design/material-symbols:water-ec-rounded.svg"
+  },
+  "water":{
+    "tag": "water",
+    "name": "水费",
+    "color": "#fecc66",
+    "icon": "https://api.iconify.design/material-symbols:water-drop-outline-rounded.svg"
+  },
+  "other":{
+    "tag": "other",
+    "name": "其他",
+    "color": "#b8cdf0",
+    "icon": "https://api.iconify.design/mingcute:bird-line.svg"
+  }
+}

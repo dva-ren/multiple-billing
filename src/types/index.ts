@@ -1,4 +1,4 @@
-export type Category = 'food' | 'life' | 'other'
+export type Category = 'food' | 'life' | 'other' | 'electric' | 'water'
 
 interface CommonField {
   id: string

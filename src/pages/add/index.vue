@@ -1,9 +1,10 @@
 <script lang="ts" setup>
-import { onMounted, reactive, ref } from 'vue'
+import { reactive, ref, computed } from 'vue'
 import type { IBillForm } from '@/types'
 import ColorIcon from '@/components/ColorIcon.vue'
 import SelectItem from '@/components/SelectItem.vue'
-import { getImageUrl } from '@/utils/url'
+import categoryes from '@/data/category.json'
+import users from '@/data/users.json'
 
 const billForm = reactive<IBillForm>({
   amount: 0,
@@ -11,16 +12,30 @@ const billForm = reactive<IBillForm>({
   actor: [],
   name: ''
 })
-function handleClick() {
-  console.log('aaa')
+
+const currentCategory = computed(() => categoryes[billForm.category])
+const isSelect = (id: string) => {
+  return billForm.actor.includes(id)
 }
+
 const categoryRef = ref()
 const close = () => {
   categoryRef.value.show = false
 }
-const onItemClick = (value: any) => {
-  billForm.category = value
-  close()
+const onItemClick = (category: any) => {
+  billForm.category = category
+  setTimeout(() => {
+    close()
+  }, 50)
+}
+const handleUserSelect = (id: string) => {
+  const idx = billForm.actor.indexOf(id)
+
+  if (idx >= 0) {
+    billForm.actor.splice(idx, 1)
+  } else {
+    billForm.actor.push(id)
+  }
 }
 </script>
 
@@ -42,75 +57,95 @@ const onItemClick = (value: any) => {
     </view>
     <SelectItem
       sub-title="分类"
-      title="食物"
-      img-name="CarbonArrival.svg"
+      :color="currentCategory.color"
+      :title="currentCategory.name"
+      :icon="currentCategory.icon"
       dorp-down
-      :on-click="handleClick"
       ref="categoryRef"
     >
-      <template #pre>
-        <ColorIcon color="rgb(179,224,186)" img-name="CarbonArrival.svg" />
-      </template>
       <template #selection>
         <view
-          v-for="i in 4"
-          :key="i"
+          v-for="i of categoryes"
+          :key="i.tag"
           p-2
           flex
           items-center
-          active:bg-blue-200
-          rounded
-          transition
-          @click="() => onItemClick(i)"
+          rounded-xl
+          @click="() => onItemClick(i.tag)"
           :style="{
             backgroundColor:
-              billForm.category === i ? 'rgba(179,224,186,0.5)' : ''
+              billForm.category === i.tag ? 'rgba(179,224,186,0.5)' : ''
           }"
         >
-          <ColorIcon
-            color="rgb(179,224,186)"
-            img-name="CarbonArrival.svg"
-          ></ColorIcon>
-          <view ml-4 font-bold>Food</view>
+          <ColorIcon :color="i.color" :src="i.icon"></ColorIcon>
+          <view ml-4 font-bold>{{ i.name }}</view>
         </view>
       </template>
     </SelectItem>
 
-    <SelectItem
-      mt-4
-      sub-title="分类"
-      title="食物"
-      img-name="CarbonArrival.svg"
-      dorp-down
-      :on-click="handleClick"
-    >
+    <SelectItem sub-title="参与者" dorp-down>
       <template #pre>
-        <ColorIcon color="rgb(179,24,96)" img-name="CarbonArrival.svg" />
+        <ColorIcon
+          color="rgb(179,24,96)"
+          src="https://api.iconify.design/fe:github-alt.svg"
+        />
       </template>
       <template #selection>
         <view
-          v-for="i in 4"
-          :key="i"
+          v-for="u in users"
+          :key="u.id"
+          @click="handleUserSelect(u.id)"
           p-2
+          my-1
           flex
           items-center
-          active:bg-blue-200
-          rounded
+          rounded-xl
           transition
-          @click="billForm.category = i"
           :style="{
-            backgroundColor:
-              billForm.category === i ? 'rgba(179,224,186,0.5)' : ''
+            backgroundColor: isSelect(u.id) ? 'rgba(179,224,186,0.5)' : ''
           }"
         >
-          <ColorIcon
-            color="rgb(179,224,186)"
-            img-name="CarbonArrival.svg"
-          ></ColorIcon>
-          <view ml-4 font-bold>Food</view>
+          <image
+            w-64
+            h-64
+            border="~ gray-200"
+            rounded-full
+            p-1
+            :src="u.avatar"
+            mode="scaleToFill"
+          />
+          <view flex-1 ml-4 font-bold>{{ u.name }}</view>
+          <image
+            v-if="!isSelect(u.id)"
+            w-64
+            h-64
+            src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxZW0iIGhlaWdodD0iMWVtIiB2aWV3Qm94PSIwIDAgMjQgMjQiPjxwYXRoIGZpbGw9IiNlNWU3ZWIiIGQ9Im0xMC42IDEzLjhsLTIuMTUtMi4xNXEtLjI3NS0uMjc1LS43LS4yNzV0LS43LjI3NXEtLjI3NS4yNzUtLjI3NS43dC4yNzUuN0w5LjkgMTUuOXEuMy4zLjcuM3QuNy0uM2w1LjY1LTUuNjVxLjI3NS0uMjc1LjI3NS0uN3QtLjI3NS0uN3EtLjI3NS0uMjc1LS43LS4yNzV0LS43LjI3NUwxMC42IDEzLjhaTTEyIDIycS0yLjA3NSAwLTMuOS0uNzg4dC0zLjE3NS0yLjEzN3EtMS4zNS0xLjM1LTIuMTM3LTMuMTc1VDIgMTJxMC0yLjA3NS43ODgtMy45dDIuMTM3LTMuMTc1cTEuMzUtMS4zNSAzLjE3NS0yLjEzN1QxMiAycTIuMDc1IDAgMy45Ljc4OHQzLjE3NSAyLjEzN3ExLjM1IDEuMzUgMi4xMzggMy4xNzVUMjIgMTJxMCAyLjA3NS0uNzg4IDMuOXQtMi4xMzcgMy4xNzVxLTEuMzUgMS4zNS0zLjE3NSAyLjEzOFQxMiAyMloiLz48L3N2Zz4="
+            mode="scaleToFill"
+          />
+          <image
+            v-else
+            w-64
+            h-64
+            src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxZW0iIGhlaWdodD0iMWVtIiB2aWV3Qm94PSIwIDAgMjQgMjQiPjxwYXRoIGZpbGw9IiM0YWRlODAiIGQ9Im0xMC42IDEzLjhsLTIuMTUtMi4xNXEtLjI3NS0uMjc1LS43LS4yNzV0LS43LjI3NXEtLjI3NS4yNzUtLjI3NS43dC4yNzUuN0w5LjkgMTUuOXEuMy4zLjcuM3QuNy0uM2w1LjY1LTUuNjVxLjI3NS0uMjc1LjI3NS0uN3QtLjI3NS0uN3EtLjI3NS0uMjc1LS43LS4yNzV0LS43LjI3NUwxMC42IDEzLjhaTTEyIDIycS0yLjA3NSAwLTMuOS0uNzg4dC0zLjE3NS0yLjEzN3EtMS4zNS0xLjM1LTIuMTM3LTMuMTc1VDIgMTJxMC0yLjA3NS43ODgtMy45dDIuMTM3LTMuMTc1cTEuMzUtMS4zNSAzLjE3NS0yLjEzN1QxMiAycTIuMDc1IDAgMy45Ljc4OHQzLjE3NSAyLjEzN3ExLjM1IDEuMzUgMi4xMzggMy4xNzVUMjIgMTJxMCAyLjA3NS0uNzg4IDMuOXQtMi4xMzcgMy4xNzVxLTEuMzUgMS4zNS0zLjE3NSAyLjEzOFQxMiAyMloiLz48L3N2Zz4="
+            mode="scaleToFill"
+          />
         </view>
       </template>
     </SelectItem>
+    <view w-full>
+      <button
+        m-4
+        bg-black
+        text-white
+        rounded-full
+        absolute
+        bottom-0
+        right-0
+        left-0
+      >
+        Request Now
+      </button>
+    </view>
   </view>
 </template>
 

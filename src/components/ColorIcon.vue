@@ -1,7 +1,5 @@
 <script lang="ts" setup>
-import { getImageUrl } from '@/utils/url'
-
-const props = defineProps<{ color: string; imgName: string }>()
+const props = defineProps<{ color: string; src: string }>()
 </script>
 
 <template>
@@ -13,6 +11,6 @@ const props = defineProps<{ color: string; imgName: string }>()
     rounded-2
     flex-center
   >
-    <image w-36 h-36 :src="getImageUrl(props.imgName)" mode="scaleToFill" />
+    <image op-90 w-40 h-40 :src="props.src" mode="scaleToFill" />
   </view>
 </template>

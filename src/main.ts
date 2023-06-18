@@ -6,6 +6,7 @@ import App from './App.vue'
 
 // unocss
 import 'uno.css'
+import './styles/main.css'
 
 export function createApp() {
   const app = createSSRApp(App)

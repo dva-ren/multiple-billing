@@ -1,13 +1,14 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
 import ColorIcon from './ColorIcon.vue'
-import { getImageUrl } from '@/utils/url'
+import categoryIcons from '@/data/category.json'
 
 const props = defineProps<{
-  imgName: string
+  icon?: string
   subTitle?: string
   title?: string
   dorpDown?: boolean
+  color?: string
   onClick?: () => void
 }>()
 
@@ -28,33 +29,49 @@ defineExpose({
 </script>
 
 <template>
-  <view>
-    <view p-3 flex shadow-xl rounded items-center @click="handleClick">
-      <slot name="pre"></slot>
+  <view mb-4>
+    <view
+      bg-white
+      p-3
+      flex
+      shadow-xl
+      rounded-xl
+      items-center
+      @click="handleClick"
+    >
+      <slot name="pre">
+        <ColorIcon
+          :color="props.color ?? 'rgb(179, 224, 186)'"
+          :src="props.icon ?? ''"
+        />
+      </slot>
       <view ml-2 flex-1>
         <view text-gray-500 v-if="props.subTitle">{{ props.subTitle }}</view>
-        <view font-bold lh-6>{{ props.title }}</view>
+        <slot name="title">
+          <view font-bold lh-6>{{ props.title }}</view>
+        </slot>
       </view>
+      <!-- 下拉箭头 -->
       <view v-if="props.dorpDown">
         <image
           w-40
           h-40
-          :src="getImageUrl('CarbonChevronDown.svg')"
+          src="https://api.iconify.design/ic:round-keyboard-arrow-down.svg"
           mode="scaleToFill"
         />
       </view>
     </view>
     <view>
-      <u-popup v-model="show" mode="bottom" border-radius="6">
-        <view h-40vh p-6>
-          <view pb-4 text-base>Category</view>
-          <view>
-            <slot name="selection"></slot>
-          </view>
+      <u-popup v-model="show" mode="bottom" border-radius="40">
+        <view h-40vh p="x6 y4">
+          <view text-base>{{ props.subTitle }}</view>
+          <scroll-view scroll-y>
+            <view py-4 max-h-30vh>
+              <slot name="selection"></slot>
+            </view>
+          </scroll-view>
         </view>
       </u-popup>
     </view>
   </view>
 </template>
-
-<style scoped lang=""></style>
