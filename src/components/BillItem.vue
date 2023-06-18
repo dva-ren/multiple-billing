@@ -8,10 +8,20 @@ const props = defineProps<{
 </script>
 
 <template>
-  <view bg-white p="x3 y2" my-2 flex gap-2 items-center justify-between rounded>
+  <view
+    bg-white
+    p-3
+    my-2
+    flex
+    gap-4
+    items-center
+    justify-between
+    rounded-xl
+    shadow-sm
+  >
     <CategoryIcon :category="props.data.category" />
     <view flex-1>
-      <view font-bold> {{ props.data.name }} </view>
+      <view font-bold mb-1> {{ props.data.name }} </view>
       <view text="~ xs gray-400">{{ props.data.createAt }}</view>
     </view>
     <view flex-1 flex items-center justify-center>
@@ -29,7 +39,7 @@ const props = defineProps<{
       </view>
     </view>
     <view h-full w-100 text-right>
-      <span text="base blue-400" px-1>¥{{ props.data.amount }}</span>
+      <span text="xs red-300" font-bold px-1>¥{{ props.data.amount }}</span>
     </view>
   </view>
 </template>

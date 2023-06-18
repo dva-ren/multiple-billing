@@ -46,7 +46,9 @@ defineExpose({
         />
       </slot>
       <view ml-2 flex-1>
-        <view text-gray-500 v-if="props.subTitle">{{ props.subTitle }}</view>
+        <view text="xs gray-500" v-if="props.subTitle">{{
+          props.subTitle
+        }}</view>
         <slot name="title">
           <view font-bold lh-6>{{ props.title }}</view>
         </slot>
@@ -56,7 +58,7 @@ defineExpose({
         <image
           w-40
           h-40
-          src="https://api.iconify.design/ic:round-keyboard-arrow-down.svg"
+          src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxZW0iIGhlaWdodD0iMWVtIiB2aWV3Qm94PSIwIDAgMjQgMjQiPjxwYXRoIGZpbGw9IiM0NTQ1NDUiIGQ9Im0xMiAxNS40bC02LTZMNy40IDhsNC42IDQuNkwxNi42IDhMMTggOS40bC02IDZaIi8+PC9zdmc+"
           mode="scaleToFill"
         />
       </view>
@@ -64,7 +66,7 @@ defineExpose({
     <view>
       <u-popup v-model="show" mode="bottom" border-radius="40">
         <view h-40vh p="x6 y4">
-          <view text-base>{{ props.subTitle }}</view>
+          <view text-base font-bold>{{ props.subTitle }}</view>
           <scroll-view scroll-y>
             <view py-4 max-h-30vh>
               <slot name="selection"></slot>

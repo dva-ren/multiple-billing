@@ -86,9 +86,12 @@ const handleUserSelect = (id: string) => {
     <SelectItem sub-title="参与者" dorp-down>
       <template #pre>
         <ColorIcon
-          color="rgb(179,24,96)"
-          src="https://api.iconify.design/fe:github-alt.svg"
+          color="#fb9968"
+          src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxZW0iIGhlaWdodD0iMWVtIiB2aWV3Qm94PSIwIDAgMjQgMjQiPjxwYXRoIGZpbGw9ImN1cnJlbnRDb2xvciIgZD0iTTE4LjM5IDE0LjU2QzE2LjcxIDEzLjcgMTQuNTMgMTMgMTIgMTNzLTQuNzEuNy02LjM5IDEuNTZBMi45NyAyLjk3IDAgMCAwIDQgMTcuMjJWMThjMCAxLjEuOSAyIDIgMmgxMmMxLjEgMCAyLS45IDItMnYtLjc4YzAtMS4xMi0uNjEtMi4xNS0xLjYxLTIuNjZ6TTEwIDEyaDRjMS42NiAwIDMtMS4zNCAzLTNjMC0uNzMtLjI3LTEuNC0uNzEtMS45MmMuMTMtLjMzLjIxLS43LjIxLTEuMDhhMyAzIDAgMCAwLTEuODYtMi43N0MxNCAyLjQ4IDEzLjA2IDIgMTIgMnMtMiAuNDgtMi42NCAxLjIzQTMgMyAwIDAgMCA3LjUgNmMwIC4zOC4wOC43NS4yMSAxLjA4QzcuMjcgNy42IDcgOC4yNyA3IDljMCAxLjY2IDEuMzQgMyAzIDN6Ii8+PC9zdmc+"
         />
+      </template>
+      <template #title>
+        {{ billForm.actor.toString() }}
       </template>
       <template #selection>
         <view
@@ -135,15 +138,18 @@ const handleUserSelect = (id: string) => {
     <view w-full>
       <button
         m-4
+        py-1
         bg-black
+        active:bg-gray-6
+        transition
         text-white
-        rounded-full
+        rounded-xl
         absolute
         bottom-0
         right-0
         left-0
       >
-        Request Now
+        立即添加
       </button>
     </view>
   </view>
