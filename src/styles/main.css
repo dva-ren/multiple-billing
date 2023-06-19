@@ -1,3 +1,8 @@
 .main,body,uni-page-body,page{
   height: 100%;
 }
+
+.main {
+  padding: 40rpx;
+  background-color: rgba(250, 250, 250);
+}

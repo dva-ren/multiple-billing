@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { reactive, ref, computed } from 'vue'
+import { reactive, ref, computed, compile } from 'vue'
 import type { IBillForm } from '@/types'
 import ColorIcon from '@/components/ColorIcon.vue'
 import SelectItem from '@/components/SelectItem.vue'
@@ -10,9 +10,15 @@ const billForm = reactive<IBillForm>({
   amount: 0,
   category: 'food',
   actor: [],
-  name: ''
+  date: new Date().toLocaleDateString().replaceAll('/', '-'),
+  remark: ''
 })
-
+const showPicker = ref(false)
+const slelcetedList = computed(() => {
+  return users.filter((i) => billForm.actor.includes(i.id))
+})
+const isEdit = ref(false)
+const showLoadingMask = ref(false)
 const currentCategory = computed(() => categoryes[billForm.category])
 const isSelect = (id: string) => {
   return billForm.actor.includes(id)
@@ -37,22 +43,54 @@ const handleUserSelect = (id: string) => {
     billForm.actor.push(id)
   }
 }
+const handleDateChange = (date: any) => {
+  billForm.date = date.result
+}
+const handleAddBill = () => {
+  console.log(billForm)
+  uni.showLoading({
+    mask: true,
+    title: '添加中'
+  })
+  showLoadingMask.value = true
+  setTimeout(() => {
+    showLoadingMask.value = false
+    uni.showToast({
+      title: '添加成功',
+      icon: 'success',
+      duration: 2000,
+      complete: () => {
+        console.log('compile')
+        setTimeout(() => {
+          uni.navigateBack()
+        }, 2000);
+      }
+    })
+  }, 2000);
+}
 </script>
 
 <template>
   <view class="main">
-    <view text="~ 3xl" font-bold pb-10>
+    <view text="~ 4xl" font-bold pb-10>
       <view relative>
         <view text-center>¥ {{ billForm.amount ? billForm.amount : 0 }}</view>
         <input
           absolute
           inset-0
           text-xl
-          type="number"
           w-fill
           op-0
+          type="number"
           v-model="billForm.amount"
         />
+      </view>
+      <view relative vertical-bottom text="center sm gray-600" h-20>
+        <view v-if="!isEdit">
+          <image op-70 mb--2px w-28 h-28 src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxZW0iIGhlaWdodD0iMWVtIiB2aWV3Qm94PSIwIDAgMjQgMjQiPjxwYXRoIGZpbGw9Im5vbmUiIHN0cm9rZT0iY3VycmVudENvbG9yIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIHN0cm9rZS13aWR0aD0iMiIgZD0iTTQgMjBoMTZNNCAyMHYtNGw4LThNNCAyMGg0bDgtOG0tNC00bDIuODY5LTIuODY5bC4wMDEtLjAwMWMuMzk1LS4zOTUuNTkzLS41OTMuODIxLS42NjdhMSAxIDAgMCAxIC42MTggMGMuMjI4LjA3NC40MjUuMjcyLjgyLjY2NmwxLjc0IDEuNzRjLjM5Ni4zOTYuNTk0LjU5NC42NjguODIyYTEgMSAwIDAgMSAwIC42MThjLS4wNzQuMjI4LS4yNzIuNDI2LS42NjguODIyaDBMMTYgMTIuMDAxbS00LTRsNCA0Ii8+PC9zdmc+"></image>
+          <span underline>{{billForm.remark=='' ? '备注':billForm.remark}}</span>
+        </view>
+        <input :class="isEdit?'':'op-0'" @focus="isEdit = true" @blur="isEdit=false" absolute inset-0 inline-block type="text" placeholder="" v-model="billForm.remark">
       </view>
     </view>
     <SelectItem
@@ -62,6 +100,7 @@ const handleUserSelect = (id: string) => {
       :icon="currentCategory.icon"
       dorp-down
       ref="categoryRef"
+      popup
     >
       <template #selection>
         <view
@@ -83,7 +122,7 @@ const handleUserSelect = (id: string) => {
       </template>
     </SelectItem>
 
-    <SelectItem sub-title="参与者" dorp-down>
+    <SelectItem sub-title="参与者" popup dorp-down>
       <template #pre>
         <ColorIcon
           color="#fb9968"
@@ -91,7 +130,20 @@ const handleUserSelect = (id: string) => {
         />
       </template>
       <template #title>
-        {{ billForm.actor.toString() }}
+        <view v-if="slelcetedList.length" flex>
+          <view v-for="i in slelcetedList">
+            <image
+              w-48
+              h-48
+              ml--1
+              border="~ gray-200"
+              rounded-full
+              :src="i.avatar"
+              mode="scaleToFill"
+            />
+          </view>
+        </view>
+        <view v-else text-green-700 font-bold>点击选择</view>
       </template>
       <template #selection>
         <view
@@ -135,6 +187,14 @@ const handleUserSelect = (id: string) => {
         </view>
       </template>
     </SelectItem>
+    <SelectItem
+      sub-title="时间选择"
+      :on-click="()=>showPicker = true"
+      :title="billForm.date"
+      icon="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxZW0iIGhlaWdodD0iMWVtIiB2aWV3Qm94PSIwIDAgMjQgMjQiPjxwYXRoIGZpbGw9ImN1cnJlbnRDb2xvciIgZD0iTTE5IDNoLTFWMWgtMnYySDhWMUg2djJINWMtMS4xMSAwLTIgLjg5LTIgMnYxNGEyIDIgMCAwIDAgMiAyaDE0YzEuMTEgMCAyLS44OSAyLTJWNWEyIDIgMCAwIDAtMi0ybTAgMnYySDVWNWgxNE01IDE5VjloMTR2MTBINW0zLTZoOHYySDh2LTJaIi8+PC9zdmc+"
+    >
+    </SelectItem>
+    <u-calendar @change="handleDateChange" v-model="showPicker" mode="date"></u-calendar>
     <view w-full>
       <button
         m-4
@@ -145,13 +205,20 @@ const handleUserSelect = (id: string) => {
         text-white
         rounded-xl
         absolute
-        bottom-0
+        bottom-10
         right-0
         left-0
+        @click="handleAddBill"
       >
         立即添加
       </button>
     </view>
+    <!-- 等待添加完成动画 -->
+    <!-- <u-mask relative :show="showLoadingMask" @click="showLoadingMask = false">
+      <view class="loading">
+        <u-loading mode="circle"></u-loading>
+      </view>
+    </u-mask> -->
   </view>
 </template>
 
@@ -160,11 +227,12 @@ const handleUserSelect = (id: string) => {
   padding: 40rpx;
   background-color: rgba(250, 250, 250);
 }
-.popup-content {
-  align-items: center;
-  justify-content: center;
-  padding: 15px;
-  height: 50px;
-  background-color: #fff;
-}
+// .popup-content {
+//   align-items: center;
+//   justify-content: center;
+//   padding: 15px;
+//   height: 50px;
+//   background-color: #fff;
+// }
+
 </style>

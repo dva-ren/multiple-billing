@@ -1,10 +1,16 @@
 <script lang="ts" setup>
 import BillItem from '@/components/BillItem.vue'
 import useStore from '@/store/modules/countStore'
-import users from '@/data/users'
+import users from '@/data/users.json'
 
 const { userInfo } = useStore()
 const { record } = useStore()
+
+const handleAvatarClick = () => {
+  uni.navigateTo({
+    url: '/pages/user/index'
+  })
+}
 </script>
 
 <template>
@@ -15,14 +21,7 @@ const { record } = useStore()
         <view text="~ 2xl" font-bold>Split your bill</view>
       </view>
       <view>
-        <image
-          h-80
-          w-80
-          rounded-full
-          bg-gray-300
-          border="~ gray-200"
-          :src="userInfo.avatar"
-        ></image>
+        <u-avatar :src="userInfo.avatar" @click="handleAvatarClick"></u-avatar>
       </view>
     </view>
     <view bg-black w-full mt-4 p6 text-white rounded-xl>
@@ -48,9 +47,9 @@ const { record } = useStore()
             </view>
           </view>
           <view mt-6>
-            <navigator url="/pages/add/index" open-type="navigate">
-              <view class="add-btn" rounded> 添加账单 </view>
-            </navigator>
+            <view class="add-btn" rounded>
+              <navigator url="/pages/add/index" open-type="navigate">添加账单</navigator>
+            </view>
           </view>
         </view>
       </view>
@@ -63,10 +62,6 @@ const { record } = useStore()
 </template>
 
 <style scoped>
-.main {
-  padding: 40rpx;
-  background-color: rgba(250, 250, 250);
-}
 .add-btn {
   padding: 20rpx 30rpx;
   width: fit-content;

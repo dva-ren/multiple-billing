@@ -20,7 +20,8 @@ export interface IBillItem extends CommonField {
 
 export interface IBillForm {
   category: Category
-  name?: string
   amount: number
   actor: string[]
+  date: string
+  remark?: string
 }

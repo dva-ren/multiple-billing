@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import type { IUser } from '@/types'
+import type { IBillItem, IUser } from '@/types'
 
 const useStore = defineStore('main', {
   // arrow function recommended for full type inference
@@ -61,7 +61,7 @@ const useStore = defineStore('main', {
         ],
         createAt: '2023-6-17'
       }
-    ]
+    ] as IBillItem[]
   }),
   getters: {
     isLogin: (state) => state.id !== ''

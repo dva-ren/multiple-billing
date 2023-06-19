@@ -12,6 +12,12 @@
       "style": {
         "navigationBarTitleText": "Add Page"
       }
+    },
+    {
+      "path": "pages/user/index",
+      "style": {
+        "navigationBarTitleText": "Me"
+      }
     }
   ],
   "globalStyle": {

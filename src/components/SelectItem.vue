@@ -9,6 +9,7 @@ const props = defineProps<{
   title?: string
   dorpDown?: boolean
   color?: string
+  popup?: boolean
   onClick?: () => void
 }>()
 
@@ -21,7 +22,8 @@ const open = () => {
 }
 const handleClick = () => {
   if (props.onClick) props.onClick()
-  open()
+  if (props.popup)
+    open()
 }
 defineExpose({
   show
@@ -36,7 +38,6 @@ defineExpose({
       flex
       shadow-xl
       rounded-xl
-      items-center
       @click="handleClick"
     >
       <slot name="pre">
@@ -45,12 +46,12 @@ defineExpose({
           :src="props.icon ?? ''"
         />
       </slot>
-      <view ml-2 flex-1>
+      <view ml-2 flex-1 flex="~ col" justify-between py-2px>
         <view text="xs gray-500" v-if="props.subTitle">{{
           props.subTitle
         }}</view>
         <slot name="title">
-          <view font-bold lh-6>{{ props.title }}</view>
+          <view font-bold>{{ props.title }}</view>
         </slot>
       </view>
       <!-- 下拉箭头 -->
@@ -63,12 +64,12 @@ defineExpose({
         />
       </view>
     </view>
-    <view>
+    <view v-if="popup">
       <u-popup v-model="show" mode="bottom" border-radius="40">
-        <view h-40vh p="x6 y4">
-          <view text-base font-bold>{{ props.subTitle }}</view>
+        <view h-40vh >
+          <view p="x6 y4" text-base font-bold>{{ props.subTitle }}</view>
           <scroll-view scroll-y>
-            <view py-4 max-h-30vh>
+            <view max-h-30vh p="x6">
               <slot name="selection"></slot>
             </view>
           </scroll-view>
