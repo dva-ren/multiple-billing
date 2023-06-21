@@ -10,14 +10,14 @@ const instance = axios.create({
   baseURL: import.meta.env.VITE_APP_AXIOS_BASE_URL,
   // #endif
   // #ifndef H5
-  // @ts-ignore
+  // @ts-expect-error
   baseURL: 'https://service-rbji0bev-1256505457.cd.apigw.tencentcs.com/release',
   // #endif
   adapter(config) {
     console.log('request adapter ↓↓')
     console.log(config)
-    const { url, method, data, params, headers, baseURL, paramsSerializer } =
-      config
+    const { url, method, data, params, headers, baseURL, paramsSerializer }
+      = config
     return new Promise((resolve, reject) => {
       uni.request({
         method: method!.toUpperCase() as any,
@@ -33,10 +33,10 @@ const instance = axios.create({
         },
         fail: (err: any) => {
           reject(err)
-        }
+        },
       })
     })
-  }
+  },
 })
 
 /**
@@ -46,24 +46,24 @@ instance.interceptors.request.use((config) => {
   const { method, params } = config
   // 附带鉴权的token
   const headers: any = {
-    token: uni.getStorageSync('token')
+    token: uni.getStorageSync('token'),
   }
   // 不缓存get请求
-  if (method === 'get') {
+  if (method === 'get')
     headers['Cache-Control'] = 'no-cache'
-  }
+
   // delete请求参数放入body中
   if (method === 'delete') {
     headers['Content-type'] = 'application/json;'
     Object.assign(config, {
       data: params,
-      params: {}
+      params: {},
     })
   }
 
   return {
     ...config,
-    headers
+    headers,
   }
 })
 
@@ -78,10 +78,10 @@ instance.interceptors.response.use((v) => {
     return v.data
   }
 
-  // @ts-ignore
-  if ((v.status || v.statusCode) === 200) {
+  // @ts-expect-error
+  if ((v.status || v.statusCode) === 200)
     return v.data
-  }
+
   // alert(v.statusText, '网络错误')
   return Promise.reject(v)
 })

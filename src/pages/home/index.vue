@@ -6,9 +6,9 @@ import users from '@/data/users.json'
 const { userInfo } = useStore()
 const { record } = useStore()
 
-const handleAvatarClick = () => {
+function handleAvatarClick() {
   uni.navigateTo({
-    url: '/pages/user/index'
+    url: '/pages/user/index',
   })
 }
 </script>
@@ -17,11 +17,15 @@ const handleAvatarClick = () => {
   <view class="main">
     <view flex justify-between items-center>
       <view>
-        <view text-gray-600>Hi {{ userInfo.name }}</view>
-        <view text="~ 2xl" font-bold>Split your bill</view>
+        <view text-gray-600>
+          Hi {{ userInfo.name }}
+        </view>
+        <view text="~ 2xl" font-bold>
+          Split your bill
+        </view>
       </view>
       <view>
-        <u-avatar :src="userInfo.avatar" @click="handleAvatarClick"></u-avatar>
+        <u-avatar :src="userInfo.avatar" @click="handleAvatarClick" />
       </view>
     </view>
     <view bg-black w-full mt-4 p6 text-white rounded-xl>
@@ -33,7 +37,9 @@ const handleAvatarClick = () => {
             <view>{{ userInfo.amount }}</view>
           </view>
           <view mt-4>
-            <view text-base>Split With</view>
+            <view text-base>
+              Split With
+            </view>
             <view flex gap-1 p-1>
               <image
                 v-for="u in users"
@@ -43,20 +49,24 @@ const handleAvatarClick = () => {
                 bg-gray-100
                 rounded-full
                 :src="u.avatar"
-              ></image>
+              />
             </view>
           </view>
           <view mt-6>
             <view class="add-btn" rounded>
-              <navigator url="/pages/add/index" open-type="navigate">添加账单</navigator>
+              <navigator url="/pages/add/index" open-type="navigate">
+                添加账单
+              </navigator>
             </view>
           </view>
         </view>
       </view>
     </view>
     <view mt-6>
-      <view text-xl font-bold mb-4>Recent Split</view>
-      <bill-item v-for="i in record" :key="i.id" :data="i" />
+      <view text-xl font-bold mb-4>
+        Recent Split
+      </view>
+      <BillItem v-for="i in record" :key="i.id" :data="i" />
     </view>
   </view>
 </template>

@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
 import ColorIcon from './ColorIcon.vue'
-import categoryIcons from '@/data/category.json'
 
 const props = defineProps<{
   icon?: string
@@ -14,19 +13,20 @@ const props = defineProps<{
 }>()
 
 const show = ref(false)
-const close = () => {
+function close() {
   show.value = false
 }
-const open = () => {
+function open() {
   show.value = true
 }
-const handleClick = () => {
-  if (props.onClick) props.onClick()
+function handleClick() {
+  if (props.onClick)
+    props.onClick()
   if (props.popup)
     open()
 }
 defineExpose({
-  show
+  show,
 })
 </script>
 
@@ -47,11 +47,15 @@ defineExpose({
         />
       </slot>
       <view ml-2 flex-1 flex="~ col" justify-between py-2px>
-        <view text="xs gray-500" v-if="props.subTitle">{{
-          props.subTitle
-        }}</view>
+        <view v-if="props.subTitle" text="xs gray-500">
+          {{
+            props.subTitle
+          }}
+        </view>
         <slot name="title">
-          <view font-bold>{{ props.title }}</view>
+          <view font-bold>
+            {{ props.title }}
+          </view>
         </slot>
       </view>
       <!-- 下拉箭头 -->
@@ -66,11 +70,13 @@ defineExpose({
     </view>
     <view v-if="popup">
       <u-popup v-model="show" mode="bottom" border-radius="40">
-        <view h-40vh >
-          <view p="x6 y4" text-base font-bold>{{ props.subTitle }}</view>
+        <view h-40vh>
+          <view p="x6 y4" text-base font-bold>
+            {{ props.subTitle }}
+          </view>
           <scroll-view scroll-y>
             <view max-h-30vh p="x6">
-              <slot name="selection"></slot>
+              <slot name="selection" />
             </view>
           </scroll-view>
         </view>

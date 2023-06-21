@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { reactive, ref, computed, compile } from 'vue'
+import { computed, reactive, ref } from 'vue'
 import type { IBillForm } from '@/types'
 import ColorIcon from '@/components/ColorIcon.vue'
 import SelectItem from '@/components/SelectItem.vue'
@@ -11,46 +11,44 @@ const billForm = reactive<IBillForm>({
   category: 'food',
   actor: [],
   date: new Date().toLocaleDateString().replaceAll('/', '-'),
-  remark: ''
+  remark: '',
 })
 const showPicker = ref(false)
 const slelcetedList = computed(() => {
-  return users.filter((i) => billForm.actor.includes(i.id))
+  return users.filter(i => billForm.actor.includes(i.id))
 })
 const isEdit = ref(false)
 const showLoadingMask = ref(false)
 const currentCategory = computed(() => categoryes[billForm.category])
-const isSelect = (id: string) => {
+function isSelect(id: string) {
   return billForm.actor.includes(id)
 }
 
 const categoryRef = ref()
-const close = () => {
+function close() {
   categoryRef.value.show = false
 }
-const onItemClick = (category: any) => {
+function onItemClick(category: any) {
   billForm.category = category
   setTimeout(() => {
     close()
   }, 50)
 }
-const handleUserSelect = (id: string) => {
+function handleUserSelect(id: string) {
   const idx = billForm.actor.indexOf(id)
 
-  if (idx >= 0) {
+  if (idx >= 0)
     billForm.actor.splice(idx, 1)
-  } else {
+  else
     billForm.actor.push(id)
-  }
 }
-const handleDateChange = (date: any) => {
+function handleDateChange(date: any) {
   billForm.date = date.result
 }
-const handleAddBill = () => {
-  console.log(billForm)
+function handleAddBill() {
   uni.showLoading({
     mask: true,
-    title: '添加中'
+    title: '添加中',
   })
   showLoadingMask.value = true
   setTimeout(() => {
@@ -60,13 +58,12 @@ const handleAddBill = () => {
       icon: 'success',
       duration: 2000,
       complete: () => {
-        console.log('compile')
         setTimeout(() => {
           uni.navigateBack()
-        }, 2000);
-      }
+        }, 2000)
+      },
     })
-  }, 2000);
+  }, 2000)
 }
 </script>
 
@@ -74,32 +71,34 @@ const handleAddBill = () => {
   <view class="main">
     <view text="~ 4xl" font-bold pb-10>
       <view relative>
-        <view text-center>¥ {{ billForm.amount ? billForm.amount : 0 }}</view>
+        <view text-center>
+          ¥ {{ billForm.amount ? billForm.amount : 0 }}
+        </view>
         <input
+          v-model="billForm.amount"
           absolute
           inset-0
           text-xl
           w-fill
           op-0
           type="number"
-          v-model="billForm.amount"
-        />
+        >
       </view>
       <view relative vertical-bottom text="center sm gray-600" h-20>
         <view v-if="!isEdit">
-          <image op-70 mb--2px w-28 h-28 src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxZW0iIGhlaWdodD0iMWVtIiB2aWV3Qm94PSIwIDAgMjQgMjQiPjxwYXRoIGZpbGw9Im5vbmUiIHN0cm9rZT0iY3VycmVudENvbG9yIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIHN0cm9rZS13aWR0aD0iMiIgZD0iTTQgMjBoMTZNNCAyMHYtNGw4LThNNCAyMGg0bDgtOG0tNC00bDIuODY5LTIuODY5bC4wMDEtLjAwMWMuMzk1LS4zOTUuNTkzLS41OTMuODIxLS42NjdhMSAxIDAgMCAxIC42MTggMGMuMjI4LjA3NC40MjUuMjcyLjgyLjY2NmwxLjc0IDEuNzRjLjM5Ni4zOTYuNTk0LjU5NC42NjguODIyYTEgMSAwIDAgMSAwIC42MThjLS4wNzQuMjI4LS4yNzIuNDI2LS42NjguODIyaDBMMTYgMTIuMDAxbS00LTRsNCA0Ii8+PC9zdmc+"></image>
-          <span underline>{{billForm.remark=='' ? '备注':billForm.remark}}</span>
+          <image op-70 mb--2px w-28 h-28 src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxZW0iIGhlaWdodD0iMWVtIiB2aWV3Qm94PSIwIDAgMjQgMjQiPjxwYXRoIGZpbGw9Im5vbmUiIHN0cm9rZT0iY3VycmVudENvbG9yIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIHN0cm9rZS13aWR0aD0iMiIgZD0iTTQgMjBoMTZNNCAyMHYtNGw4LThNNCAyMGg0bDgtOG0tNC00bDIuODY5LTIuODY5bC4wMDEtLjAwMWMuMzk1LS4zOTUuNTkzLS41OTMuODIxLS42NjdhMSAxIDAgMCAxIC42MTggMGMuMjI4LjA3NC40MjUuMjcyLjgyLjY2NmwxLjc0IDEuNzRjLjM5Ni4zOTYuNTk0LjU5NC42NjguODIyYTEgMSAwIDAgMSAwIC42MThjLS4wNzQuMjI4LS4yNzIuNDI2LS42NjguODIyaDBMMTYgMTIuMDAxbS00LTRsNCA0Ii8+PC9zdmc+" />
+          <span underline>{{ billForm.remark === '' ? '备注' : billForm.remark }}</span>
         </view>
-        <input :class="isEdit?'':'op-0'" @focus="isEdit = true" @blur="isEdit=false" absolute inset-0 inline-block type="text" placeholder="" v-model="billForm.remark">
+        <input v-model="billForm.remark" :class="isEdit ? '' : 'op-0'" absolute inset-0 inline-block type="text" placeholder="" @focus="isEdit = true" @blur="isEdit = false">
       </view>
     </view>
     <SelectItem
+      ref="categoryRef"
       sub-title="分类"
       :color="currentCategory.color"
       :title="currentCategory.name"
       :icon="currentCategory.icon"
       dorp-down
-      ref="categoryRef"
       popup
     >
       <template #selection>
@@ -110,14 +109,16 @@ const handleAddBill = () => {
           flex
           items-center
           rounded-xl
-          @click="() => onItemClick(i.tag)"
           :style="{
             backgroundColor:
-              billForm.category === i.tag ? 'rgba(179,224,186,0.5)' : ''
+              billForm.category === i.tag ? 'rgba(179,224,186,0.5)' : '',
           }"
+          @click="() => onItemClick(i.tag)"
         >
-          <ColorIcon :color="i.color" :src="i.icon"></ColorIcon>
-          <view ml-4 font-bold>{{ i.name }}</view>
+          <ColorIcon :color="i.color" :src="i.icon" />
+          <view ml-4 font-bold>
+            {{ i.name }}
+          </view>
         </view>
       </template>
     </SelectItem>
@@ -131,7 +132,7 @@ const handleAddBill = () => {
       </template>
       <template #title>
         <view v-if="slelcetedList.length" flex>
-          <view v-for="i in slelcetedList">
+          <view v-for="i in slelcetedList" :key="i.id">
             <image
               w-48
               h-48
@@ -143,13 +144,14 @@ const handleAddBill = () => {
             />
           </view>
         </view>
-        <view v-else text-green-700 font-bold>点击选择</view>
+        <view v-else text-green-700 font-bold>
+          点击选择
+        </view>
       </template>
       <template #selection>
         <view
           v-for="u in users"
           :key="u.id"
-          @click="handleUserSelect(u.id)"
           p-2
           my-1
           flex
@@ -157,8 +159,9 @@ const handleAddBill = () => {
           rounded-xl
           transition
           :style="{
-            backgroundColor: isSelect(u.id) ? 'rgba(179,224,186,0.5)' : ''
+            backgroundColor: isSelect(u.id) ? 'rgba(179,224,186,0.5)' : '',
           }"
+          @click="handleUserSelect(u.id)"
         >
           <image
             w-64
@@ -169,7 +172,9 @@ const handleAddBill = () => {
             :src="u.avatar"
             mode="scaleToFill"
           />
-          <view flex-1 ml-4 font-bold>{{ u.name }}</view>
+          <view flex-1 ml-4 font-bold>
+            {{ u.name }}
+          </view>
           <image
             v-if="!isSelect(u.id)"
             w-64
@@ -189,12 +194,11 @@ const handleAddBill = () => {
     </SelectItem>
     <SelectItem
       sub-title="时间选择"
-      :on-click="()=>showPicker = true"
+      :on-click="() => showPicker = true"
       :title="billForm.date"
       icon="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxZW0iIGhlaWdodD0iMWVtIiB2aWV3Qm94PSIwIDAgMjQgMjQiPjxwYXRoIGZpbGw9ImN1cnJlbnRDb2xvciIgZD0iTTE5IDNoLTFWMWgtMnYySDhWMUg2djJINWMtMS4xMSAwLTIgLjg5LTIgMnYxNGEyIDIgMCAwIDAgMiAyaDE0YzEuMTEgMCAyLS44OSAyLTJWNWEyIDIgMCAwIDAtMi0ybTAgMnYySDVWNWgxNE01IDE5VjloMTR2MTBINW0zLTZoOHYySDh2LTJaIi8+PC9zdmc+"
-    >
-    </SelectItem>
-    <u-calendar @change="handleDateChange" v-model="showPicker" mode="date"></u-calendar>
+    />
+    <u-calendar v-model="showPicker" mode="date" @change="handleDateChange" />
     <view w-full>
       <button
         m-4
@@ -234,5 +238,4 @@ const handleAddBill = () => {
 //   height: 50px;
 //   background-color: #fff;
 // }
-
 </style>

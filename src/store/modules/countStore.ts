@@ -10,7 +10,7 @@ const useStore = defineStore('main', {
       name: 'Rakib',
       avatar: 'https://avatars.githubusercontent.com/u/41265413?s=64&v=4',
       createAt: '2023-6-17',
-      amount: 365.66
+      amount: 365.66,
     } as IUser,
     record: [
       {
@@ -23,22 +23,22 @@ const useStore = defineStore('main', {
             id: '11111',
             name: '阿三',
             avatar: 'https://avatars.githubusercontent.com/u/26707388?s=64&v=4',
-            createAt: '2023-6-17'
+            createAt: '2023-6-17',
           },
           {
             id: '2222',
             name: 'Innei',
             avatar: 'https://avatars.githubusercontent.com/u/41265413?s=64&v=4',
-            createAt: '2023-6-16'
+            createAt: '2023-6-16',
           },
           {
             id: '333',
             name: 'Bot',
             avatar: 'https://avatars.githubusercontent.com/in/2740?s=64&v=4',
-            createAt: '2023-6-16'
-          }
+            createAt: '2023-6-16',
+          },
         ],
-        createAt: '2023-6-17'
+        createAt: '2023-6-17',
       },
       {
         id: 'bbbb',
@@ -50,23 +50,23 @@ const useStore = defineStore('main', {
             id: '2222',
             name: 'Innei',
             avatar: 'https://avatars.githubusercontent.com/u/41265413?s=64&v=4',
-            createAt: '2023-6-16'
+            createAt: '2023-6-16',
           },
           {
             id: '333',
             name: 'Bot',
             avatar: 'https://avatars.githubusercontent.com/in/2740?s=64&v=4',
-            createAt: '2023-6-16'
-          }
+            createAt: '2023-6-16',
+          },
         ],
-        createAt: '2023-6-17'
-      }
-    ] as IBillItem[]
+        createAt: '2023-6-17',
+      },
+    ] as IBillItem[],
   }),
   getters: {
-    isLogin: (state) => state.id !== ''
+    isLogin: state => state.id !== '',
   },
-  actions: {}
+  actions: {},
 })
 
 export default useStore

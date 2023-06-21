@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import type { IBillItem } from '@/types'
 import CategoryIcon from './CategoryIcon.vue'
+import type { IBillItem } from '@/types'
 
 const props = defineProps<{
   data: IBillItem
@@ -21,8 +21,12 @@ const props = defineProps<{
   >
     <CategoryIcon :category="props.data.category" />
     <view flex-1>
-      <view font-bold mb-1> {{ props.data.name }} </view>
-      <view text="~ xs gray-400">{{ props.data.createAt }}</view>
+      <view font-bold mb-1>
+        {{ props.data.name }}
+      </view>
+      <view text="~ xs gray-400">
+        {{ props.data.createAt }}
+      </view>
     </view>
     <view flex-1 flex items-center justify-center>
       <view v-for="u in props.data.actor" :key="u.id">

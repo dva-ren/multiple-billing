@@ -11,7 +11,7 @@ const category = computed(() => categoryIcons[props.category])
 <template>
   <view>
     <view v-if="category">
-      <ColorIcon :color="category.color" :src="category.icon"></ColorIcon>
+      <ColorIcon :color="category.color" :src="category.icon" />
     </view>
   </view>
 </template>
