@@ -1,10 +1,11 @@
 <script lang="ts" setup>
-import { computed, reactive, ref } from 'vue'
+import { computed, reactive, ref, unref } from 'vue'
 import type { IBillForm } from '@/types'
 import ColorIcon from '@/components/ColorIcon.vue'
 import SelectItem from '@/components/SelectItem.vue'
 import categoryes from '@/data/category.json'
 import users from '@/data/users.json'
+import { recordApi } from '@/api'
 
 const billForm = reactive<IBillForm>({
   amount: 0,
@@ -14,7 +15,7 @@ const billForm = reactive<IBillForm>({
   remark: '',
 })
 const showPicker = ref(false)
-const slelcetedList = computed(() => {
+const selectedList = computed(() => {
   return users.filter(i => billForm.actor.includes(i.id))
 })
 const isEdit = ref(false)
@@ -45,25 +46,49 @@ function handleUserSelect(id: string) {
 function handleDateChange(date: any) {
   billForm.date = date.result
 }
-function handleAddBill() {
+async function handleAddBill() {
+  if (!billForm.amount) {
+    uni.showToast({
+      icon: 'error',
+      title: '未填写金额',
+    })
+    return
+  }
+  if (!billForm.actor.length) {
+    uni.showToast({
+      icon: 'error',
+      title: '未选择人员',
+    })
+    return
+  }
   uni.showLoading({
     mask: true,
     title: '添加中',
   })
   showLoadingMask.value = true
-  setTimeout(() => {
-    showLoadingMask.value = false
+  const res = await recordApi.addRecord(unref(billForm))
+  if (res.code === 200) {
+    setTimeout(() => {
+      showLoadingMask.value = false
+      uni.showToast({
+        title: '添加成功',
+        icon: 'success',
+        duration: 2000,
+        complete: () => {
+          setTimeout(() => {
+            uni.navigateBack()
+          }, 2000)
+        },
+      })
+    }, 2000)
+  }
+  else {
     uni.showToast({
-      title: '添加成功',
-      icon: 'success',
+      title: res.msg ?? '添加失败',
+      icon: 'error',
       duration: 2000,
-      complete: () => {
-        setTimeout(() => {
-          uni.navigateBack()
-        }, 2000)
-      },
     })
-  }, 2000)
+  }
 }
 </script>
 
@@ -131,11 +156,11 @@ function handleAddBill() {
         />
       </template>
       <template #title>
-        <view v-if="slelcetedList.length" flex>
-          <view v-for="i in slelcetedList" :key="i.id">
+        <view v-if="selectedList.length" flex>
+          <view v-for="i in selectedList" :key="i.id">
             <image
               w-48
-              h-48
+              h-full
               ml--1
               border="~ gray-200"
               rounded-full

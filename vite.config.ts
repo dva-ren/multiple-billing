@@ -16,7 +16,7 @@ export default defineConfig({
     proxy: {
       '/api/': {
         target:
-          'https://service-rbji0bev-1256505457.cd.apigw.tencentcs.com/release',
+          'https://vn0nty.laf.run',
         changeOrigin: true,
         rewrite: p => p.replace(/^\/api/, ''),
       },

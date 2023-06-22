@@ -1,14 +1,20 @@
 export type Category = 'food' | 'life' | 'other' | 'electric' | 'water'
 
+export type IResponseResult<T = any> = Promise<{
+  code: number
+  data: T
+  msg: string
+}>
+
 interface CommonField {
-  id: string
+  _id: string
   createAt: string
 }
 
 export interface IUser extends CommonField {
-  name: string
+  openid: string
+  nickName: string
   avatar: string
-  amount: number
 }
 
 export interface IBillItem extends CommonField {

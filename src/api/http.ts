@@ -11,11 +11,9 @@ const instance = axios.create({
   // #endif
   // #ifndef H5
   // @ts-expect-error
-  baseURL: 'https://service-rbji0bev-1256505457.cd.apigw.tencentcs.com/release',
+  baseURL: 'https://vn0nty.laf.run',
   // #endif
   adapter(config) {
-    console.log('request adapter ↓↓')
-    console.log(config)
     const { url, method, data, params, headers, baseURL, paramsSerializer }
       = config
     return new Promise((resolve, reject) => {
@@ -27,8 +25,6 @@ const instance = axios.create({
         dataType: 'json',
         responseType: config.responseType,
         success: (res: any) => {
-          console.log('request success ↓↓')
-          console.log(res)
           resolve(res)
         },
         fail: (err: any) => {
@@ -46,7 +42,7 @@ instance.interceptors.request.use((config) => {
   const { method, params } = config
   // 附带鉴权的token
   const headers: any = {
-    token: uni.getStorageSync('token'),
+    access_token: uni.getStorageSync('access_token'),
   }
   // 不缓存get请求
   if (method === 'get')

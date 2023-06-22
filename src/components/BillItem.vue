@@ -29,7 +29,7 @@ const props = defineProps<{
       </view>
     </view>
     <view flex-1 flex items-center justify-center>
-      <view v-for="u in props.data.actor" :key="u.id">
+      <view v-for="u in props.data.actor" :key="u._id">
         <image
           border="~ 2px white"
           w-50

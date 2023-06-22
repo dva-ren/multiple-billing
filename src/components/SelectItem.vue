@@ -34,18 +34,20 @@ defineExpose({
   <view mb-4>
     <view
       bg-white
-      p-3
+      p-2
       flex
       shadow-xl
       rounded-xl
       @click="handleClick"
     >
-      <slot name="pre">
-        <ColorIcon
-          :color="props.color ?? 'rgb(179, 224, 186)'"
-          :src="props.icon ?? ''"
-        />
-      </slot>
+      <view p-1>
+        <slot name="pre">
+          <ColorIcon
+            :color="props.color ?? 'rgb(179, 224, 186)'"
+            :src="props.icon ?? ''"
+          />
+        </slot>
+      </view>
       <view ml-2 flex-1 flex="~ col" justify-between py-2px>
         <view v-if="props.subTitle" text="xs gray-500">
           {{
@@ -62,7 +64,7 @@ defineExpose({
       <view v-if="props.dorpDown">
         <image
           w-40
-          h-40
+          h-full
           src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxZW0iIGhlaWdodD0iMWVtIiB2aWV3Qm94PSIwIDAgMjQgMjQiPjxwYXRoIGZpbGw9IiM0NTQ1NDUiIGQ9Im0xMiAxNS40bC02LTZMNy40IDhsNC42IDQuNkwxNi42IDhMMTggOS40bC02IDZaIi8+PC9zdmc+"
           mode="scaleToFill"
         />

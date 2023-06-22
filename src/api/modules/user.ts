@@ -1,24 +1,37 @@
 import http from '../http'
+import type { IResponseResult, IUser } from '@/types'
 
-function login(account: string, pwd: string) {
-  return http.post('user/login', {
-    account,
-    pwd,
-  })
+function login(data: Record<string, any>): IResponseResult<{ access_token: string }> {
+  return http.post('/login', data)
 }
 
 /**
- * 获取验证码
- * @param phone 手机号
+ * 获取用户信息
+ * @param
  */
-function getCode(phone: string): Promise<{ num: number }> {
-  return http.get('random/code', {
-    params: {
-      phone,
-    },
-  })
+function getUserInfo(): IResponseResult<IUser> {
+  return http.get('/getUserInfo')
 }
+
+/**
+ * 获取所有用户
+ * @param
+ */
+function getUserList(): IResponseResult<IUser[]> {
+  return http.get('/getUsers')
+}
+
+/**
+ * 获取单个用户信息
+ * @param uid 用户ID
+ */
+function getUserByUid(uid: string): IResponseResult<IUser> {
+  return http.get(`/getUsers?uid=${uid}`)
+}
+
 export default {
   login,
-  getCode,
+  getUserInfo,
+  getUserList,
+  getUserByUid,
 }

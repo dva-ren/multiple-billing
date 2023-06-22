@@ -1,9 +1,96 @@
 <script lang="ts" setup>
+import { computed } from 'vue'
+import useStore from '@/store/modules/mainStore'
+import { userApi } from '@/api'
 
+const mainStore = useStore()
+const userInfo = computed(() => mainStore.userInfo)
+const isLogin = computed(() => mainStore.isLogin)
+
+async function onLogin() {
+  uni.showLoading({
+    mask: true,
+    title: '登录中',
+  })
+  try {
+    // 获取用户信息 （头像和名称）
+    const userProfile = await uni.getUserProfile({
+      desc: '获取用户信息',
+      lang: 'zh_CN',
+    })
+    if (userProfile) {
+    // 调用微信登录接口获取临时code
+      const loginInfo = await uni.login({ provider: 'weixin' })
+      if (loginInfo) {
+      // 登录临时code
+        const { code } = loginInfo
+        const { userInfo: { avatarUrl: avatar, nickName } } = userProfile
+        // 组装后端接口需要的数据
+        const params = { code, avatar, nickName }
+        // 调用登录接口
+        const { data } = await userApi.login(params)
+        uni.setStorageSync('access_token', data.access_token)
+        mainStore.INIT_STORE()
+        // eslint-disable-next-line no-console
+        console.log('登陆成功')
+        uni.hideLoading()
+      }
+    }
+  }
+  catch (e) {
+    console.error(e)
+    uni.showToast({
+      title: '未知错误',
+      icon: 'error',
+    })
+  }
+}
+
+function handleLogout() {
+  uni.showModal({
+    title: '提示',
+    content: '确定退出登录吗?',
+    success(res) {
+      if (res.confirm) {
+        uni.removeStorageSync('access_token')
+        mainStore.CLEAR_STATE()
+      }
+    },
+  })
+}
 </script>
 
 <template>
-  <view class="main">
-    me Page
+  <view class="bg-color h-full" py-4>
+    <view text-center>
+      <view v-if="isLogin">
+        <u-avatar :src="userInfo.avatar" size="large" />
+        <view text-base font-bold>
+          {{ userInfo.nickName }}
+        </view>
+      </view>
+      <view v-else text-center>
+        <u-avatar size="large" />
+        <view text-center>
+          <view text-blue @click="onLogin">
+            登录
+          </view>
+        </view>
+      </view>
+    </view>
+    <view mt-16>
+      <view p="x6 y2" bg-white text-base mb-1 text-gray>
+        个人资料
+      </view>
+      <view p="x6 y2" bg-white text-base mb-1 text-gray>
+        我的好友
+      </view>
+      <view p="x6 y2" bg-white text-base mb-1 text-gray>
+        其他设置
+      </view>
+      <view v-if="isLogin" p="x6 y2" bg-white text-base mb-1 @click="handleLogout">
+        退出登录
+      </view>
+    </view>
   </view>
 </template>

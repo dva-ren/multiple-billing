@@ -1,5 +1,5 @@
 {
-  "name": "uni-vue3-ts-template",
+  "name": "multi-billing",
   "version": "0.0.0",
   "private": true,
   "description": "multi-person billing applet, built through uniapp",
@@ -67,8 +67,6 @@
   },
   "devDependencies": {
     "@antfu/eslint-config": "^0.39.5",
-    "@commitlint/cli": "^17.4.2",
-    "@commitlint/config-conventional": "^17.4.2",
     "@dcloudio/types": "^3.3.3",
     "@dcloudio/uni-automator": "3.0.0-alpha-3080520230616001",
     "@dcloudio/uni-cli-shared": "3.0.0-alpha-3080520230616001",
