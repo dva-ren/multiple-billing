@@ -28,12 +28,20 @@ async function onLogin() {
         // 组装后端接口需要的数据
         const params = { code, avatar, nickName }
         // 调用登录接口
-        const { data } = await userApi.login(params)
-        uni.setStorageSync('access_token', data.access_token)
-        mainStore.INIT_STORE()
-        // eslint-disable-next-line no-console
-        console.log('登陆成功')
-        uni.hideLoading()
+        const res = await userApi.login(params)
+        if (res.code === 200) {
+          uni.setStorageSync('access_token', res.data.access_token)
+          mainStore.INIT_STORE()
+          // eslint-disable-next-line no-console
+          console.log('登陆成功')
+          uni.hideLoading()
+        }
+        else {
+          uni.showToast({
+            title: '登录失败',
+            icon: 'error',
+          })
+        }
       }
     }
   }

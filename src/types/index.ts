@@ -21,13 +21,13 @@ export interface IBillItem extends CommonField {
   category: Category
   name?: string
   amount: number
-  actor: IUser[]
+  participant: IUser[]
 }
 
 export interface IBillForm {
   category: Category
   amount: number
-  actor: string[]
+  participant: string[]
   date: string
   remark?: string
 }

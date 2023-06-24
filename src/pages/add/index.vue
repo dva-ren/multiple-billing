@@ -4,25 +4,28 @@ import type { IBillForm } from '@/types'
 import ColorIcon from '@/components/ColorIcon.vue'
 import SelectItem from '@/components/SelectItem.vue'
 import categoryes from '@/data/category.json'
-import users from '@/data/users.json'
 import { recordApi } from '@/api'
+import { useMainStore } from '@/store'
+
+const mainStore = useMainStore()
+const users = computed(() => mainStore.users)
 
 const billForm = reactive<IBillForm>({
   amount: 0,
   category: 'food',
-  actor: [],
+  participant: [],
   date: new Date().toLocaleDateString().replaceAll('/', '-'),
   remark: '',
 })
 const showPicker = ref(false)
 const selectedList = computed(() => {
-  return users.filter(i => billForm.actor.includes(i.id))
+  return users.value.filter(i => billForm.participant.includes(i._id))
 })
 const isEdit = ref(false)
 const showLoadingMask = ref(false)
 const currentCategory = computed(() => categoryes[billForm.category])
 function isSelect(id: string) {
-  return billForm.actor.includes(id)
+  return billForm.participant.includes(id)
 }
 
 const categoryRef = ref()
@@ -36,12 +39,12 @@ function onItemClick(category: any) {
   }, 50)
 }
 function handleUserSelect(id: string) {
-  const idx = billForm.actor.indexOf(id)
+  const idx = billForm.participant.indexOf(id)
 
   if (idx >= 0)
-    billForm.actor.splice(idx, 1)
+    billForm.participant.splice(idx, 1)
   else
-    billForm.actor.push(id)
+    billForm.participant.push(id)
 }
 function handleDateChange(date: any) {
   billForm.date = date.result
@@ -54,7 +57,7 @@ async function handleAddBill() {
     })
     return
   }
-  if (!billForm.actor.length) {
+  if (!billForm.participant.length) {
     uni.showToast({
       icon: 'error',
       title: '未选择人员',
@@ -157,15 +160,15 @@ async function handleAddBill() {
       </template>
       <template #title>
         <view v-if="selectedList.length" flex>
-          <view v-for="i in selectedList" :key="i.id">
+          <view v-for="i in selectedList" :key="i._id">
             <image
               w-48
-              h-full
+              h-48
               ml--1
               border="~ gray-200"
               rounded-full
               :src="i.avatar"
-              mode="scaleToFill"
+              mode="aspectFill"
             />
           </view>
         </view>
@@ -176,32 +179,29 @@ async function handleAddBill() {
       <template #selection>
         <view
           v-for="u in users"
-          :key="u.id"
-          p-2
-          my-1
+          :key="u._id"
           flex
+          p-3
           items-center
           rounded-xl
           transition
           :style="{
-            backgroundColor: isSelect(u.id) ? 'rgba(179,224,186,0.5)' : '',
+            backgroundColor: isSelect(u._id) ? 'rgba(179,224,186,0.5)' : '',
           }"
-          @click="handleUserSelect(u.id)"
+          @click="handleUserSelect(u._id)"
         >
           <image
             w-64
             h-64
             border="~ gray-200"
             rounded-full
-            p-1
             :src="u.avatar"
-            mode="scaleToFill"
           />
           <view flex-1 ml-4 font-bold>
-            {{ u.name }}
+            {{ u.nickName }}
           </view>
           <image
-            v-if="!isSelect(u.id)"
+            v-if="!isSelect(u._id)"
             w-64
             h-64
             src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxZW0iIGhlaWdodD0iMWVtIiB2aWV3Qm94PSIwIDAgMjQgMjQiPjxwYXRoIGZpbGw9IiNlNWU3ZWIiIGQ9Im0xMC42IDEzLjhsLTIuMTUtMi4xNXEtLjI3NS0uMjc1LS43LS4yNzV0LS43LjI3NXEtLjI3NS4yNzUtLjI3NS43dC4yNzUuN0w5LjkgMTUuOXEuMy4zLjcuM3QuNy0uM2w1LjY1LTUuNjVxLjI3NS0uMjc1LjI3NS0uN3QtLjI3NS0uN3EtLjI3NS0uMjc1LS43LS4yNzV0LS43LjI3NUwxMC42IDEzLjhaTTEyIDIycS0yLjA3NSAwLTMuOS0uNzg4dC0zLjE3NS0yLjEzN3EtMS4zNS0xLjM1LTIuMTM3LTMuMTc1VDIgMTJxMC0yLjA3NS43ODgtMy45dDIuMTM3LTMuMTc1cTEuMzUtMS4zNSAzLjE3NS0yLjEzN1QxMiAycTIuMDc1IDAgMy45Ljc4OHQzLjE3NSAyLjEzN3ExLjM1IDEuMzUgMi4xMzggMy4xNzVUMjIgMTJxMCAyLjA3NS0uNzg4IDMuOXQtMi4xMzcgMy4xNzVxLTEuMzUgMS4zNS0zLjE3NSAyLjEzOFQxMiAyMloiLz48L3N2Zz4="

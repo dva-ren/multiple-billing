@@ -1,6 +1,8 @@
 <script lang="ts" setup>
 import CategoryIcon from './CategoryIcon.vue'
 import type { IBillItem } from '@/types'
+import categores from '@/data/category.json'
+import { formatToDate } from '@/utils/date'
 
 const props = defineProps<{
   data: IBillItem
@@ -22,14 +24,14 @@ const props = defineProps<{
     <CategoryIcon :category="props.data.category" />
     <view flex-1>
       <view font-bold mb-1>
-        {{ props.data.name }}
+        {{ props.data.name ?? categores[data.category].name }}
       </view>
       <view text="~ xs gray-400">
-        {{ props.data.createAt }}
+        {{ formatToDate(props.data.createAt) }}
       </view>
     </view>
     <view flex-1 flex items-center justify-center>
-      <view v-for="u in props.data.actor" :key="u._id">
+      <view v-for="u in props.data.participant" :key="u._id">
         <image
           border="~ 2px white"
           w-50

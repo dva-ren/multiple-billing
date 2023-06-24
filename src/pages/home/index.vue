@@ -51,7 +51,7 @@ function handleAvatarClick() {
               <view flex gap-1 p-1>
                 <image
                   v-for="u in users"
-                  :key="u.id"
+                  :key="u._id"
                   shrink-0
                   h-80
                   w-80

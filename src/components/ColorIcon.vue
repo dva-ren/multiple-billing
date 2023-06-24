@@ -11,6 +11,6 @@ const props = defineProps<{ color: string; src: string }>()
     rounded-2
     flex-center
   >
-    <image op-70 w-40 h-40 :src="props.src" mode="scaleToFill" />
+    <image op-70 w-40 h-40 :src="props.src" />
   </view>
 </template>

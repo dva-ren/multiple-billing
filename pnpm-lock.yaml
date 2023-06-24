@@ -56,6 +56,9 @@ dependencies:
   cz-git:
     specifier: ^1.4.1
     version: 1.4.1
+  dayjs:
+    specifier: ^1.11.8
+    version: 1.11.8
   pinia:
     specifier: ^2.0.14
     version: 2.0.14(typescript@4.7.4)(vue@3.2.45)
@@ -3278,7 +3281,7 @@ packages:
   /@meoc/utils@0.1.9:
     resolution: {integrity: sha512-CIZDdbMHHs8qMllpEE6WMyVTMrjFMQmYcrX25WxN8h+7QZkMcTK5omU6PKjb5d4rSdbrIPVTkvrl1KUByveITA==}
     dependencies:
-      dayjs: 1.11.6
+      dayjs: 1.11.8
     dev: true
 
   /@nodelib/fs.scandir@2.1.5:
@@ -4789,9 +4792,8 @@ packages:
       whatwg-url: 8.7.0
     dev: true
 
-  /dayjs@1.11.6:
-    resolution: {integrity: sha512-zZbY5giJAinCG+7AGaw0wIhNZ6J8AhWuSXKvuc1KAyMiRsvGQWqh4L+MomvhdAYjN+lqvVCMq1I41e3YHvXkyQ==}
-    dev: true
+  /dayjs@1.11.8:
+    resolution: {integrity: sha512-LcgxzFoWMEPO7ggRv1Y2N31hUf2R0Vj7fuy/m+Bg1K8rr+KAs1AEy4y9jd5DXe8pbHgX+srkHNS7TH6Q6ZhYeQ==}
 
   /debug@2.6.9:
     resolution: {integrity: sha512-bC7ElrdJaJnPbAP+1EotYvqZsb3ecl5wi6Bfi6BJTUcNowp6cvspg0jXznRTKDjm/E7AdgFBVeAPVMNcKGsHMA==}

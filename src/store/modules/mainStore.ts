@@ -27,6 +27,7 @@ const useStore = defineStore('main', {
       this.userInfo.createAt = ''
       this.amount = 0
       this.record = []
+      this.users = []
     },
     INIT_STORE() {
       const access_token = uni.getStorageSync('access_token')
