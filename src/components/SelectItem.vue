@@ -34,7 +34,7 @@ defineExpose({
   <view mb-4>
     <view
       bg-white
-      p-2
+      p-3
       flex
       shadow-xl
       rounded-xl

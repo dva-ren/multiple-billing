@@ -12,7 +12,7 @@ const props = defineProps<{
 <template>
   <view
     bg-white
-    p-4
+    p-3
     my-2
     flex
     gap-4
@@ -53,9 +53,9 @@ const props = defineProps<{
 <style scoped>
 .bill-item{
   box-shadow:
-  1.4px 2.4px 2.2px -6px rgba(0, 0, 0, 0.019),
-  3.8px 6.6px 6px -6px rgba(0, 0, 0, 0.023),
-  9px 16px 14.5px -6px rgba(0, 0, 0, 0.028),
-  30px 53px 48px -6px rgba(0, 0, 0, 0.04);
+  0px 2.4px 2.2px -6px rgba(0, 0, 0, 0.019),
+  0px 6.6px 6px -6px rgba(0, 0, 0, 0.023),
+  0px 16px 14.5px -6px rgba(0, 0, 0, 0.028),
+  0px 53px 48px -6px rgba(0, 0, 0, 0.04);
 }
 </style>
