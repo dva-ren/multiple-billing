@@ -1,11 +1,11 @@
 <script lang="ts" setup>
 import CategoryIcon from './CategoryIcon.vue'
-import type { IBillItem } from '@/types'
+import type { IRecord } from '@/types'
 import categores from '@/data/category.json'
 import { formatToDate } from '@/utils/date'
 
 const props = defineProps<{
-  data: IBillItem
+  data: IRecord
 }>()
 </script>
 
@@ -21,17 +21,17 @@ const props = defineProps<{
     rounded-xl
     shadow-sm
   >
-    <CategoryIcon :category="props.data.category" />
+    <CategoryIcon :category="props.data.record.category" />
     <view flex-1>
       <view font-bold mb-1>
-        {{ props.data.name ?? categores[data.category].name }}
+        {{ props.data.record.remark ?? categores[data.record.category].name }}
       </view>
       <view text="~ xs gray-400">
-        {{ formatToDate(props.data.createAt) }}
+        {{ formatToDate(props.data.record.date) }}
       </view>
     </view>
     <view flex-1 flex items-center justify-center>
-      <view v-for="u in props.data.participant" :key="u._id">
+      <view v-for="u in props.data.record.participant" :key="u._id">
         <image
           border="~ 2px white"
           w-50
@@ -45,7 +45,7 @@ const props = defineProps<{
       </view>
     </view>
     <view h-full w-100 text-right>
-      <span text="xs red-300" font-bold px-1>¥{{ props.data.amount }}</span>
+      <span text="xs red-300" font-bold px-1>¥{{ props.data.record.amount }}</span>
     </view>
   </view>
 </template>

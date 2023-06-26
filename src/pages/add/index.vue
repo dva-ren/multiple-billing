@@ -6,20 +6,21 @@ import SelectItem from '@/components/SelectItem.vue'
 import categoryes from '@/data/category.json'
 import { recordApi } from '@/api'
 import { useMainStore } from '@/store'
+import { formatDate } from '@/utils/date'
 
 const mainStore = useMainStore()
-const users = computed(() => mainStore.users)
+const userInfo = computed(() => mainStore.userInfo)
 
 const billForm = reactive<IBillForm>({
   amount: 0,
   category: 'food',
   participant: [],
-  date: new Date().toLocaleDateString().replaceAll('/', '-'),
+  date: formatDate(new Date(), 'YYYY-MM-DD'),
   remark: '',
 })
 const showPicker = ref(false)
 const selectedList = computed(() => {
-  return users.value.filter(i => billForm.participant.includes(i._id))
+  return userInfo.value.users.filter(i => billForm.participant.includes(i._id))
 })
 const isEdit = ref(false)
 const showLoadingMask = ref(false)
@@ -71,19 +72,18 @@ async function handleAddBill() {
   showLoadingMask.value = true
   const res = await recordApi.addRecord(unref(billForm))
   if (res.code === 200) {
-    setTimeout(() => {
-      showLoadingMask.value = false
-      uni.showToast({
-        title: '添加成功',
-        icon: 'success',
-        duration: 2000,
-        complete: () => {
-          setTimeout(() => {
-            uni.navigateBack()
-          }, 2000)
-        },
-      })
-    }, 2000)
+    showLoadingMask.value = false
+    uni.showToast({
+      title: '添加成功',
+      icon: 'success',
+      duration: 2000,
+      complete: () => {
+        mainStore.INIT_STORE()
+        setTimeout(() => {
+          uni.navigateBack()
+        }, 2000)
+      },
+    })
   }
   else {
     uni.showToast({
@@ -177,11 +177,28 @@ async function handleAddBill() {
         </view>
       </template>
       <template #selection>
+        <view v-if="!userInfo.users.length" flex-center h-full>
+          <view>
+            <view mt-10 lh-8>
+              还没有可以选择的人员
+            </view>
+            <navigator
+              url="/pages/user/add/index"
+              open-type="navigate"
+              hover-class="navigator-hover"
+              text="~ sm blue center"
+            >
+              去添加
+            </navigator>
+          </view>
+        </view>
         <view
-          v-for="u in users"
+          v-for="u in userInfo.users"
+          v-else
           :key="u._id"
           flex
-          p-3
+          my-2
+          p-2
           items-center
           rounded-xl
           transition
@@ -263,4 +280,7 @@ async function handleAddBill() {
 //   height: 50px;
 //   background-color: #fff;
 // }
+.navigator-hover{
+  background: transparent;
+}
 </style>

@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import type { IBillItem, IUser } from '@/types'
+import type { IRecord, IUserInfo } from '@/types'
 import { recordApi, userApi } from '@/api'
 
 const useStore = defineStore('main', {
@@ -13,10 +13,10 @@ const useStore = defineStore('main', {
       avatar: '',
       createAt: '',
       openid: '',
-    } as IUser,
-    record: [] as IBillItem[],
-    amount: 0,
-    users: [] as IUser[],
+      amount: 0,
+      users: [],
+    } as IUserInfo,
+    record: [] as IRecord[],
   }),
   actions: {
     CLEAR_STATE() {
@@ -25,44 +25,50 @@ const useStore = defineStore('main', {
       this.userInfo.nickName = ''
       this.userInfo.avatar = ''
       this.userInfo.createAt = ''
-      this.amount = 0
+      this.userInfo.amount = 0
       this.record = []
-      this.users = []
+      this.userInfo.users = []
     },
     INIT_STORE() {
-      const access_token = uni.getStorageSync('access_token')
-      if (access_token) {
-        userApi.getUserInfo().then((res) => {
-          if (res.code === 200)
-            this.SET_USER_INFO(res.data)
-          else if (res.code === 400)
-            this.CLEAR_STATE()
-        })
-        recordApi.getRecordList().then((res) => {
-          if (res.code === 200)
-            this.SET_RECORD(res.data)
-          else if (res.code === 400)
-            this.CLEAR_STATE()
-        })
-        userApi.getUserList().then((res) => {
-          if (res.code === 200)
-            this.SET_USERS(res.data)
-          else if (res.code === 400)
-            this.CLEAR_STATE()
-        })
-      }
-      else { this.CLEAR_STATE() }
+      return new Promise((resolve, reject) => {
+        const access_token = uni.getStorageSync('access_token')
+        if (access_token) {
+          const p1 = userApi.getUserInfo().then((res) => {
+            if (res.code === 200)
+              this.SET_USER_INFO(res.data)
+            else if (res.code === 400)
+              this.CLEAR_STATE()
+          })
+          const p2 = recordApi.getRecordList().then((res) => {
+            if (res.code === 200)
+              this.SET_RECORD(res.data)
+            else if (res.code === 400)
+              this.CLEAR_STATE()
+          })
+          // const p3 = userApi.getUserList().then((res) => {
+          //   if (res.code === 200)
+          //     this.SET_USERS(res.data)
+          //   else if (res.code === 400)
+          //     this.CLEAR_STATE()
+          // })
+          Promise.all([p1, p2]).then(resolve)
+        }
+        else {
+          reject(new Error('未知错误'))
+          this.CLEAR_STATE()
+        }
+      })
     },
-    SET_USER_INFO(data: IUser) {
+    SET_USER_INFO(data: IUserInfo) {
       this.isLogin = true
       this.userInfo = data
     },
-    SET_RECORD(record: IBillItem[]) {
+    SET_RECORD(record: IRecord[]) {
       this.record = record
     },
-    SET_USERS(users: IUser[]) {
-      this.users = users
-    },
+    // SET_USERS(users: IUser[]) {
+    //   this.users = users
+    // },
   },
 })
 

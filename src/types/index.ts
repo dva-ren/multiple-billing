@@ -16,7 +16,10 @@ export interface IUser extends CommonField {
   nickName: string
   avatar: string
 }
-
+export interface IUserInfo extends IUser {
+  amount: number
+  users: IUser[]
+}
 export interface IBillItem extends CommonField {
   category: Category
   name?: string
@@ -30,4 +33,25 @@ export interface IBillForm {
   participant: string[]
   date: string
   remark?: string
+}
+
+export interface IRecord {
+  _id: string
+  recordId: string
+  userId: string
+  checked: boolean
+  sharedAmount: string
+  record: Record
+}
+
+export interface Record {
+  _id: string
+  category: Category
+  amount: string
+  date: string
+  participant: IUser[]
+  creatorId: string
+  creator: IUser
+  remark?: string
+  createAt: string
 }

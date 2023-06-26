@@ -1,20 +1,23 @@
 <script lang="ts" setup>
 import { computed } from 'vue'
+import { onPullDownRefresh } from '@dcloudio/uni-app'
 import BillItem from '@/components/BillItem.vue'
 import useStore from '@/store/modules/mainStore'
 
 const mainStore = useStore()
 const userInfo = computed(() => mainStore.userInfo)
 const record = computed(() => mainStore.record)
-const amount = computed(() => mainStore.amount)
 const isLogin = computed(() => mainStore.isLogin)
-const users = computed(() => mainStore.users)
 
 function handleAvatarClick() {
   uni.navigateTo({
     url: '/pages/user/index',
   })
 }
+onPullDownRefresh(async () => {
+  await mainStore.INIT_STORE()
+  uni.stopPullDownRefresh()
+})
 </script>
 
 <template>
@@ -32,7 +35,7 @@ function handleAvatarClick() {
         </view>
       </view>
       <view>
-        <u-avatar :src="userInfo.avatar" @click="handleAvatarClick" />
+        <u-avatar :src="userInfo.avatar" size="100" @click="handleAvatarClick" />
       </view>
     </view>
     <view class="card" w-full mt-4 p6 text-white rounded-xl>
@@ -41,7 +44,7 @@ function handleAvatarClick() {
         <view>
           <view flex items-center text-2xl>
             <span text-blue mr-1>¥</span>
-            <view>{{ amount }}</view>
+            <view>{{ userInfo.amount }}</view>
           </view>
           <view mt-4>
             <view text-base>
@@ -50,7 +53,7 @@ function handleAvatarClick() {
             <scroll-view scroll-x>
               <view flex gap-1 p-1>
                 <image
-                  v-for="u in users"
+                  v-for="u in userInfo.users"
                   :key="u._id"
                   shrink-0
                   h-80

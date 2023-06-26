@@ -72,12 +72,12 @@ defineExpose({
     </view>
     <view v-if="popup">
       <u-popup v-model="show" mode="bottom" border-radius="40">
-        <view h-40vh>
+        <view h-45vh>
           <view p="x6 y4" text-base font-bold>
             {{ props.subTitle }}
           </view>
           <scroll-view scroll-y>
-            <view max-h-30vh p="x6">
+            <view max-h-35vh p="x6">
               <slot name="selection" />
             </view>
           </scroll-view>

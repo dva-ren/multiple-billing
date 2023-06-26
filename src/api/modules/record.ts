@@ -1,5 +1,5 @@
 import http from '../http'
-import type { IBillForm, IResponseResult } from '@/types'
+import type { IBillForm, IRecord, IResponseResult } from '@/types'
 
 function addRecord(data: IBillForm): IResponseResult {
   return http.post('/addRecord', data)
@@ -9,7 +9,7 @@ function addRecord(data: IBillForm): IResponseResult {
  * @param id 记录id
  * @returns List
  */
-function getRecordList(id?: string): IResponseResult {
+function getRecordList(id?: string): IResponseResult<IRecord[]> {
   return http.get('/getRecord', {
     params: {
       id,

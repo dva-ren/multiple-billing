@@ -1,28 +1,28 @@
 {
   "pages": [
-    //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
     {
       "path": "pages/home/index",
       "style": {
-        "navigationBarTitleText": "Home"
+        "navigationBarTitleText": "Home",
+        "enablePullDownRefresh": true
       }
     },
     {
       "path": "pages/add/index",
       "style": {
-        "navigationBarTitleText": "Add Page"
+        "navigationBarTitleText": "添加记录"
       }
     },
     {
       "path": "pages/user/index",
       "style": {
-        "navigationBarTitleText": "Me"
+        "navigationBarTitleText": "个人中心"
       }
     }
   ],
   "globalStyle": {
     "navigationBarTextStyle": "black",
-    "navigationBarTitleText": "uni-app",
+    "navigationBarTitleText": "馨千录",
     "navigationBarBackgroundColor": "#F8F8F8",
     "backgroundColor": "#F8F8F8"
   },
