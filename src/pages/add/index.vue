@@ -1,8 +1,9 @@
 <script lang="ts" setup>
 import { computed, reactive, ref, unref } from 'vue'
-import type { IBillForm } from '@/types'
+import type { IBillForm, IUser } from '@/types'
 import ColorIcon from '@/components/ColorIcon.vue'
 import SelectItem from '@/components/SelectItem.vue'
+import CheckItem from '@/components/CheckItem.vue'
 import categoryes from '@/data/category.json'
 import { recordApi } from '@/api'
 import { useMainStore } from '@/store'
@@ -19,14 +20,13 @@ const billForm = reactive<IBillForm>({
   remark: '',
 })
 const showPicker = ref(false)
-const selectedList = computed(() => {
-  return userInfo.value.users.filter(i => billForm.participant.includes(i._id))
-})
+const selectedList = ref<IUser[]>([])
+
 const isEdit = ref(false)
 const showLoadingMask = ref(false)
 const currentCategory = computed(() => categoryes[billForm.category])
-function isSelect(id: string) {
-  return billForm.participant.includes(id)
+function isSelect(u: IUser) {
+  return selectedList.value.includes(u)
 }
 
 const categoryRef = ref()
@@ -39,13 +39,13 @@ function onItemClick(category: any) {
     close()
   }, 50)
 }
-function handleUserSelect(id: string) {
-  const idx = billForm.participant.indexOf(id)
+function handleUserSelect(user: IUser) {
+  const idx = selectedList.value.findIndex(u => u._id === user._id)
 
   if (idx >= 0)
-    billForm.participant.splice(idx, 1)
+    selectedList.value.splice(idx, 1)
   else
-    billForm.participant.push(id)
+    selectedList.value.push(user)
 }
 function handleDateChange(date: any) {
   billForm.date = date.result
@@ -58,7 +58,7 @@ async function handleAddBill() {
     })
     return
   }
-  if (!billForm.participant.length) {
+  if (!selectedList.value.length) {
     uni.showToast({
       icon: 'error',
       title: '未选择人员',
@@ -70,6 +70,7 @@ async function handleAddBill() {
     title: '添加中',
   })
   showLoadingMask.value = true
+  billForm.participant = selectedList.value.map(u => u._id)
   const res = await recordApi.addRecord(unref(billForm))
   if (res.code === 200) {
     showLoadingMask.value = false
@@ -177,13 +178,13 @@ async function handleAddBill() {
         </view>
       </template>
       <template #selection>
-        <view v-if="!userInfo.users.length" flex-center h-full>
+        <!-- <view v-if="!userInfo.users.length" flex-center h-full>
           <view>
             <view mt-10 lh-8>
               还没有可以选择的人员
             </view>
             <navigator
-              url="/pages/user/add/index"
+              url="/pages/user/addUser"
               open-type="navigate"
               hover-class="navigator-hover"
               text="~ sm blue center"
@@ -191,47 +192,22 @@ async function handleAddBill() {
               去添加
             </navigator>
           </view>
-        </view>
-        <view
+        </view> -->
+        <CheckItem
+          class="text-blue"
+          :avatar="userInfo.avatar"
+          name="ME"
+          :is-select="isSelect(userInfo)"
+          @click="handleUserSelect(userInfo)"
+        />
+        <CheckItem
           v-for="u in userInfo.users"
-          v-else
           :key="u._id"
-          flex
-          my-2
-          p-2
-          items-center
-          rounded-xl
-          transition
-          :style="{
-            backgroundColor: isSelect(u._id) ? 'rgba(179,224,186,0.5)' : '',
-          }"
-          @click="handleUserSelect(u._id)"
-        >
-          <image
-            w-64
-            h-64
-            border="~ gray-200"
-            rounded-full
-            :src="u.avatar"
-          />
-          <view flex-1 ml-4 font-bold>
-            {{ u.nickName }}
-          </view>
-          <image
-            v-if="!isSelect(u._id)"
-            w-64
-            h-64
-            src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxZW0iIGhlaWdodD0iMWVtIiB2aWV3Qm94PSIwIDAgMjQgMjQiPjxwYXRoIGZpbGw9IiNlNWU3ZWIiIGQ9Im0xMC42IDEzLjhsLTIuMTUtMi4xNXEtLjI3NS0uMjc1LS43LS4yNzV0LS43LjI3NXEtLjI3NS4yNzUtLjI3NS43dC4yNzUuN0w5LjkgMTUuOXEuMy4zLjcuM3QuNy0uM2w1LjY1LTUuNjVxLjI3NS0uMjc1LjI3NS0uN3QtLjI3NS0uN3EtLjI3NS0uMjc1LS43LS4yNzV0LS43LjI3NUwxMC42IDEzLjhaTTEyIDIycS0yLjA3NSAwLTMuOS0uNzg4dC0zLjE3NS0yLjEzN3EtMS4zNS0xLjM1LTIuMTM3LTMuMTc1VDIgMTJxMC0yLjA3NS43ODgtMy45dDIuMTM3LTMuMTc1cTEuMzUtMS4zNSAzLjE3NS0yLjEzN1QxMiAycTIuMDc1IDAgMy45Ljc4OHQzLjE3NSAyLjEzN3ExLjM1IDEuMzUgMi4xMzggMy4xNzVUMjIgMTJxMCAyLjA3NS0uNzg4IDMuOXQtMi4xMzcgMy4xNzVxLTEuMzUgMS4zNS0zLjE3NSAyLjEzOFQxMiAyMloiLz48L3N2Zz4="
-            mode="scaleToFill"
-          />
-          <image
-            v-else
-            w-64
-            h-64
-            src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxZW0iIGhlaWdodD0iMWVtIiB2aWV3Qm94PSIwIDAgMjQgMjQiPjxwYXRoIGZpbGw9IiM0YWRlODAiIGQ9Im0xMC42IDEzLjhsLTIuMTUtMi4xNXEtLjI3NS0uMjc1LS43LS4yNzV0LS43LjI3NXEtLjI3NS4yNzUtLjI3NS43dC4yNzUuN0w5LjkgMTUuOXEuMy4zLjcuM3QuNy0uM2w1LjY1LTUuNjVxLjI3NS0uMjc1LjI3NS0uN3QtLjI3NS0uN3EtLjI3NS0uMjc1LS43LS4yNzV0LS43LjI3NUwxMC42IDEzLjhaTTEyIDIycS0yLjA3NSAwLTMuOS0uNzg4dC0zLjE3NS0yLjEzN3EtMS4zNS0xLjM1LTIuMTM3LTMuMTc1VDIgMTJxMC0yLjA3NS43ODgtMy45dDIuMTM3LTMuMTc1cTEuMzUtMS4zNSAzLjE3NS0yLjEzN1QxMiAycTIuMDc1IDAgMy45Ljc4OHQzLjE3NSAyLjEzN3ExLjM1IDEuMzUgMi4xMzggMy4xNzVUMjIgMTJxMCAyLjA3NS0uNzg4IDMuOXQtMi4xMzcgMy4xNzVxLTEuMzUgMS4zNS0zLjE3NSAyLjEzOFQxMiAyMloiLz48L3N2Zz4="
-            mode="scaleToFill"
-          />
-        </view>
+          :avatar="u.avatar"
+          :name="u.nickName"
+          :is-select="isSelect(u)"
+          @click="handleUserSelect(u)"
+        />
       </template>
     </SelectItem>
     <SelectItem
@@ -259,12 +235,6 @@ async function handleAddBill() {
         立即添加
       </button>
     </view>
-    <!-- 等待添加完成动画 -->
-    <!-- <u-mask relative :show="showLoadingMask" @click="showLoadingMask = false">
-      <view class="loading">
-        <u-loading mode="circle"></u-loading>
-      </view>
-    </u-mask> -->
   </view>
 </template>
 
@@ -273,13 +243,7 @@ async function handleAddBill() {
   padding: 40rpx;
   background-color: rgba(250, 250, 250);
 }
-// .popup-content {
-//   align-items: center;
-//   justify-content: center;
-//   padding: 15px;
-//   height: 50px;
-//   background-color: #fff;
-// }
+
 .navigator-hover{
   background: transparent;
 }

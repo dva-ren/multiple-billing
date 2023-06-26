@@ -12,14 +12,14 @@ const props = defineProps<{
 <template>
   <view
     bg-white
-    p-3
+    p-4
     my-2
     flex
     gap-4
     items-center
     justify-between
     rounded-xl
-    shadow-sm
+    class="bill-item"
   >
     <CategoryIcon :category="props.data.record.category" />
     <view flex-1>
@@ -49,3 +49,13 @@ const props = defineProps<{
     </view>
   </view>
 </template>
+
+<style scoped>
+.bill-item{
+  box-shadow:
+  1.4px 2.4px 2.2px -6px rgba(0, 0, 0, 0.019),
+  3.8px 6.6px 6px -6px rgba(0, 0, 0, 0.023),
+  9px 16px 14.5px -6px rgba(0, 0, 0, 0.028),
+  30px 53px 48px -6px rgba(0, 0, 0, 0.04);
+}
+</style>

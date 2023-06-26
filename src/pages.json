@@ -18,6 +18,12 @@
       "style": {
         "navigationBarTitleText": "个人中心"
       }
+    },
+    {
+      "path": "pages/user/addUser",
+      "style": {
+        "navigationBarTitleText": "添加朋友"
+      }
     }
   ],
   "globalStyle": {

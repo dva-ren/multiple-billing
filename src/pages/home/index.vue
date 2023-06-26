@@ -51,7 +51,7 @@ onPullDownRefresh(async () => {
               Split With
             </view>
             <scroll-view scroll-x>
-              <view flex gap-1 p-1>
+              <view flex gap-2 p-1>
                 <image
                   v-for="u in userInfo.users"
                   :key="u._id"
@@ -70,12 +70,19 @@ onPullDownRefresh(async () => {
                   flex-center
                   border="2px dotted black "
                 >
-                  <image
-                    w-60
-                    h-60
-                    op-80
-                    src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxZW0iIGhlaWdodD0iMWVtIiB2aWV3Qm94PSIwIDAgMjQgMjQiPjxwYXRoIGZpbGw9ImN1cnJlbnRDb2xvciIgZD0iTTE5IDEyLjk5OGgtNnY2aC0ydi02SDV2LTJoNnYtNmgydjZoNnoiLz48L3N2Zz4="
-                  />
+                  <navigator
+                    url="/pages/user/addUser"
+                    open-type="navigate"
+                    hover-class="navigator-hover"
+                    flex-center
+                  >
+                    <image
+                      w-60
+                      h-60
+                      op-80
+                      src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxZW0iIGhlaWdodD0iMWVtIiB2aWV3Qm94PSIwIDAgMjQgMjQiPjxwYXRoIGZpbGw9ImN1cnJlbnRDb2xvciIgZD0iTTE5IDEyLjk5OGgtNnY2aC0ydi02SDV2LTJoNnYtNmgydjZoNnoiLz48L3N2Zz4="
+                    />
+                  </navigator>
                 </view>
               </view>
             </scroll-view>
@@ -92,7 +99,7 @@ onPullDownRefresh(async () => {
       </view>
     </view>
     <view mt-6>
-      <view text-xl font-bold mb-4>
+      <view text-xl font-bold mb-4 class="pre-border">
         Recent Split
       </view>
       <view v-if="record.length">

@@ -34,10 +34,8 @@ function getUserByUid(uid: string): IResponseResult<IUserInfo> {
  * @param uid 用户ID
  */
 function addFriends(uid: string): IResponseResult {
-  return http.get('/add-friends', {
-    params: {
-      uid,
-    },
+  return http.post('/add-friends', {
+    uid,
   })
 }
 
@@ -46,10 +44,8 @@ function addFriends(uid: string): IResponseResult {
  * @param uid 用户ID
  */
 function removeFriends(uid: string): IResponseResult {
-  return http.get('/remove-friends', {
-    params: {
-      uid,
-    },
+  return http.post('/remove-friends', {
+    uid,
   })
 }
 
