@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { computed } from 'vue'
 import CategoryIcon from './CategoryIcon.vue'
 import type { IRecord } from '@/types'
 import categores from '@/data/category.json'
@@ -7,6 +8,12 @@ import { formatToDate } from '@/utils/date'
 const props = defineProps<{
   data: IRecord
 }>()
+
+const participant = computed(() => {
+  return props.data.record.participant.filter((item) => {
+    return item._id !== props.data.record.creatorId
+  })
+})
 </script>
 
 <template>
@@ -24,14 +31,26 @@ const props = defineProps<{
     <CategoryIcon :category="props.data.record.category" />
     <view flex-1>
       <view font-bold mb-1>
-        {{ props.data.record.remark ?? categores[data.record.category].name }}
+        {{ props.data.record.remark || categores[data.record.category].name }}
       </view>
       <view text="~ xs gray-400">
         {{ formatToDate(props.data.record.date) }}
       </view>
     </view>
     <view flex-1 flex items-center justify-center>
-      <view v-for="u in props.data.record.participant" :key="u._id">
+      <view>
+        <image
+          border="~ 2px blue"
+          w-60
+          h-60
+          ml--2
+          shadow
+          rounded-full
+          :src="props.data.record.creator.avatar"
+          mode="aspectFit"
+        />
+      </view>
+      <view v-for="u in participant" :key="u._id">
         <image
           border="~ 2px white"
           w-50

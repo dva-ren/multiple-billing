@@ -24,13 +24,25 @@
       "style": {
         "navigationBarTitleText": "添加朋友"
       }
+    },
+    {
+      "path": "pages/overview/index",
+      "style": {
+        "navigationBarTitleText": "总览"
+      }
+    },
+    {
+      "path": "pages/bill/index",
+      "style": {
+        "navigationBarTitleText": "账单详情"
+      }
     }
   ],
   "globalStyle": {
     "navigationBarTextStyle": "black",
     "navigationBarTitleText": "馨千录",
     "navigationBarBackgroundColor": "#F8F8F8",
-    "backgroundColor": "#F8F8F8"
+    "backgroundColor": "#fafafa"
   },
   "easycom": {
     "custom": {

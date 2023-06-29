@@ -1,4 +1,4 @@
-export type Category = 'food' | 'life' | 'other' | 'electric' | 'water'
+export type Category = 'food' | 'life' | 'other' | 'electric' | 'water' | 'vegetable'
 
 export type IResponseResult<T = any> = Promise<{
   code: number
@@ -54,4 +54,10 @@ export interface Record {
   creator: IUser
   remark?: string
   createAt: string
+}
+
+export interface ICheckout {
+  _id: string
+  payTo: IUser
+  totalAmount: number
 }

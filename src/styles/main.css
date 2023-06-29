@@ -4,7 +4,7 @@
 
 .main {
   padding: 40rpx;
-  background-color: rgba(250, 250, 250);
+  background-color: #fafafa;
 }
 .bg-color{
   background-color: rgba(250, 250, 250);
@@ -12,6 +12,9 @@
 
 .pre-border{
   position: relative;
-  border-left: 8rpx rgb(96,165,250) solid;
+  border-left: 8rpx #60a5fa solid;
   padding-left: 8rpx;
+}
+.navigator-hover{
+  background-color: transparent;
 }

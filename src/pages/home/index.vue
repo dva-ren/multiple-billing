@@ -25,7 +25,7 @@ onPullDownRefresh(async () => {
     <view flex justify-between items-center>
       <view>
         <view v-if="isLogin" text-gray-600>
-          Hi {{ userInfo.nickName }}
+          HI {{ userInfo.nickName }}
         </view>
         <view v-else text-gray-600>
           当前未登录
@@ -40,61 +40,69 @@ onPullDownRefresh(async () => {
     </view>
     <view class="card" w-full mt-4 p6 text-white rounded-xl>
       <view>
-        <view>总金额</view>
         <view>
-          <view flex items-center text-2xl>
-            <span text-blue mr-1>¥</span>
-            <view>{{ userInfo.amount }}</view>
-          </view>
-          <view mt-4>
-            <view text-base>
-              Split With
-            </view>
-            <scroll-view scroll-x>
-              <view flex gap-2 p-1>
-                <image
-                  v-for="u in userInfo.users"
-                  :key="u._id"
-                  shrink-0
-                  h-80
-                  w-80
-                  bg-gray-100
-                  rounded-full
-                  :src="u.avatar"
-                />
-                <view
-                  shrink-0
-                  h-80
-                  w-80
-                  rounded-full
-                  flex-center
-                  border="2px dotted black "
-                >
-                  <navigator
-                    url="/pages/user/addUser"
-                    open-type="navigate"
-                    hover-class="navigator-hover"
-                    flex-center
-                  >
-                    <image
-                      w-60
-                      h-60
-                      op-80
-                      src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxZW0iIGhlaWdodD0iMWVtIiB2aWV3Qm94PSIwIDAgMjQgMjQiPjxwYXRoIGZpbGw9ImN1cnJlbnRDb2xvciIgZD0iTTE5IDEyLjk5OGgtNnY2aC0ydi02SDV2LTJoNnYtNmgydjZoNnoiLz48L3N2Zz4="
-                    />
-                  </navigator>
-                </view>
+          <navigator
+            url="/pages/overview/index"
+            open-type="navigate"
+            hover-class="navigator-hover"
+          >
+            <view>总金额</view>
+            <view>
+              <view flex items-center text-2xl>
+                <span text-blue mr-1>¥</span>
+                <view>{{ userInfo.amount }}</view>
               </view>
-            </scroll-view>
+            </view>
+          </navigator>
+        </view>
+        <view mt-4>
+          <view text-base>
+            Split With
           </view>
-          <view mt-6>
-            <navigator v-if="isLogin" class="add-btn" rounded url="/pages/add/index" open-type="navigate">
-              添加账单
-            </navigator>
-            <navigator v-else class="add-btn" rounded url="/pages/user/index" open-type="navigate">
-              去登陆
-            </navigator>
-          </view>
+          <scroll-view scroll-x>
+            <view flex gap-2 p-1>
+              <image
+                v-for="u in userInfo.users"
+                :key="u._id"
+                shrink-0
+                h-80
+                w-80
+                bg-gray-100
+                rounded-full
+                :src="u.avatar"
+              />
+              <view
+                shrink-0
+                h-80
+                w-80
+                rounded-full
+                flex-center
+                border="2px dotted black "
+              >
+                <navigator
+                  url="/pages/user/addUser"
+                  open-type="navigate"
+                  hover-class="navigator-hover"
+                  flex-center
+                >
+                  <image
+                    w-60
+                    h-60
+                    op-80
+                    src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxZW0iIGhlaWdodD0iMWVtIiB2aWV3Qm94PSIwIDAgMjQgMjQiPjxwYXRoIGZpbGw9ImN1cnJlbnRDb2xvciIgZD0iTTE5IDEyLjk5OGgtNnY2aC0ydi02SDV2LTJoNnYtNmgydjZoNnoiLz48L3N2Zz4="
+                  />
+                </navigator>
+              </view>
+            </view>
+          </scroll-view>
+        </view>
+        <view mt-6>
+          <navigator v-if="isLogin" class="add-btn" rounded url="/pages/add/index" open-type="navigate">
+            添加账单
+          </navigator>
+          <navigator v-else class="add-btn" rounded url="/pages/user/index" open-type="navigate">
+            去登陆
+          </navigator>
         </view>
       </view>
     </view>

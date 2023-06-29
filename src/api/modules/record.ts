@@ -1,5 +1,5 @@
 import http from '../http'
-import type { IBillForm, IRecord, IResponseResult } from '@/types'
+import type { IBillForm, ICheckout, IRecord, IResponseResult } from '@/types'
 
 function addRecord(data: IBillForm): IResponseResult {
   return http.post('/addRecord', data)
@@ -17,7 +17,16 @@ function getRecordList(id?: string): IResponseResult<IRecord[]> {
   })
 }
 
+/**
+ * 获取账单列表
+ * @returns List
+ */
+function getTotalMoney(): IResponseResult<ICheckout[]> {
+  return http.get('/get-total-money')
+}
+
 export default {
   addRecord,
   getRecordList,
+  getTotalMoney,
 }

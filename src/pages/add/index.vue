@@ -14,7 +14,7 @@ const userInfo = computed(() => mainStore.userInfo)
 
 const billForm = reactive<IBillForm>({
   amount: 0,
-  category: 'food',
+  category: 'vegetable',
   participant: [],
   date: formatDate(new Date(), 'YYYY-MM-DD'),
   remark: '',
