@@ -49,6 +49,22 @@ function removeFriends(uid: string): IResponseResult {
   })
 }
 
+/**
+ * 更新用户信息
+ * @param data 新的信息
+ */
+function updateUserInfo(data: { nickName?: string; avatar?: string }): IResponseResult {
+  return http.post('/update-user-info', data)
+}
+
+/**
+ * s上传头像
+ * @param data 新的信息
+ */
+function uploadAvatar(data: any): IResponseResult<string> {
+  return http.post('/upload-avatar', data)
+}
+
 export default {
   login,
   getUserInfo,
@@ -56,4 +72,6 @@ export default {
   getUserByUid,
   addFriends,
   removeFriends,
+  updateUserInfo,
+  uploadAvatar,
 }

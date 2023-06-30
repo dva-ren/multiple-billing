@@ -87,9 +87,15 @@ function handleLogout() {
       </view>
     </view>
     <view mt-16>
-      <view p="x6 y2" bg-white text-base mb-1 text-gray>
-        个人资料
-      </view>
+      <navigator
+        url="/pages/user/update"
+        open-type="navigate"
+        hover-class="navigator-hover"
+      >
+        <view p="x6 y2" bg-white text-base mb-1>
+          修改资料
+        </view>
+      </navigator>
       <view p="x6 y2" bg-white text-base mb-1 text-gray>
         我的好友
       </view>

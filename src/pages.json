@@ -36,6 +36,12 @@
       "style": {
         "navigationBarTitleText": "账单详情"
       }
+    },
+    {
+      "path": "pages/user/update",
+      "style": {
+        "navigationBarTitleText": "修改资料"
+      }
     }
   ],
   "globalStyle": {
