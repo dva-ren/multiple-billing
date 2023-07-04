@@ -9,11 +9,9 @@ function addRecord(data: IBillForm): IResponseResult {
  * @param id 记录id
  * @returns List
  */
-function getRecordList(id?: string): IResponseResult<IRecord[]> {
+function getRecordList(query?: { id?: string; checked?: boolean }): IResponseResult<IRecord[]> {
   return http.get('/getRecord', {
-    params: {
-      id,
-    },
+    params: query,
   })
 }
 
@@ -25,8 +23,19 @@ function getTotalMoney(): IResponseResult<ICheckout[]> {
   return http.get('/get-total-money')
 }
 
+/**
+ * 结算账单
+ * @returns null
+ */
+function checkout(ids: string[]): IResponseResult {
+  return http.post('/checkout', {
+    ids,
+  })
+}
+
 export default {
   addRecord,
   getRecordList,
   getTotalMoney,
+  checkout,
 }

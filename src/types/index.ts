@@ -60,4 +60,5 @@ export interface ICheckout {
   _id: string
   payTo: IUser
   totalAmount: number
+  ids: string[]
 }

@@ -46,10 +46,10 @@ onPullDownRefresh(async () => {
             open-type="navigate"
             hover-class="navigator-hover"
           >
-            <view>总金额</view>
+            <view>待结算</view>
             <view>
-              <view flex items-center text-2xl>
-                <span text-blue mr-1>¥</span>
+              <view flex items-center text-3xl>
+                <span mr-1>¥</span>
                 <view>{{ userInfo.amount }}</view>
               </view>
             </view>
@@ -107,7 +107,7 @@ onPullDownRefresh(async () => {
       </view>
     </view>
     <view mt-6>
-      <view text-xl font-bold mb-4 class="pre-border">
+      <view text-xl font-bold mb-4>
         Recent Split
       </view>
       <view v-if="record.length">

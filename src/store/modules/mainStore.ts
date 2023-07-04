@@ -34,12 +34,20 @@ const useStore = defineStore('main', {
         const access_token = uni.getStorageSync('access_token')
         if (access_token) {
           const p1 = userApi.getUserInfo().then((res) => {
-            if (res.code === 200)
+            if (res.code === 200) {
               this.SET_USER_INFO(res.data)
-            else if (res.code === 400)
+            }
+            else if (res.code === 400) {
+              uni.showToast({
+                icon: 'error',
+                title: '登录失效，请重新登录',
+              })
               this.CLEAR_STATE()
+            }
           })
-          const p2 = recordApi.getRecordList().then((res) => {
+          const p2 = recordApi.getRecordList({
+            checked: false,
+          }).then((res) => {
             if (res.code === 200)
               this.SET_RECORD(res.data)
             else if (res.code === 400)

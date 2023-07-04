@@ -10,6 +10,43 @@ const list = ref([])
 //   list.value = res.data
 // }
 const { data, loading } = useData(() => recordApi.getTotalMoney())
+async function checkout(ids: string[]) {
+  uni.showLoading({
+    title: '结算中',
+  })
+  try {
+    const res = await recordApi.checkout(ids)
+    if (res.code === 200) {
+      uni.showToast({
+        icon: 'success',
+        title: res.msg,
+      })
+    }
+    else {
+      uni.showToast({
+        icon: 'error',
+        title: res.msg,
+      })
+    }
+  }
+  catch (error) {
+    console.error(error)
+    uni.showToast({
+      icon: 'error',
+      title: '服务器错误',
+    })
+  }
+}
+async function handleCheckout(ids: string[]) {
+  uni.showModal({
+    showCancel: true,
+    title: '确定结算？',
+    success: ({ confirm }) => {
+      if (confirm)
+        checkout(ids)
+    },
+  })
+}
 </script>
 
 <template>
@@ -52,10 +89,13 @@ const { data, loading } = useData(() => recordApi.getTotalMoney())
         <view text-2xl>
           ¥ {{ i.totalAmount }}
         </view>
-        <div class="button" text-base p-2 w-200 shadow bg="#fbc2eb" text-center rounded-full>
+        <div class="button" text-base p-2 w-200 shadow bg="#fbc2eb" text-center rounded-full @click="handleCheckout(i.ids)">
           结算
         </div>
       </view>
+    </view>
+    <view v-if="!data?.data.length" text-center p-10>
+      已结清
     </view>
   </view>
 </template>
