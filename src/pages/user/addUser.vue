@@ -2,17 +2,47 @@
 import { ref } from 'vue'
 import { userApi } from '@/api'
 import { useMainStore } from '@/store'
+import type { IUser } from '@/types'
+import Empty from '@/components/Empty.vue'
 
-const uid = ref('')
-async function handleAdd() {
-  if (uid.value.trim().length < 6) {
+const keyword = ref('')
+const userList = ref<IUser[]>([])
+const mainStore = useMainStore()
+
+function isAdded(id: string) {
+  return mainStore.userInfo.users.find(u => u._id === id) || id === mainStore.userInfo._id
+}
+
+async function handleSearch() {
+  if (keyword.value.trim().length < 2) {
     uni.showToast({
       icon: 'error',
-      title: '输入少于6位',
+      title: '输入少于2位',
     })
     return
   }
-  const res = await userApi.addFriends(uid.value)
+  uni.showLoading({
+    title: '搜索中',
+    mask: true,
+  })
+  try {
+    const res = await userApi.searchUser(keyword.value)
+    if (res.code === 200)
+      userList.value = res.data
+  }
+  catch (e) {
+    console.error(e)
+  }
+  finally {
+    uni.hideLoading()
+  }
+}
+async function addFriend(uid: string) {
+  uni.showLoading({
+    title: '添加中',
+    mask: true,
+  })
+  const res = await userApi.addFriends(uid)
   if (res.code === 200) {
     useMainStore().INIT_STORE()
     uni.showToast({
@@ -34,11 +64,32 @@ async function handleAdd() {
   <view class="main">
     <u-form>
       <u-form-item>
-        <u-input v-model="uid" type="text" placeholder="用户id" />
+        <u-input v-model="keyword" type="text" placeholder="id或昵称" />
+        <template #right>
+          <u-button size="mini" :plain="true" @click="handleSearch">
+            搜索
+          </u-button>
+        </template>
       </u-form-item>
-      <u-button @click="handleAdd">
-        添加用户
-      </u-button>
     </u-form>
+    <view mt-10>
+      <view v-if="userList.length">
+        <view v-for="u in userList" :key="u._id" rounded-xl py-2 px-4 bg-white flex justify-beetwen items-center>
+          <u-avatar :src="u.avatar" />
+          <view flex-1 px-4>
+            {{ u.nickName }}
+          </view>
+          <view text-xs>
+            <view v-if="isAdded(u._id)">
+              已添加
+            </view>
+            <view v-else bg-blue-400 p="x2 y1" rounded text-white @click="addFriend(u._id)">
+              添加
+            </view>
+          </view>
+        </view>
+      </view>
+      <Empty v-else text="结果为空" />
+    </view>
   </view>
 </template>

@@ -29,7 +29,7 @@ export interface IBillItem extends CommonField {
 
 export interface IBillForm {
   category: Category
-  amount: number
+  amount: number | undefined
   participant: string[]
   date: string
   remark?: string

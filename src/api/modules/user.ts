@@ -58,11 +58,23 @@ function updateUserInfo(data: { nickName?: string; avatar?: string }): IResponse
 }
 
 /**
- * s上传头像
+ * 上传头像
  * @param data 新的信息
  */
 function uploadAvatar(data: any): IResponseResult<string> {
   return http.post('/upload-avatar', data)
+}
+
+/**
+ * 搜索用户
+ * @param data 用户列表
+ */
+function searchUser(keyword: string): IResponseResult<IUser[]> {
+  return http.get('/search-user', {
+    params: {
+      keyword,
+    },
+  })
 }
 
 export default {
@@ -74,4 +86,5 @@ export default {
   removeFriends,
   updateUserInfo,
   uploadAvatar,
+  searchUser,
 }

@@ -28,7 +28,8 @@
     {
       "path": "pages/overview/index",
       "style": {
-        "navigationBarTitleText": "总览"
+        "navigationBarTitleText": "总览",
+        "enablePullDownRefresh": true
       }
     },
     {

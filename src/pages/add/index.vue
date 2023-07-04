@@ -13,7 +13,7 @@ const mainStore = useMainStore()
 const userInfo = computed(() => mainStore.userInfo)
 
 const billForm = reactive<IBillForm>({
-  amount: 0,
+  amount: undefined,
   category: 'vegetable',
   participant: [],
   date: formatDate(new Date(), 'YYYY-MM-DD'),
@@ -23,6 +23,8 @@ const showPicker = ref(false)
 const selectedList = ref<IUser[]>([])
 
 const isEdit = ref(false)
+const editFocus = ref(false)
+
 const showLoadingMask = ref(false)
 const currentCategory = computed(() => categoryes[billForm.category])
 function isSelect(u: IUser) {
@@ -94,23 +96,32 @@ async function handleAddBill() {
     })
   }
 }
+
+function handleInput() {
+  // billForm.amount = billForm.amount
+}
 </script>
 
 <template>
   <view class="main">
     <view text="~ 4xl" font-bold pb-10>
       <view relative>
-        <view text-center>
-          ¥ {{ billForm.amount ? billForm.amount : 0 }}
+        <view text-center py-1>
+          <span>¥</span>
+          <span :class="billForm.amount ? '' : 'text-gray-500'">
+            {{ billForm.amount ? billForm.amount : 0 }}
+          </span>
         </view>
         <input
           v-model="billForm.amount"
           absolute
           inset-0
-          text-xl
+          text="center 4xl"
+          style="color: transparent;"
           w-fill
-          op-0
-          type="number"
+          focus
+          type="digit"
+          @input="handleInput"
         >
       </view>
       <view relative vertical-bottom text="center sm gray-600" h-20>

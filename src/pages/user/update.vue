@@ -35,6 +35,10 @@ async function handleSubmit() {
   }
 }
 async function onChooseAvatar(e: any) {
+  uni.showLoading({
+    title: '上传中',
+    mask: true,
+  })
   const res = await uni.uploadFile({
     url: 'https://vn0nty.laf.run/upload-avatar',
     filePath: e.detail.avatarUrl,
@@ -42,6 +46,7 @@ async function onChooseAvatar(e: any) {
   })
   if (res.statusCode === 200) {
     form.avatar = JSON.parse(res.data).data
+    uni.hideLoading()
   }
   else {
     uni.showToast({

@@ -19,7 +19,7 @@ function getRecordList(query?: { id?: string; checked?: boolean }): IResponseRes
  * 获取账单列表
  * @returns List
  */
-function getTotalMoney(): IResponseResult<ICheckout[]> {
+function getTotalMoney(): IResponseResult<{ expend: ICheckout[]; income: ICheckout[] }> {
   return http.get('/get-total-money')
 }
 

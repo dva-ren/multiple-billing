@@ -3,6 +3,7 @@ import { computed } from 'vue'
 import { onPullDownRefresh } from '@dcloudio/uni-app'
 import BillItem from '@/components/BillItem.vue'
 import useStore from '@/store/modules/mainStore'
+import Empty from '@/components/Empty.vue'
 
 const mainStore = useStore()
 const userInfo = computed(() => mainStore.userInfo)
@@ -25,7 +26,8 @@ onPullDownRefresh(async () => {
     <view flex justify-between items-center>
       <view>
         <view v-if="isLogin" text-gray-600>
-          HI {{ userInfo.nickName }}
+          <span>Hi</span>
+          <span ml-1 text-blue-400 font-bold>{{ userInfo.nickName }}</span>
         </view>
         <view v-else text-gray-600>
           当前未登录
@@ -40,15 +42,32 @@ onPullDownRefresh(async () => {
     </view>
     <view class="card" w-full mt-4 p6 text-white rounded-xl>
       <view>
-        <view>
+        <view flex>
           <navigator
+            flex-1
             url="/pages/overview/index"
             open-type="navigate"
             hover-class="navigator-hover"
           >
-            <view>待结算</view>
+            <view>支出</view>
             <view>
-              <view flex items-center text-3xl>
+              <view flex items-center text="3xl">
+                <span mr-1>¥</span>
+                <view>{{ userInfo.amount }}</view>
+              </view>
+            </view>
+          </navigator>
+          <navigator
+            flex-1
+            url="/pages/overview/index"
+            open-type="navigate"
+            hover-class="navigator-hover"
+          >
+            <view>
+              收入
+            </view>
+            <view>
+              <view flex items-center text="3xl">
                 <span mr-1>¥</span>
                 <view>{{ userInfo.amount }}</view>
               </view>
@@ -77,7 +96,7 @@ onPullDownRefresh(async () => {
                 w-80
                 rounded-full
                 flex-center
-                border="2px dotted black "
+                border="2px gray-700 "
               >
                 <navigator
                   url="/pages/user/addUser"
@@ -113,7 +132,7 @@ onPullDownRefresh(async () => {
       <view v-if="record.length">
         <BillItem v-for="i in record" :key="i._id" :data="i" />
       </view>
-      <u-empty v-else text="暂无数据" mode="list" />
+      <Empty v-else text="暂无数据" />
     </view>
   </view>
 </template>
@@ -132,5 +151,8 @@ onPullDownRefresh(async () => {
   /* background: linear-gradient(to bottom, #323232 0%, #3F3F3F 40%, #1C1C1C 150%), linear-gradient(to top, rgba(255,255,255,0.40) 0%, rgba(0,0,0,0.25) 200%); */
  /* background-blend-mode: multiply; */
   background-image: linear-gradient(45deg, #8baaaa 0%, #ae8b9c 100%);
+}
+.navigator-hover{
+  background-color: transparent;
 }
 </style>
