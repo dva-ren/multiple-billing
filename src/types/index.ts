@@ -17,7 +17,8 @@ export interface IUser extends CommonField {
   avatar: string
 }
 export interface IUserInfo extends IUser {
-  amount: number
+  expend: number
+  income: number
   users: IUser[]
 }
 export interface IBillItem extends CommonField {

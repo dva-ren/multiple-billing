@@ -53,7 +53,7 @@ onPullDownRefresh(async () => {
             <view>
               <view flex items-center text="3xl">
                 <span mr-1>¥</span>
-                <view>{{ userInfo.amount }}</view>
+                <view>{{ userInfo.expend }}</view>
               </view>
             </view>
           </navigator>
@@ -69,7 +69,7 @@ onPullDownRefresh(async () => {
             <view>
               <view flex items-center text="3xl">
                 <span mr-1>¥</span>
-                <view>{{ userInfo.amount }}</view>
+                <view>{{ userInfo.income }}</view>
               </view>
             </view>
           </navigator>

@@ -13,17 +13,17 @@ const mainStore = useMainStore()
 const userInfo = computed(() => mainStore.userInfo)
 
 const billForm = reactive<IBillForm>({
-  amount: undefined,
+  amount: 0,
   category: 'vegetable',
   participant: [],
   date: formatDate(new Date(), 'YYYY-MM-DD'),
   remark: '',
 })
+const inputAmount = ref('')
 const showPicker = ref(false)
 const selectedList = ref<IUser[]>([])
 
 const isEdit = ref(false)
-const editFocus = ref(false)
 
 const showLoadingMask = ref(false)
 const currentCategory = computed(() => categoryes[billForm.category])
@@ -52,11 +52,13 @@ function handleUserSelect(user: IUser) {
 function handleDateChange(date: any) {
   billForm.date = date.result
 }
+const reg = /^(-)?(([1-9]{1}\d*)|([0]{1}))(\.(\d){1,2})?$/
+
 async function handleAddBill() {
-  if (!billForm.amount) {
+  if (!reg.test(billForm.amount!.toString())) {
     uni.showToast({
       icon: 'error',
-      title: '未填写金额',
+      title: '金额不正确',
     })
     return
   }
@@ -98,7 +100,16 @@ async function handleAddBill() {
 }
 
 function handleInput() {
-  // billForm.amount = billForm.amount
+  let value = inputAmount.value.trim()
+    .replace(/^0/, '')
+    .replace('.', '$#$')
+    .replace(/\./g, '')
+    .replace('$#$', '.')
+  if (!value.startsWith('¥'))
+    value = `¥${value}`
+
+  inputAmount.value = value
+  billForm.amount = Number(value.replace('¥', ''))
 }
 </script>
 
@@ -106,21 +117,14 @@ function handleInput() {
   <view class="main">
     <view text="~ 4xl" font-bold pb-10>
       <view relative>
-        <view text-center py-1>
-          <span>¥</span>
-          <span :class="billForm.amount ? '' : 'text-gray-500'">
-            {{ billForm.amount ? billForm.amount : 0 }}
-          </span>
-        </view>
         <input
-          v-model="billForm.amount"
-          absolute
-          inset-0
+          v-model="inputAmount"
           text="center 4xl"
-          style="color: transparent;"
+          h-full
           w-fill
           focus
           type="digit"
+          placeholder="¥0"
           @input="handleInput"
         >
       </view>

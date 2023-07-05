@@ -13,7 +13,8 @@ const useStore = defineStore('main', {
       avatar: '',
       createAt: '',
       openid: '',
-      amount: 0,
+      expend: 0,
+      income: 0,
       users: [],
     } as IUserInfo,
     record: [] as IRecord[],
@@ -25,7 +26,8 @@ const useStore = defineStore('main', {
       this.userInfo.nickName = ''
       this.userInfo.avatar = ''
       this.userInfo.createAt = ''
-      this.userInfo.amount = 0
+      this.userInfo.expend = 0
+      this.userInfo.income = 0
       this.record = []
       this.userInfo.users = []
     },
