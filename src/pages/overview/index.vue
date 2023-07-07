@@ -55,7 +55,7 @@ onPullDownRefresh(async () => {
 
 <template>
   <view v-if="loading" flex-center h-full>
-    <u-loading mode="circle" />
+    <u-loading mode="flower" />
   </view>
   <view v-if="!loading" class="bg-color" h-full p-4>
     <view class="pre-border font-bold">

@@ -18,6 +18,7 @@ const useStore = defineStore('main', {
       users: [],
     } as IUserInfo,
     record: [] as IRecord[],
+    billIds: [] as string[],
   }),
   actions: {
     CLEAR_STATE() {

@@ -9,14 +9,14 @@ function addRecord(data: IBillForm): IResponseResult {
  * @param id 记录id
  * @returns List
  */
-function getRecordList(query?: { id?: string; checked?: boolean }): IResponseResult<IRecord[]> {
+function getRecordList(query?: { id?: string; checked?: boolean; ids?: string[] }): IResponseResult<IRecord[]> {
   return http.get('/getRecord', {
     params: query,
   })
 }
 
 /**
- * 获取账单列表
+ * 获取金额
  * @returns List
  */
 function getTotalMoney(): IResponseResult<{ expend: ICheckout[]; income: ICheckout[] }> {

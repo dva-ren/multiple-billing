@@ -1,8 +1,16 @@
 <script lang="ts" setup>
+import { useMainStore } from '@/store'
 import type { ICheckout } from '@/types'
 
 const props = defineProps<{ data: ICheckout; showButton?: boolean }>()
+
 const emits = defineEmits(['onButtonClick', 'onClick'])
+
+const mainStore = useMainStore()
+
+function handleClick() {
+  mainStore.billIds = props.data.ids
+}
 </script>
 
 <template>
@@ -25,6 +33,7 @@ const emits = defineEmits(['onButtonClick', 'onClick'])
         open-type="navigate"
         hover-class="navigator-hover"
         items-center
+        @click="handleClick"
       >
         <span>查看详情</span>
         <image

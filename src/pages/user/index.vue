@@ -69,7 +69,7 @@ function handleLogout() {
 </script>
 
 <template>
-  <view class="bg-color h-full" py-4>
+  <view class="h-full" py-4 bg-white>
     <view text-center>
       <view v-if="isLogin">
         <u-avatar :src="userInfo.avatar" size="large" />
@@ -86,25 +86,33 @@ function handleLogout() {
         </view>
       </view>
     </view>
-    <view mt-16>
+    <view mt-16 p="x6 y2" text-base>
       <navigator
         url="/pages/user/update"
         open-type="navigate"
         hover-class="navigator-hover"
+        class="item"
       >
-        <view p="x6 y2" bg-white text-base mb-1>
+        <view>
           修改资料
         </view>
       </navigator>
-      <view p="x6 y2" bg-white text-base mb-1 text-gray>
+      <view class="item" text-gray>
         我的好友
       </view>
-      <view p="x6 y2" bg-white text-base mb-1 text-gray>
+      <view class="item" text-gray>
         其他设置
       </view>
-      <view v-if="isLogin" p="x6 y2" bg-white text-base mb-1 @click="handleLogout">
+      <view v-if="isLogin" text="center blue-400" class="item" @click="handleLogout">
         退出登录
       </view>
     </view>
   </view>
 </template>
+
+<style scoped>
+.item{
+  padding: 16rpx;
+  border-bottom: 1px solid rgba(50,50,50,0.1);
+}
+</style>

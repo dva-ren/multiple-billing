@@ -41,7 +41,7 @@ onPullDownRefresh(async () => {
       </view>
     </view>
     <view class="card" w-full mt-4 p6 text-white rounded-xl>
-      <view>
+      <view z-2>
         <view flex>
           <navigator
             flex-1
@@ -96,7 +96,8 @@ onPullDownRefresh(async () => {
                 w-80
                 rounded-full
                 flex-center
-                border="2px gray-700 "
+                op-80
+                border="2px white-700 "
               >
                 <navigator
                   url="/pages/user/addUser"
@@ -108,7 +109,7 @@ onPullDownRefresh(async () => {
                     w-60
                     h-60
                     op-80
-                    src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxZW0iIGhlaWdodD0iMWVtIiB2aWV3Qm94PSIwIDAgMjQgMjQiPjxwYXRoIGZpbGw9ImN1cnJlbnRDb2xvciIgZD0iTTE5IDEyLjk5OGgtNnY2aC0ydi02SDV2LTJoNnYtNmgydjZoNnoiLz48L3N2Zz4="
+                    src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxZW0iIGhlaWdodD0iMWVtIiB2aWV3Qm94PSIwIDAgMjQgMjQiPjxwYXRoIGZpbGw9IiNmZmZmZmYiIGQ9Ik0xOSAxMi45OThoLTZ2NmgtMnYtNkg1di0yaDZ2LTZoMnY2aDZ6Ii8+PC9zdmc+"
                   />
                 </navigator>
               </view>
@@ -148,9 +149,10 @@ onPullDownRefresh(async () => {
   opacity: 0.8;
 }
 .card{
-  /* background: linear-gradient(to bottom, #323232 0%, #3F3F3F 40%, #1C1C1C 150%), linear-gradient(to top, rgba(255,255,255,0.40) 0%, rgba(0,0,0,0.25) 200%); */
- /* background-blend-mode: multiply; */
-  background-image: linear-gradient(45deg, #8baaaa 0%, #ae8b9c 100%);
+  /* background-image: linear-gradient(45deg, #8baaaa 0%, #ae8b9c 100%); */
+  /* background-image: linear-gradient(-20deg, #e9defa 0%, #fbfcdb 100%); */
+  background-image: linear-gradient(to right, #ec77ab 0%, #7873f5 100%);
+
 }
 .navigator-hover{
   background-color: transparent;

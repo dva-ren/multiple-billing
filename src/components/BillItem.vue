@@ -7,6 +7,7 @@ import { formatToDate } from '@/utils/date'
 
 const props = defineProps<{
   data: IRecord
+  showAmount?: boolean
 }>()
 
 const participant = computed(() => {
@@ -63,8 +64,16 @@ const participant = computed(() => {
         />
       </view>
     </view>
-    <view h-full w-100 text-right>
-      <span text="xs red-300" font-bold px-1>¥{{ props.data.record.amount }}</span>
+    <view h-full w-100 text-right flex="~ col" flex-1>
+      <view v-if="props.showAmount" text="xs #8a988e" font-bold px-1 lh-6>
+        ¥{{ props.data.sharedAmount }}
+      </view>
+      <view text="xs" font-bold px-1>
+        <span v-if="props.showAmount" text-gray-400>总</span>
+        <span text="#eba0b3">
+          ¥{{ props.data.record.amount }}
+        </span>
+      </view>
     </view>
   </view>
 </template>
