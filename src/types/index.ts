@@ -7,8 +7,10 @@ export type IResponseResult<T = any> = Promise<{
 }>
 
 interface CommonField {
-  _id: string
-  createAt: string
+  id: string
+  createTime: string
+  updateTime: string
+  isDelete: 0 | 1
 }
 
 export interface IUser extends CommonField {
@@ -16,50 +18,50 @@ export interface IUser extends CommonField {
   nickName: string
   avatar: string
 }
-export interface IUserInfo extends IUser {
-  expend: number
-  income: number
-  users: IUser[]
-}
-export interface IBillItem extends CommonField {
-  category: Category
-  name?: string
-  amount: number
+
+export interface Activity extends CommonField {
+  creatorId: string
+  creator: IUser
   participant: IUser[]
 }
 
 export interface IBillForm {
+  activityId: string
   category: Category
-  amount: number | undefined
-  participant: string[]
+  description?: string
+  money: number
   date: string
+  participants: string[]
   remark?: string
 }
 
-export interface IRecord {
-  _id: string
-  recordId: string
-  userId: string
-  checked: boolean
-  sharedAmount: string
-  record: Record
-}
-
-export interface Record {
-  _id: string
-  category: Category
-  amount: string
-  date: string
-  participant: IUser[]
-  creatorId: string
-  creator: IUser
-  remark?: string
-  createAt: string
-}
-
-export interface ICheckout {
-  _id: string
-  payTo: IUser
+export interface IBillInfo {
+  bills: Array<Bill>
+  user: IUser
   totalAmount: number
-  ids: string[]
+}
+
+export interface BillParticipants extends CommonField {
+  billId: string
+  userId: string
+  user: IUser
+  splitMoney: number
+  fixed: 0 | 1
+  paid: 0 | 1
+  payToUserId: string
+  payTo: string
+}
+
+export interface Bill extends CommonField {
+  billId: string
+  money: number
+  category: Category
+  remark: string
+  creatorId: string
+  date: string
+  creator: IUser
+  participantIds: Array<string>
+  participant: Array<BillParticipants>
+  activityId: string
+  description: string
 }

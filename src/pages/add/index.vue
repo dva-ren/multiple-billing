@@ -5,19 +5,21 @@ import ColorIcon from '@/components/ColorIcon.vue'
 import SelectItem from '@/components/SelectItem.vue'
 import CheckItem from '@/components/CheckItem.vue'
 import categoryes from '@/data/category.json'
-import { recordApi } from '@/api'
 import { useMainStore } from '@/store'
 import { formatDate } from '@/utils/date'
+import { billApi } from '@/api'
 
 const mainStore = useMainStore()
 const userInfo = computed(() => mainStore.userInfo)
+const activity = computed(() => mainStore.activeties[0])
 
 const billForm = reactive<IBillForm>({
-  amount: 0,
+  money: 0,
   category: 'vegetable',
-  participant: [],
+  participants: [],
   date: formatDate(new Date(), 'YYYY-MM-DD'),
   remark: '',
+  activityId: '',
 })
 const inputAmount = ref('')
 const showPicker = ref(false)
@@ -42,7 +44,7 @@ function onItemClick(category: any) {
   }, 50)
 }
 function handleUserSelect(user: IUser) {
-  const idx = selectedList.value.findIndex(u => u._id === user._id)
+  const idx = selectedList.value.findIndex(u => u.id === user.id)
 
   if (idx >= 0)
     selectedList.value.splice(idx, 1)
@@ -55,7 +57,7 @@ function handleDateChange(date: any) {
 const reg = /^(-)?(([1-9]{1}\d*)|([0]{1}))(\.(\d){1,2})?$/
 
 async function handleAddBill() {
-  if (!reg.test(billForm.amount!.toString())) {
+  if (!reg.test(billForm.money!.toString())) {
     uni.showToast({
       icon: 'error',
       title: '金额不正确',
@@ -74,8 +76,8 @@ async function handleAddBill() {
     title: '添加中',
   })
   showLoadingMask.value = true
-  billForm.participant = selectedList.value.map(u => u._id)
-  const res = await recordApi.addRecord(unref(billForm))
+  billForm.participants = selectedList.value.map(u => u.id)
+  const res = await billApi.createBill(unref(billForm))
   if (res.code === 200) {
     showLoadingMask.value = false
     uni.showToast({
@@ -109,7 +111,7 @@ function handleInput() {
     value = `¥${value}`
 
   inputAmount.value = value
-  billForm.amount = Number(value.replace('¥', ''))
+  billForm.money = Number(value.replace('¥', ''))
 }
 </script>
 
@@ -176,7 +178,7 @@ function handleInput() {
       </template>
       <template #title>
         <view v-if="selectedList.length" flex>
-          <view v-for="i in selectedList" :key="i._id">
+          <view v-for="i in selectedList" :key="i.id">
             <image
               w-48
               h-48
@@ -216,8 +218,8 @@ function handleInput() {
           @click="handleUserSelect(userInfo)"
         />
         <CheckItem
-          v-for="u in userInfo.users"
-          :key="u._id"
+          v-for="u in activity.participant"
+          :key="u.id"
           :avatar="u.avatar"
           :name="u.nickName"
           :is-select="isSelect(u)"

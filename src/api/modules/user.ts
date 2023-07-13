@@ -1,51 +1,24 @@
 import http from '../http'
-import type { IResponseResult, IUser, IUserInfo } from '@/types'
+import type { IResponseResult, IUserInfo } from '@/types'
 
+/**
+ * 用户登录
+ * @param data 登录表单
+ * @returns 用户信息以及token
+ */
 function login(data: Record<string, any>): IResponseResult<{ access_token: string }> {
   return http.post('/login', data)
 }
 
 /**
  * 获取用户信息
- * @param
+ * @param 用户id（可选）
  */
-function getUserInfo(): IResponseResult<IUserInfo> {
-  return http.get('/get-user-info')
-}
-
-/**
- * 获取所有用户
- * @param
- */
-function getUserList(): IResponseResult<IUser[]> {
-  return http.get('/getUsers')
-}
-
-/**
- * 获取单个用户信息
- * @param uid 用户ID
- */
-function getUserByUid(uid: string): IResponseResult<IUserInfo> {
-  return http.get(`/getUsers?uid=${uid}`)
-}
-
-/**
- * 添加朋友
- * @param uid 用户ID
- */
-function addFriends(uid: string): IResponseResult {
-  return http.post('/add-friends', {
-    uid,
-  })
-}
-
-/**
- * 移除朋友
- * @param uid 用户ID
- */
-function removeFriends(uid: string): IResponseResult {
-  return http.post('/remove-friends', {
-    uid,
+function getUserInfo(id?: string): IResponseResult<IUserInfo> {
+  return http.get('/user', {
+    params: {
+      id,
+    },
   })
 }
 
@@ -54,10 +27,10 @@ function removeFriends(uid: string): IResponseResult {
  * @param data 新的信息
  */
 function updateUserInfo(data: { nickName?: string; avatar?: string }): IResponseResult {
-  return http.post('/update-user-info', data)
+  return http.put('/user', data)
 }
 
-/**
+/** TODO: 暂不可用
  * 上传头像
  * @param data 新的信息
  */
@@ -65,26 +38,9 @@ function uploadAvatar(data: any): IResponseResult<string> {
   return http.post('/upload-avatar', data)
 }
 
-/**
- * 搜索用户
- * @param data 用户列表
- */
-function searchUser(keyword: string): IResponseResult<IUser[]> {
-  return http.get('/search-user', {
-    params: {
-      keyword,
-    },
-  })
-}
-
 export default {
   login,
   getUserInfo,
-  getUserList,
-  getUserByUid,
-  addFriends,
-  removeFriends,
   updateUserInfo,
   uploadAvatar,
-  searchUser,
 }

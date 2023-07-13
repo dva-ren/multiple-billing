@@ -12,7 +12,7 @@ const props = defineProps<{
 
 const participant = computed(() => {
   return props.data.record.participant.filter((item) => {
-    return item._id !== props.data.record.creatorId
+    return item.id !== props.data.record.creatorId
   })
 })
 </script>
@@ -51,7 +51,7 @@ const participant = computed(() => {
           mode="aspectFit"
         />
       </view>
-      <view v-for="u in participant" :key="u._id">
+      <view v-for="u in participant" :key="u.id">
         <image
           border="~ 2px white"
           w-50

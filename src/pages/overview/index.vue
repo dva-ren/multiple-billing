@@ -1,18 +1,22 @@
 <script lang="ts" setup>
 import { onPullDownRefresh } from '@dcloudio/uni-app'
-import { recordApi } from '@/api'
+import { computed } from 'vue'
+import { billApi } from '@/api'
 import { useData } from '@/hooks'
 import Card from '@/components/Card.vue'
 import { useMainStore } from '@/store'
+import type { IBillInfo } from '@/types'
 
-const { data, loading, refresh } = useData(() => recordApi.getTotalMoney())
+const activity = computed(() => useMainStore().activeties[0])
+
+const { data, loading, refresh } = useData(() => billApi.getTotalMoney(activity.value.id))
 async function checkout(ids: string[]) {
   uni.showLoading({
     title: '结算中',
     mask: true,
   })
   try {
-    const res = await recordApi.checkout(ids)
+    const res = await billApi.checkout(ids)
     if (res.code === 200) {
       uni.showToast({
         icon: 'success',
@@ -37,13 +41,22 @@ async function checkout(ids: string[]) {
   }
 }
 
-async function handleCheckout(ids: string[]) {
+async function handleCheckout(info: IBillInfo) {
   uni.showModal({
     showCancel: true,
     title: '确定结算？',
     success: ({ confirm }) => {
-      if (confirm)
+      if (confirm) {
+        const ids: string[] = []
+        info.bills.forEach((bill) => {
+          bill.participant.forEach((p) => {
+            if (info.user.id === p.userId)
+              ids.push(p.id)
+          })
+        })
+        console.log('ids', ids)
         checkout(ids)
+      }
     },
   })
 }
@@ -62,7 +75,7 @@ onPullDownRefresh(async () => {
       支出
     </view>
     <view>
-      <Card v-for="i in data?.data.expend" :key="i._id" :data="i" @on-button-click="handleCheckout(i.ids)" />
+      <Card v-for="i, idx in data?.data.expend" :key="idx" :data="i" @on-button-click="handleCheckout(i)" />
     </view>
     <view v-if="!data?.data.expend.length" text-center p-10>
       已结清
@@ -71,7 +84,7 @@ onPullDownRefresh(async () => {
       收入
     </view>
     <view>
-      <Card v-for="i in data?.data.income" :key="i._id" :data="i" @on-button-click="handleCheckout(i.ids)" />
+      <Card v-for="i, idx in data?.data.income" :key="idx" :data="i" @on-button-click="handleCheckout(i)" />
     </view>
     <view v-if="!data?.data.income.length" text-center p-10>
       已结清

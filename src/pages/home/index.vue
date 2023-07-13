@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import { onPullDownRefresh } from '@dcloudio/uni-app'
 import BillItem from '@/components/BillItem.vue'
 import useStore from '@/store/modules/mainStore'
@@ -7,8 +7,9 @@ import Empty from '@/components/Empty.vue'
 
 const mainStore = useStore()
 const userInfo = computed(() => mainStore.userInfo)
-const record = computed(() => mainStore.record)
+const bills = computed(() => mainStore.bills)
 const isLogin = computed(() => mainStore.isLogin)
+const activities = computed(() => mainStore.activeties)
 
 function handleAvatarClick() {
   uni.navigateTo({
@@ -19,6 +20,7 @@ onPullDownRefresh(async () => {
   await mainStore.INIT_STORE()
   uni.stopPullDownRefresh()
 })
+const showModal = ref(false)
 </script>
 
 <template>
@@ -41,7 +43,17 @@ onPullDownRefresh(async () => {
       </view>
     </view>
     <view class="card" w-full mt-4 p6 text-white rounded-xl>
-      <view z-2>
+      <view v-if="!activities.length" min-h-360>
+        <u-modal v-model="showModal" :title-style="{ color: 'red' }">
+          <view class="slot-content">
+            1112222
+          </view>
+        </u-modal>
+        <u-button @click="showModal = true">
+          打开模态框
+        </u-button>
+      </view>
+      <view v-if="activities.length" z-2>
         <view flex>
           <navigator
             flex-1
@@ -81,8 +93,8 @@ onPullDownRefresh(async () => {
           <scroll-view scroll-x>
             <view flex gap-2 p-1>
               <image
-                v-for="u in userInfo.users"
-                :key="u._id"
+                v-for="u in activities[0]?.participant"
+                :key="u.id"
                 shrink-0
                 h-80
                 w-80
@@ -130,8 +142,8 @@ onPullDownRefresh(async () => {
       <view text-xl font-bold mb-4>
         Recent Split
       </view>
-      <view v-if="record.length">
-        <BillItem v-for="i in record" :key="i._id" :data="i" />
+      <view v-if="bills.length">
+        <BillItem v-for="i in bills" :key="i.id" :data="i" />
       </view>
       <Empty v-else text="暂无数据" />
     </view>

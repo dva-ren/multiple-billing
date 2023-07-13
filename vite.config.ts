@@ -15,8 +15,7 @@ export default defineConfig({
     host: '0.0.0.0',
     proxy: {
       '/api/': {
-        target:
-          'https://vn0nty.laf.run',
+        target: 'http://localhost:5000',
         changeOrigin: true,
         rewrite: p => p.replace(/^\/api/, ''),
       },

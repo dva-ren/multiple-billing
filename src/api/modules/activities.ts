@@ -1,0 +1,63 @@
+import http from '../http'
+import type { Activity, IResponseResult } from '@/types'
+
+/**
+ * 创建活动
+ * @param name 活动名称
+ * @returns 结果
+ */
+function createActivity(name: string): IResponseResult {
+  return http.post('/activities', {
+    name,
+  })
+}
+
+/**
+ * 加入活动
+ * @param activityId 活动id
+ * @returns 结果
+ */
+function joinActivity(activityId: string): IResponseResult {
+  return http.post('/activities/join', {
+    activityId,
+  })
+}
+
+/**
+ * 获取活动的所有成员
+ * @param activityId 活动id
+ * @returns null
+ */
+function getInActivityUsers(activityId: string): IResponseResult {
+  return http.post('/activities/users', {
+    activityId,
+  })
+}
+
+/**
+ * 解散活动
+ * @param activityId 活动id
+ * @returns null
+ */
+function dissolutionActivity(activityId: string): IResponseResult {
+  return http.post('/activities/dissolution', {
+    activityId,
+  })
+}
+
+/**
+ * 获取所有的活动
+ * @param activityId 活动id
+ * @returns null
+ */
+function getAllActivities(): IResponseResult<Array<Activity>> {
+  return http.get('/activities')
+}
+
+export default {
+  createActivity,
+  joinActivity,
+  dissolutionActivity,
+  getInActivityUsers,
+  getAllActivities,
+}

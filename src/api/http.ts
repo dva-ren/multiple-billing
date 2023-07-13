@@ -11,7 +11,7 @@ const instance = axios.create({
   // #endif
   // #ifndef H5
   // @ts-expect-error
-  baseURL: 'https://vn0nty.laf.run',
+  baseURL: 'http://localhost:5000',
   // #endif
   adapter(config) {
     const { url, method, data, params, headers, baseURL, paramsSerializer }

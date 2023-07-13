@@ -1,36 +1,28 @@
 import { defineStore } from 'pinia'
-import type { IRecord, IUserInfo } from '@/types'
-import { recordApi, userApi } from '@/api'
+import type { Activity, Bill, IUser } from '@/types'
+import { activitiesApi, billApi, userApi } from '@/api'
 
 const useStore = defineStore('main', {
-  // arrow function recommended for full type inference
   state: () => ({
-    // all these properties will have their type inferred automatically
     isLogin: false,
     userInfo: {
-      _id: '',
+      id: '',
       nickName: '',
       avatar: '',
-      createAt: '',
-      openid: '',
-      expend: 0,
-      income: 0,
-      users: [],
-    } as IUserInfo,
-    record: [] as IRecord[],
+    } as IUser,
+    bills: [] as Bill[],
     billIds: [] as string[],
+    activeties: [] as Array<Activity>,
   }),
   actions: {
     CLEAR_STATE() {
       this.isLogin = false
-      this.userInfo._id = ''
+      this.userInfo.id = ''
       this.userInfo.nickName = ''
       this.userInfo.avatar = ''
-      this.userInfo.createAt = ''
-      this.userInfo.expend = 0
-      this.userInfo.income = 0
-      this.record = []
-      this.userInfo.users = []
+      this.bills = []
+      this.billIds = []
+      this.activeties = []
     },
     INIT_STORE() {
       return new Promise((resolve, reject) => {
@@ -48,21 +40,15 @@ const useStore = defineStore('main', {
               this.CLEAR_STATE()
             }
           })
-          const p2 = recordApi.getRecordList({
-            checked: false,
-          }).then((res) => {
-            if (res.code === 200)
-              this.SET_RECORD(res.data)
-            else if (res.code === 400)
-              this.CLEAR_STATE()
+          const p2 = activitiesApi.getAllActivities().then((res) => {
+            if (res.code === 200) {
+              billApi.getBillList(res.data[0].id).then((r) => {
+                this.bills = r.data
+              })
+              this.activeties = res.data
+            }
           })
-          // const p3 = userApi.getUserList().then((res) => {
-          //   if (res.code === 200)
-          //     this.SET_USERS(res.data)
-          //   else if (res.code === 400)
-          //     this.CLEAR_STATE()
-          // })
-          Promise.all([p1, p2]).then(resolve)
+          Promise.all([p1, p2]).then(resolve).catch(reject)
         }
         else {
           reject(new Error('未知错误'))
@@ -70,12 +56,12 @@ const useStore = defineStore('main', {
         }
       })
     },
-    SET_USER_INFO(data: IUserInfo) {
+    SET_USER_INFO(data: IUser) {
       this.isLogin = true
       this.userInfo = data
     },
-    SET_RECORD(record: IRecord[]) {
-      this.record = record
+    SET_Bills(bills: Bill[]) {
+      this.bills = bills
     },
     // SET_USERS(users: IUser[]) {
     //   this.users = users
