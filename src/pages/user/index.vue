@@ -26,7 +26,7 @@ async function onLogin() {
         const { code } = loginInfo
         const { userInfo: { avatarUrl: avatar, nickName } } = userProfile
         // 组装后端接口需要的数据
-        const params = { code, avatar, nickName }
+        const params = { code, avatar, nickname: nickName }
         // 调用登录接口
         const res = await userApi.login(params)
         if (res.code === 200) {
@@ -74,7 +74,7 @@ function handleLogout() {
       <view v-if="isLogin">
         <u-avatar :src="userInfo.avatar" size="large" />
         <view text-base font-bold>
-          {{ userInfo.nickName }}
+          {{ userInfo.nickname }}
         </view>
       </view>
       <view v-else text-center>
@@ -97,9 +97,14 @@ function handleLogout() {
           修改资料
         </view>
       </navigator>
-      <view class="item" text-gray>
-        我的好友
-      </view>
+      <navigator
+        url="/pages/activities/index"
+        open-type="navigate"
+        hover-class="navigator-hover"
+        class="item"
+      >
+        活动管理
+      </navigator>
       <view class="item" text-gray>
         其他设置
       </view>

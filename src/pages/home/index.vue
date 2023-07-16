@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import { computed, ref } from 'vue'
-import { onPullDownRefresh } from '@dcloudio/uni-app'
+import { computed } from 'vue'
+import { onPullDownRefresh, onShow } from '@dcloudio/uni-app'
 import BillItem from '@/components/BillItem.vue'
 import useStore from '@/store/modules/mainStore'
 import Empty from '@/components/Empty.vue'
@@ -10,7 +10,6 @@ const userInfo = computed(() => mainStore.userInfo)
 const bills = computed(() => mainStore.bills)
 const isLogin = computed(() => mainStore.isLogin)
 const activities = computed(() => mainStore.activeties)
-
 function handleAvatarClick() {
   uni.navigateTo({
     url: '/pages/user/index',
@@ -20,7 +19,10 @@ onPullDownRefresh(async () => {
   await mainStore.INIT_STORE()
   uni.stopPullDownRefresh()
 })
-const showModal = ref(false)
+
+onShow(() => {
+  mainStore.INIT_STORE()
+})
 </script>
 
 <template>
@@ -29,7 +31,7 @@ const showModal = ref(false)
       <view>
         <view v-if="isLogin" text-gray-600>
           <span>Hi</span>
-          <span ml-1 text-blue-400 font-bold>{{ userInfo.nickName }}</span>
+          <span ml-1 text-blue-400 font-bold>{{ userInfo.nickname }}</span>
         </view>
         <view v-else text-gray-600>
           当前未登录
@@ -43,15 +45,20 @@ const showModal = ref(false)
       </view>
     </view>
     <view class="card" w-full mt-4 p6 text-white rounded-xl>
-      <view v-if="!activities.length" min-h-360>
-        <u-modal v-model="showModal" :title-style="{ color: 'red' }">
-          <view class="slot-content">
-            1112222
-          </view>
-        </u-modal>
-        <u-button @click="showModal = true">
-          打开模态框
-        </u-button>
+      <view v-if="!activities.length" min-h-360 flex-center>
+        <navigator
+          v-if="isLogin"
+          url="/pages/activities/index"
+          open-type="navigate"
+          hover-class="navigator-hover"
+          class="add-btn"
+          rounded
+        >
+          创建/加入活动
+        </navigator>
+        <navigator v-else class="add-btn" rounded url="/pages/user/index" open-type="navigate">
+          去登陆
+        </navigator>
       </view>
       <view v-if="activities.length" z-2>
         <view flex>
@@ -138,7 +145,7 @@ const showModal = ref(false)
         </view>
       </view>
     </view>
-    <view mt-6>
+    <view v-if="activities.length" mt-6>
       <view text-xl font-bold mb-4>
         Recent Split
       </view>

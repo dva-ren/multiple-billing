@@ -18,9 +18,15 @@ function createActivity(name: string): IResponseResult {
  * @returns 结果
  */
 function joinActivity(activityId: string): IResponseResult {
-  return http.post('/activities/join', {
-    activityId,
-  })
+  return http.post(`/activities/join/${activityId}`)
+}
+/**
+ * 退出活动
+ * @param activityId 活动id
+ * @returns 结果
+ */
+function exitActivity(activityId: string): IResponseResult {
+  return http.post(`/activities/exit/${activityId}`)
 }
 
 /**
@@ -40,9 +46,7 @@ function getInActivityUsers(activityId: string): IResponseResult {
  * @returns null
  */
 function dissolutionActivity(activityId: string): IResponseResult {
-  return http.post('/activities/dissolution', {
-    activityId,
-  })
+  return http.post(`/activities/dissolution/${activityId}`)
 }
 
 /**
@@ -57,6 +61,7 @@ function getAllActivities(): IResponseResult<Array<Activity>> {
 export default {
   createActivity,
   joinActivity,
+  exitActivity,
   dissolutionActivity,
   getInActivityUsers,
   getAllActivities,

@@ -7,22 +7,24 @@ const useStore = defineStore('main', {
     isLogin: false,
     userInfo: {
       id: '',
-      nickName: '',
+      nickname: '',
       avatar: '',
     } as IUser,
     bills: [] as Bill[],
     billIds: [] as string[],
     activeties: [] as Array<Activity>,
+    activetityId: '',
   }),
   actions: {
     CLEAR_STATE() {
       this.isLogin = false
       this.userInfo.id = ''
-      this.userInfo.nickName = ''
+      this.userInfo.nickname = ''
       this.userInfo.avatar = ''
       this.bills = []
       this.billIds = []
       this.activeties = []
+      this.activetityId = ''
     },
     INIT_STORE() {
       return new Promise((resolve, reject) => {
@@ -42,10 +44,13 @@ const useStore = defineStore('main', {
           })
           const p2 = activitiesApi.getAllActivities().then((res) => {
             if (res.code === 200) {
+              if (res.data.length === 0)
+                return
               billApi.getBillList(res.data[0].id).then((r) => {
                 this.bills = r.data
               })
               this.activeties = res.data
+              this.activetityId = res.data[0].id
             }
           })
           Promise.all([p1, p2]).then(resolve).catch(reject)

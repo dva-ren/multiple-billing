@@ -1,5 +1,5 @@
 import http from '../http'
-import type { IResponseResult, IUserInfo } from '@/types'
+import type { IResponseResult, IUser } from '@/types'
 
 /**
  * 用户登录
@@ -7,14 +7,14 @@ import type { IResponseResult, IUserInfo } from '@/types'
  * @returns 用户信息以及token
  */
 function login(data: Record<string, any>): IResponseResult<{ access_token: string }> {
-  return http.post('/login', data)
+  return http.post('/user/login', data)
 }
 
 /**
  * 获取用户信息
  * @param 用户id（可选）
  */
-function getUserInfo(id?: string): IResponseResult<IUserInfo> {
+function getUserInfo(id?: string): IResponseResult<IUser> {
   return http.get('/user', {
     params: {
       id,

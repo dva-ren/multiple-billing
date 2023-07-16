@@ -12,6 +12,7 @@ import { billApi } from '@/api'
 const mainStore = useMainStore()
 const userInfo = computed(() => mainStore.userInfo)
 const activity = computed(() => mainStore.activeties[0])
+const activityId = computed(() => mainStore.activetityId)
 
 const billForm = reactive<IBillForm>({
   money: 0,
@@ -19,7 +20,7 @@ const billForm = reactive<IBillForm>({
   participants: [],
   date: formatDate(new Date(), 'YYYY-MM-DD'),
   remark: '',
-  activityId: '',
+  activityId: activityId.value,
 })
 const inputAmount = ref('')
 const showPicker = ref(false)
@@ -221,7 +222,7 @@ function handleInput() {
           v-for="u in activity.participant"
           :key="u.id"
           :avatar="u.avatar"
-          :name="u.nickName"
+          :name="u.nickname"
           :is-select="isSelect(u)"
           @click="handleUserSelect(u)"
         />

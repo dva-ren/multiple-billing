@@ -15,13 +15,14 @@ interface CommonField {
 
 export interface IUser extends CommonField {
   openid: string
-  nickName: string
+  nickname: string
   avatar: string
 }
 
 export interface Activity extends CommonField {
   creatorId: string
   creator: IUser
+  name: string
   participant: IUser[]
 }
 
