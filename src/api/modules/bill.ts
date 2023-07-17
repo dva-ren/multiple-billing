@@ -7,11 +7,11 @@ import type { Bill, IBillForm, IBillInfo, IResponseResult } from '@/types'
  * @returns null
  */
 function createBill(data: IBillForm): IResponseResult {
-  return http.post('/addRecord', data)
+  return http.post('/bill', data)
 }
 
 /**
- * 查询所有账单
+ * 查询关于我的所有账单
  * @param id 记录id
  * @returns List
  */
@@ -39,7 +39,7 @@ function getTotalMoney<T extends 'income' | 'expend'>(activityId: string, type?:
  * @returns null
  */
 function checkout(ids: string[]): IResponseResult {
-  return http.post('/checkout', {
+  return http.post('/bill/checkout', {
     ids,
   })
 }
@@ -50,9 +50,24 @@ function checkout(ids: string[]): IResponseResult {
  * @returns 账单数据
  */
 function queryBills(ids: string[]): IResponseResult<Array<Bill>> {
-  return http.get('/bill/query', {
-    params: { ids },
-  })
+  return http.get(`/bill/query?ids=${ids}`)
+}
+/**
+ * 批量查询账单信息
+ * @param ids 账单id数组
+ * @returns 账单数据
+ */
+function totalMoney(activityId: string): IResponseResult<{ expend: number; income: number }> {
+  return http.get(`/bill/totalMoney?activityId=${activityId}`)
+}
+
+/**
+ * 查询我创建的账单
+ * @param ids 账单id数组
+ * @returns 账单数据
+ */
+function getCreatedBills(activityId: string): IResponseResult<Array<Bill>> {
+  return http.get(`/bill/created?activityId=${activityId}`)
 }
 
 export default {
@@ -61,4 +76,6 @@ export default {
   getTotalMoney,
   checkout,
   queryBills,
+  totalMoney,
+  getCreatedBills,
 }

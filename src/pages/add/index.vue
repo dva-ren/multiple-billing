@@ -12,15 +12,14 @@ import { billApi } from '@/api'
 const mainStore = useMainStore()
 const userInfo = computed(() => mainStore.userInfo)
 const activity = computed(() => mainStore.activeties[0])
-const activityId = computed(() => mainStore.activetityId)
 
 const billForm = reactive<IBillForm>({
   money: 0,
   category: 'vegetable',
-  participants: [],
+  participantIds: [],
   date: formatDate(new Date(), 'YYYY-MM-DD'),
   remark: '',
-  activityId: activityId.value,
+  activityId: activity.value.id,
 })
 const inputAmount = ref('')
 const showPicker = ref(false)
@@ -35,6 +34,11 @@ function isSelect(u: IUser) {
 }
 
 const categoryRef = ref()
+
+const participants = activity.value.participants.filter((i) => {
+  return i.userId !== userInfo.value.id
+})
+
 function close() {
   categoryRef.value.show = false
 }
@@ -77,8 +81,9 @@ async function handleAddBill() {
     title: '添加中',
   })
   showLoadingMask.value = true
-  billForm.participants = selectedList.value.map(u => u.id)
-  const res = await billApi.createBill(unref(billForm))
+  const form = unref(billForm)
+  form.participantIds = selectedList.value.map(u => u.id)
+  const res = await billApi.createBill(form)
   if (res.code === 200) {
     showLoadingMask.value = false
     uni.showToast({
@@ -196,35 +201,20 @@ function handleInput() {
         </view>
       </template>
       <template #selection>
-        <!-- <view v-if="!userInfo.users.length" flex-center h-full>
-          <view>
-            <view mt-10 lh-8>
-              还没有可以选择的人员
-            </view>
-            <navigator
-              url="/pages/user/addUser"
-              open-type="navigate"
-              hover-class="navigator-hover"
-              text="~ sm blue center"
-            >
-              去添加
-            </navigator>
-          </view>
-        </view> -->
         <CheckItem
           class="text-blue"
           :avatar="userInfo.avatar"
-          name="ME"
+          :name="`(我) ${userInfo.nickname}`"
           :is-select="isSelect(userInfo)"
           @click="handleUserSelect(userInfo)"
         />
         <CheckItem
-          v-for="u in activity.participant"
+          v-for="u in participants"
           :key="u.id"
-          :avatar="u.avatar"
-          :name="u.nickname"
-          :is-select="isSelect(u)"
-          @click="handleUserSelect(u)"
+          :avatar="u.user.avatar"
+          :name="u.user.nickname"
+          :is-select="isSelect(u.user)"
+          @click="handleUserSelect(u.user)"
         />
       </template>
     </SelectItem>

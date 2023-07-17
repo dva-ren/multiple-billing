@@ -1,37 +1,48 @@
 <script lang="ts" setup>
-import { computed, reactive } from 'vue'
+import { computed, reactive, ref } from 'vue'
 import { useMainStore } from '@/store'
 import { userApi } from '@/api'
 
 const mainStore = useMainStore()
 const userInfo = computed(() => mainStore.userInfo)
 const form = reactive({
-  nickName: userInfo.value.nickName,
+  nickname: userInfo.value.nickname,
   avatar: userInfo.value.avatar,
 })
 
+const inputRef = ref()
+
 async function handleSubmit() {
-  if (form.nickName.length < 2) {
+  console.log(inputRef.value)
+  if (form.nickname.length < 2) {
     uni.showToast({
       icon: 'error',
       title: '昵称至少两个字符',
     })
     return
   }
-  const res = await userApi.updateUserInfo(form)
-  if (res.code === 200) {
-    uni.showToast({
-      icon: 'success',
-      title: '修改成功',
-    })
-    mainStore.INIT_STORE()
+  uni.showLoading({
+    title: '处理中',
+  })
+  try {
+    const res = await userApi.updateUserInfo(form)
+    if (res.code === 200) {
+      uni.showToast({
+        icon: 'success',
+        title: '修改成功',
+      })
+      mainStore.INIT_STORE()
+    }
+    else {
+      uni.showToast({
+        icon: 'error',
+        title: res.msg ?? '修改失败',
+      })
+      console.error('error-res=>', res)
+    }
   }
-  else {
-    uni.showToast({
-      icon: 'error',
-      title: res.msg ?? '修改失败',
-    })
-    console.error('error-res=>', res)
+  finally {
+    uni.hideLoading()
   }
 }
 async function onChooseAvatar(e: any) {
@@ -60,17 +71,24 @@ async function onChooseAvatar(e: any) {
 
 <template>
   <view p-4>
-    <u-form-item flex-center>
-      <button class="avatar-wrapper" open-type="chooseAvatar" @chooseavatar="onChooseAvatar">
-        <u-avatar :src="form.avatar" size="large" />
+    <form
+      @submit="handleSubmit"
+    >
+      <u-form-item flex-center>
+        <button class="avatar-wrapper" open-type="chooseAvatar" @chooseavatar="onChooseAvatar">
+          <u-avatar :src="form.avatar" size="large" />
+        </button>
+      </u-form-item>
+      <u-form-item label="昵称">
+        <input v-model="form.nickname" type="nickname" class="weui-input" placeholder="输入新昵称">
+      </u-form-item>
+      <button form-type="submit">
+        保存修改
       </button>
-    </u-form-item>
-    <u-form-item label="昵称">
-      <input v-model.trim="form.nickName" type="nickname" class="weui-input" placeholder="输入新昵称">
-    </u-form-item>
-    <u-button type="submit" @click="handleSubmit">
+    <!-- <u-button type="submit" @click="handleSubmit">
       保存修改
-    </u-button>
+    </u-button> -->
+    </form>
   </view>
 </template>
 

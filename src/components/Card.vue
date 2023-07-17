@@ -1,15 +1,15 @@
 <script lang="ts" setup>
 import { useMainStore } from '@/store'
-import type { ICheckout } from '@/types'
+import type { IBillInfo } from '@/types'
 
-const props = defineProps<{ data: ICheckout; showButton?: boolean }>()
+const props = defineProps<{ data: IBillInfo; showButton?: boolean }>()
 
 const emits = defineEmits(['onButtonClick', 'onClick'])
 
 const mainStore = useMainStore()
 
 function handleClick() {
-  mainStore.billIds = props.data.ids
+  mainStore.billIds = props.data.bills.map(i => i.id)
 }
 </script>
 
@@ -25,8 +25,8 @@ function handleClick() {
   >
     <view flex justify-between>
       <view>
-        <u-avatar :src="props.data.payTo.avatar" />
-        <view>{{ props.data.payTo.nickName }}</view>
+        <u-avatar :src="props.data.user.avatar" />
+        <view>{{ props.data.user.nickname }}</view>
       </view>
       <navigator
         url="/pages/bill/index"

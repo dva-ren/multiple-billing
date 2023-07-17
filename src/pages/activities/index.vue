@@ -11,16 +11,17 @@ const input = ref('')
 const showModal = ref(false)
 const mode = ref(0)
 const userId = computed(() => useMainStore().userInfo.id)
-const modal = ref(null)
+const modal = ref()
 
 async function handleCreate() {
   input.value = input.value.trim()
-  if (input.value.length < 2 || input.value.length > 16) {
+  if (input.value.length < 2) {
+    uni.hideLoading()
     uni.showToast({
       icon: 'error',
-      title: '名称为1-16个字符',
+      title: '至少为2个字符',
     })
-    // uModal.value.clearLoading()
+    modal.value.clearLoading()
     return
   }
   try {
@@ -33,16 +34,17 @@ async function handleCreate() {
     if (res.code === 200) {
       uni.showToast({
         icon: 'success',
-        title: '创建成功',
+        title: res.msg,
       })
       refresh()
+      showModal.value = false
     }
     else {
       uni.showToast({
         icon: 'error',
         title: res.msg,
       })
-      // uModal.value.clearLoading()
+      modal.value.clearLoading()
     }
   }
   catch (e) {
@@ -50,10 +52,10 @@ async function handleCreate() {
       icon: 'error',
       title: '服务器错误',
     })
+    showModal.value = false
   }
   finally {
     uni.hideLoading()
-    showModal.value = false
   }
 }
 
@@ -94,7 +96,7 @@ function handleRemove(activity: Activity) {
         <view class="pre-border">
           所有活动
         </view>
-        <u-button plain size="mini" text-sm shape="circle" type="primary" @click="showModal = true">
+        <u-button plain size="mini" text-sm shape="circle" type="primary" @click="handleClick(0)">
           加入活动
         </u-button>
       </view>
@@ -109,13 +111,18 @@ function handleRemove(activity: Activity) {
       <view v-if="!loading">
         <view v-if="data?.data.length">
           <view v-for="i in data?.data" :key="i.id" my-4>
-            <view bg-white p-2 my-1 rounded-xl>
+            <view bg-white p="x4 y2" my-1 rounded-xl>
               <view mb-2>
                 <view>{{ i.name }}</view>
               </view>
               <view>
                 <view flex justify-between items-center>
-                  <u-avatar :src="i.creator.avatar" size="mini" />
+                  <view flex-center>
+                    <u-avatar :src="i.creator.avatar" size="mini" />
+                    <template v-for="item in i.participant" :key="item.id">
+                      <u-avatar v-if="item.id !== i.creatorId" :src="item.avatar" size="60" ml--1 />
+                    </template>
+                  </view>
                   <u-button size="mini" text-sm type="warning" @click="handleRemove(i)">
                     {{ i.creatorId === userId ? '解散活动' : '退出活动' }}
                   </u-button>

@@ -10,10 +10,17 @@ const useStore = defineStore('main', {
       nickname: '',
       avatar: '',
     } as IUser,
-    bills: [] as Bill[],
+    bills: {
+      created: [] as Bill[],
+      abouteMe: [] as Bill[],
+    },
     billIds: [] as string[],
     activeties: [] as Array<Activity>,
-    activetityId: '',
+    activity: undefined as Activity | undefined,
+    totalMoney: {
+      expend: 0,
+      income: 0,
+    },
   }),
   actions: {
     CLEAR_STATE() {
@@ -21,10 +28,17 @@ const useStore = defineStore('main', {
       this.userInfo.id = ''
       this.userInfo.nickname = ''
       this.userInfo.avatar = ''
-      this.bills = []
+      this.bills = {
+        abouteMe: [],
+        created: [],
+      }
       this.billIds = []
       this.activeties = []
-      this.activetityId = ''
+      this.activity = undefined
+      this.totalMoney = {
+        expend: 0,
+        income: 0,
+      }
     },
     INIT_STORE() {
       return new Promise((resolve, reject) => {
@@ -47,10 +61,19 @@ const useStore = defineStore('main', {
               if (res.data.length === 0)
                 return
               billApi.getBillList(res.data[0].id).then((r) => {
-                this.bills = r.data
+                this.bills.abouteMe = r.data
+              })
+              billApi.getCreatedBills(res.data[0].id).then((r) => {
+                this.bills.created = r.data
+              })
+              billApi.totalMoney(res.data[0].id).then((res) => {
+                if (res.code === 200) {
+                  this.totalMoney.income = res.data.income
+                  this.totalMoney.expend = res.data.expend
+                }
               })
               this.activeties = res.data
-              this.activetityId = res.data[0].id
+              this.activity = res.data[0]
             }
           })
           Promise.all([p1, p2]).then(resolve).catch(reject)
@@ -64,9 +87,6 @@ const useStore = defineStore('main', {
     SET_USER_INFO(data: IUser) {
       this.isLogin = true
       this.userInfo = data
-    },
-    SET_Bills(bills: Bill[]) {
-      this.bills = bills
     },
     // SET_USERS(users: IUser[]) {
     //   this.users = users

@@ -73,7 +73,7 @@ function handleLogout() {
     <view text-center>
       <view v-if="isLogin">
         <u-avatar :src="userInfo.avatar" size="large" />
-        <view text-base font-bold>
+        <view text-sm font-bold>
           {{ userInfo.nickname }}
         </view>
       </view>

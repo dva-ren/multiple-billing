@@ -10,6 +10,9 @@ const userInfo = computed(() => mainStore.userInfo)
 const bills = computed(() => mainStore.bills)
 const isLogin = computed(() => mainStore.isLogin)
 const activities = computed(() => mainStore.activeties)
+const activity = computed(() => mainStore.activity)
+const totalMoney = computed(() => mainStore.totalMoney)
+
 function handleAvatarClick() {
   uni.navigateTo({
     url: '/pages/user/index',
@@ -72,7 +75,7 @@ onShow(() => {
             <view>
               <view flex items-center text="3xl">
                 <span mr-1>¥</span>
-                <view>{{ userInfo.expend }}</view>
+                <view>{{ totalMoney.expend }}</view>
               </view>
             </view>
           </navigator>
@@ -88,7 +91,7 @@ onShow(() => {
             <view>
               <view flex items-center text="3xl">
                 <span mr-1>¥</span>
-                <view>{{ userInfo.income }}</view>
+                <view>{{ totalMoney.income }}</view>
               </view>
             </view>
           </navigator>
@@ -100,14 +103,14 @@ onShow(() => {
           <scroll-view scroll-x>
             <view flex gap-2 p-1>
               <image
-                v-for="u in activities[0]?.participant"
+                v-for="u in activity?.participants"
                 :key="u.id"
                 shrink-0
                 h-80
                 w-80
                 bg-gray-100
                 rounded-full
-                :src="u.avatar"
+                :src="u.user.avatar"
               />
               <view
                 shrink-0
@@ -149,10 +152,22 @@ onShow(() => {
       <view text-xl font-bold mb-4>
         Recent Split
       </view>
-      <view v-if="bills.length">
-        <BillItem v-for="i in bills" :key="i.id" :data="i" />
+      <view>
+        <view class="pre-border">
+          我创建的
+        </view>
+        <view v-if="bills.created.length">
+          <BillItem v-for="i in bills.created" :key="i.id" :data="i" />
+        </view>
+        <Empty v-else text="暂无数据" />
+        <view class="pre-border">
+          关于我的
+        </view>
+        <view v-if="bills.abouteMe.length">
+          <BillItem v-for="i in bills.abouteMe" :key="i.id" :data="i" />
+        </view>
+        <Empty v-else text="暂无数据" />
       </view>
-      <Empty v-else text="暂无数据" />
     </view>
   </view>
 </template>

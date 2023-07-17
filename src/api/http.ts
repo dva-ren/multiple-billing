@@ -68,17 +68,28 @@ instance.interceptors.request.use((config) => {
  */
 instance.interceptors.response.use((v) => {
   if (v.data?.code === 401) {
-    uni.removeStorageSync('token')
-    // alert('即将跳转登录页。。。', '登录过期')
+    uni.removeStorageSync('access_token')
+    alert('登录过期,即将跳转登录页...')
     // setTimeout(redirectHome, 1500)
     return v.data
   }
-
+  if (v.data?.code === 400) {
+    uni.hideLoading()
+    uni.showToast({
+      icon: 'error',
+      title: v.data?.msg,
+    })
+    return v.data
+  }
   // @ts-expect-error
   if ((v.status || v.statusCode) === 200)
     return v.data
 
-  // alert(v.statusText, '网络错误')
+  uni.hideLoading()
+  uni.showToast({
+    icon: 'error',
+    title: '网络错误',
+  })
   return Promise.reject(v)
 })
 

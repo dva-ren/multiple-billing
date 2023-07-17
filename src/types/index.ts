@@ -18,12 +18,16 @@ export interface IUser extends CommonField {
   nickname: string
   avatar: string
 }
-
 export interface Activity extends CommonField {
   creatorId: string
-  creator: IUser
   name: string
-  participant: IUser[]
+  participants: Array<ActivityParticipants>
+}
+export interface ActivityParticipants extends CommonField {
+  activityId: string
+  creator: IUser
+  userId: string
+  user: IUser
 }
 
 export interface IBillForm {
@@ -32,7 +36,7 @@ export interface IBillForm {
   description?: string
   money: number
   date: string
-  participants: string[]
+  participantIds: string[]
   remark?: string
 }
 
@@ -54,7 +58,6 @@ export interface BillParticipants extends CommonField {
 }
 
 export interface Bill extends CommonField {
-  billId: string
   money: number
   category: Category
   remark: string

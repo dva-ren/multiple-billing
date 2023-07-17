@@ -1,18 +1,17 @@
 <script lang="ts" setup>
 import { computed } from 'vue'
 import CategoryIcon from './CategoryIcon.vue'
-import type { IRecord } from '@/types'
+import type { Bill } from '@/types'
 import categores from '@/data/category.json'
 import { formatToDate } from '@/utils/date'
 
 const props = defineProps<{
-  data: IRecord
+  data: Bill
   showAmount?: boolean
 }>()
-
 const participant = computed(() => {
-  return props.data.record.participant.filter((item) => {
-    return item.id !== props.data.record.creatorId
+  return props.data.participant.filter((item) => {
+    return item.userId !== props.data.creatorId
   })
 })
 </script>
@@ -29,13 +28,13 @@ const participant = computed(() => {
     rounded-xl
     class="bill-item"
   >
-    <CategoryIcon :category="props.data.record.category" />
+    <CategoryIcon :category="props.data.category" />
     <view flex-1>
       <view font-bold mb-1>
-        {{ props.data.record.remark || categores[data.record.category].name }}
+        {{ props.data.remark || categores[data.category].name }}
       </view>
       <view text="~ xs gray-400">
-        {{ formatToDate(props.data.record.date) }}
+        {{ formatToDate(props.data.date) }}
       </view>
     </view>
     <view flex-1 flex items-center justify-center>
@@ -47,7 +46,7 @@ const participant = computed(() => {
           ml--2
           shadow
           rounded-full
-          :src="props.data.record.creator.avatar"
+          :src="props.data.creator.avatar"
           mode="aspectFit"
         />
       </view>
@@ -59,19 +58,18 @@ const participant = computed(() => {
           ml--2
           shadow
           rounded-full
-          :src="u.avatar"
+          :src="u.user.avatar"
           mode="aspectFit"
         />
       </view>
     </view>
     <view h-full w-100 text-right flex="~ col" flex-1>
-      <view v-if="props.showAmount" text="xs #8a988e" font-bold px-1 lh-6>
-        ¥{{ props.data.sharedAmount }}
+      <view text="xs #eba0b3" font-bold px-1 lh-6>
+        ¥{{ props.data.participant[0].splitMoney }}
       </view>
-      <view text="xs" font-bold px-1>
-        <span v-if="props.showAmount" text-gray-400>总</span>
-        <span text="#eba0b3">
-          ¥{{ props.data.record.amount }}
+      <view v-if="props.showAmount" text="xs" font-bold px-1>
+        <span text="#8a988e">
+          共：{{ props.data.money }}
         </span>
       </view>
     </view>

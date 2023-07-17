@@ -1,13 +1,11 @@
 <script lang="ts" setup>
-import { computed } from 'vue'
 import { useMainStore } from '@/store'
 import { useData } from '@/hooks'
 import { billApi } from '@/api'
 import BillItem from '@/components/BillItem.vue'
 
 const mainStore = useMainStore()
-const ids = computed(() => mainStore.billIds)
-const { data } = useData(() => billApi.queryBills(ids.value))
+const { data } = useData(() => billApi.queryBills(mainStore.billIds))
 </script>
 
 <template>

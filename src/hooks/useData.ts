@@ -1,7 +1,7 @@
-import { ref } from 'vue'
+import { ref, shallowRef } from 'vue'
 
 export function useData<T>(fn: () => Promise<T>) {
-  const data = ref<T>()
+  const data = shallowRef<T>()
   const loading = ref(true)
 
   const refresh = () => {
