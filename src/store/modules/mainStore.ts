@@ -54,6 +54,7 @@ const useStore = defineStore('main', {
                 title: '登录失效，请重新登录',
               })
               this.CLEAR_STATE()
+              uni.removeStorageSync('access_token')
             }
           })
           const p2 = activitiesApi.getAllActivities().then((res) => {
