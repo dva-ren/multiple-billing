@@ -16,19 +16,13 @@
     {
       "path": "pages/activities/index",
       "style": {
-        "navigationBarTitleText": "管理活动",
+        "navigationBarTitleText": "管理活动"
       }
     },
     {
       "path": "pages/user/index",
       "style": {
         "navigationBarTitleText": "个人中心"
-      }
-    },
-    {
-      "path": "pages/user/addUser",
-      "style": {
-        "navigationBarTitleText": "添加朋友"
       }
     },
     {

@@ -86,7 +86,7 @@ function handleLogout() {
         </view>
       </view>
     </view>
-    <view mt-16 p="x6 y2" text-base>
+    <view v-if="isLogin" mt-16 p="x6 y2" text-base>
       <navigator
         url="/pages/user/update"
         open-type="navigate"

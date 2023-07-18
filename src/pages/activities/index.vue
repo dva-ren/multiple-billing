@@ -87,6 +87,18 @@ function handleRemove(activity: Activity) {
     },
   })
 }
+
+function handleCopy(id: string) {
+  uni.setClipboardData({
+    data: id,
+    success() {
+      uni.showToast({
+        icon: 'success',
+        title: '已复制',
+      })
+    },
+  })
+}
 </script>
 
 <template>
@@ -112,15 +124,18 @@ function handleRemove(activity: Activity) {
         <view v-if="data?.data.length">
           <view v-for="i in data?.data" :key="i.id" my-4>
             <view bg-white p="x4 y2" my-1 rounded-xl>
-              <view mb-2>
+              <view mb-4 flex justify-between>
                 <view>{{ i.name }}</view>
+                <view text="~ xs gray-400" underline @click="handleCopy(i.id)">
+                  复制id
+                </view>
               </view>
               <view>
                 <view flex justify-between items-center>
                   <view flex-center>
                     <u-avatar :src="i.creator.avatar" size="mini" />
-                    <template v-for="item in i.participant" :key="item.id">
-                      <u-avatar v-if="item.id !== i.creatorId" :src="item.avatar" size="60" ml--1 />
+                    <template v-for="item in i.participants" :key="item.id">
+                      <u-avatar v-if="item.userId !== i.creatorId" :src="item.user.avatar" size="60" ml--1 />
                     </template>
                   </view>
                   <u-button size="mini" text-sm type="warning" @click="handleRemove(i)">

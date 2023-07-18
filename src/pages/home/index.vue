@@ -122,7 +122,7 @@ onShow(() => {
                 border="2px white-700 "
               >
                 <navigator
-                  url="/pages/user/addUser"
+                  url="/pages/activities/index"
                   open-type="navigate"
                   hover-class="navigator-hover"
                   flex-center
@@ -152,21 +152,20 @@ onShow(() => {
       <view text-xl font-bold mb-4>
         Recent Split
       </view>
-      <view>
-        <view class="pre-border">
-          我创建的
-        </view>
+      <view text-gray-800>
         <view v-if="bills.created.length">
+          <view class="pre-border">
+            我创建的
+          </view>
           <BillItem v-for="i in bills.created" :key="i.id" :data="i" />
         </view>
-        <Empty v-else text="暂无数据" />
-        <view class="pre-border">
-          关于我的
-        </view>
         <view v-if="bills.abouteMe.length">
+          <view class="pre-border">
+            关于我的
+          </view>
           <BillItem v-for="i in bills.abouteMe" :key="i.id" :data="i" />
         </view>
-        <Empty v-else text="暂无数据" />
+        <Empty v-if="!bills.created.length && !bills.abouteMe.length" text="暂无数据" />
       </view>
     </view>
   </view>

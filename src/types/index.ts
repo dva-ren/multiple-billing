@@ -20,6 +20,7 @@ export interface IUser extends CommonField {
 }
 export interface Activity extends CommonField {
   creatorId: string
+  creator: IUser
   name: string
   participants: Array<ActivityParticipants>
 }
