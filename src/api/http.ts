@@ -28,6 +28,10 @@ const instance = axios.create({
           resolve(res)
         },
         fail: (err: any) => {
+          uni.showToast({
+            icon: 'error',
+            title: '网络错误',
+          })
           reject(err)
         },
       })

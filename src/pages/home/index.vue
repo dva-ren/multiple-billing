@@ -19,8 +19,12 @@ function handleAvatarClick() {
   })
 }
 onPullDownRefresh(async () => {
-  await mainStore.INIT_STORE()
-  uni.stopPullDownRefresh()
+  try {
+    await mainStore.INIT_STORE()
+  }
+  finally {
+    uni.stopPullDownRefresh()
+  }
 })
 
 onShow(() => {
@@ -157,13 +161,13 @@ onShow(() => {
           <view class="pre-border">
             我创建的
           </view>
-          <BillItem v-for="i in bills.created" :key="i.id" :data="i" />
+          <BillItem v-for="i in bills.created.slice(0, 5)" :key="i.id" :data="i" />
         </view>
         <view v-if="bills.abouteMe.length">
           <view class="pre-border">
             关于我的
           </view>
-          <BillItem v-for="i in bills.abouteMe" :key="i.id" :data="i" />
+          <BillItem v-for="i in bills.abouteMe.slice(0, 5)" :key="i.id" :data="i" />
         </view>
         <Empty v-if="!bills.created.length && !bills.abouteMe.length" text="暂无数据" />
       </view>

@@ -54,7 +54,6 @@ async function handleCheckout(info: IBillInfo) {
               ids.push(p.id)
           })
         })
-        console.log('ids', ids)
         checkout(ids)
       }
     },

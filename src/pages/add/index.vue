@@ -62,7 +62,7 @@ function handleDateChange(date: any) {
 const reg = /^(-)?(([1-9]{1}\d*)|([0]{1}))(\.(\d){1,2})?$/
 
 async function handleAddBill() {
-  if (!reg.test(billForm.money!.toString())) {
+  if (!billForm.money || !reg.test(billForm.money!.toString())) {
     uni.showToast({
       icon: 'error',
       title: '金额不正确',
