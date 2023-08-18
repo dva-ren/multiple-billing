@@ -15,7 +15,7 @@ export default defineConfig({
     host: '0.0.0.0',
     proxy: {
       '/api/': {
-        target: 'http://localhost:5000',
+        target: 'https://bill.dvaren.xyz',
         changeOrigin: true,
         rewrite: p => p.replace(/^\/api/, ''),
       },

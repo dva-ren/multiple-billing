@@ -20,6 +20,12 @@
       }
     },
     {
+      "path": "pages/activities/join",
+      "style": {
+        "navigationBarTitleText": "加入活动"
+      }
+    },
+    {
       "path": "pages/user/index",
       "style": {
         "navigationBarTitleText": "个人中心"

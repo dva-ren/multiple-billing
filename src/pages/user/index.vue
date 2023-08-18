@@ -66,21 +66,35 @@ function handleLogout() {
     },
   })
 }
+function scanQrCode() {
+  uni.navigateTo({
+    url: '/pages/activities/join?scan=1',
+  })
+}
 </script>
 
 <template>
-  <view class="h-full" py-4 bg-white>
+  <view class="h-full" bg-white>
     <view text-center>
       <view v-if="isLogin">
+        <view flex justify-end>
+          <image
+            src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxZW0iIGhlaWdodD0iMWVtIiB2aWV3Qm94PSIwIDAgMjQgMjQiPjxwYXRoIGZpbGw9Im5vbmUiIHN0cm9rZT0iY3VycmVudENvbG9yIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIHN0cm9rZS13aWR0aD0iMS41IiBkPSJNMjAgMTJING0xMi04aDJhMiAyIDAgMCAxIDIgMnYyTTggMjBINmEyIDIgMCAwIDEtMi0ydi0ybTE2IDB2MmEyIDIgMCAwIDEtMiAyaC0yTTQgOFY2YTIgMiAwIDAgMSAyLTJoMiIvPjwvc3ZnPg=="
+            w-50
+            h-50
+            p="x4 y2"
+            @click="scanQrCode"
+          />
+        </view>
         <u-avatar :src="userInfo.avatar" size="large" />
         <view text-sm font-bold>
           {{ userInfo.nickname }}
         </view>
       </view>
-      <view v-else text-center>
+      <view v-else text-center @click="onLogin">
         <u-avatar size="large" />
         <view text-center>
-          <view text-blue @click="onLogin">
+          <view text-blue>
             登录
           </view>
         </view>

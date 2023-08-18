@@ -58,6 +58,15 @@ function getAllActivities(): IResponseResult<Array<Activity>> {
   return http.get('/activities')
 }
 
+/**
+ * 查询活动详情
+ * @param activityId 活动id
+ * @returns null
+ */
+function getActivity(activityId: string): IResponseResult<Activity> {
+  return http.get(`/activities/${activityId}`)
+}
+
 export default {
   createActivity,
   joinActivity,
@@ -65,4 +74,5 @@ export default {
   dissolutionActivity,
   getInActivityUsers,
   getAllActivities,
+  getActivity,
 }
