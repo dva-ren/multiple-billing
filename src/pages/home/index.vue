@@ -189,7 +189,7 @@ onShow(() => {
   /* background-image: linear-gradient(45deg, #8baaaa 0%, #ae8b9c 100%); */
   /* background-image: linear-gradient(-20deg, #e9defa 0%, #fbfcdb 100%); */
   background-image: linear-gradient(to right, #ec77ab 0%, #7873f5 100%);
-
+  background-repeat: no-repeat;
 }
 .navigator-hover{
   background-color: transparent;

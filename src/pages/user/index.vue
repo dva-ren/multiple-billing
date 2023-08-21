@@ -75,7 +75,7 @@ function scanQrCode() {
 
 <template>
   <view class="h-full" bg-white>
-    <view text-center>
+    <view text-center class="user-page">
       <view v-if="isLogin">
         <view flex justify-end>
           <image
@@ -86,7 +86,7 @@ function scanQrCode() {
             @click="scanQrCode"
           />
         </view>
-        <u-avatar :src="userInfo.avatar" size="large" />
+        <u-avatar :src="userInfo.avatar" size="160" />
         <view text-sm font-bold>
           {{ userInfo.nickname }}
         </view>

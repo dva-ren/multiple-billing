@@ -2,6 +2,9 @@
   height: 100%;
 }
 
+/* Inter font CSS */
+:root { font-family: 'Inter', sans-serif; }
+
 .main {
   padding: 40rpx;
   background-color: #fafafa;
