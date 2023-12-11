@@ -21,6 +21,7 @@ const useStore = defineStore('main', {
       expend: 0,
       income: 0,
     },
+    billList: [] as Bill[],
   }),
   actions: {
     CLEAR_STATE() {
@@ -61,7 +62,7 @@ const useStore = defineStore('main', {
             if (res.code === 200) {
               if (res.data.length === 0)
                 return
-              billApi.getBillList(res.data[0].id).then((r) => {
+              billApi.getAboutMeBills(res.data[0].id).then((r) => {
                 this.bills.abouteMe = r.data
               })
               billApi.getCreatedBills(res.data[0].id).then((r) => {
@@ -72,6 +73,9 @@ const useStore = defineStore('main', {
                   this.totalMoney.income = res.data.income
                   this.totalMoney.expend = res.data.expend
                 }
+              })
+              billApi.getAllBills(res.data[0].id).then((res) => {
+                this.billList = res.data
               })
               this.activeties = res.data
               this.activity = res.data[0]

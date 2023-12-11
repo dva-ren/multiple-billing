@@ -12,6 +12,7 @@ const isLogin = computed(() => mainStore.isLogin)
 const activities = computed(() => mainStore.activeties)
 const activity = computed(() => mainStore.activity)
 const totalMoney = computed(() => mainStore.totalMoney)
+const billList = computed(() => mainStore.billList)
 
 function handleAvatarClick() {
   uni.navigateTo({
@@ -169,6 +170,8 @@ onShow(() => {
           </view>
           <BillItem v-for="i in bills.abouteMe.slice(0, 5)" :key="i.id" :data="i" />
         </view>
+        <p>---------</p>
+        <BillItem v-for="i in billList" :key="i.id" :data="i" />
         <Empty v-if="!bills.created.length && !bills.abouteMe.length" text="暂无数据" />
       </view>
     </view>

@@ -11,12 +11,23 @@ function createBill(data: IBillForm): IResponseResult {
 }
 
 /**
- * 查询关于我的所有账单
- * @param id 记录id
+ * 查询所有账单（我创建的和关于我的）
+ * @param id 活动id
  * @returns List
  */
-function getBillList(activityId: string): IResponseResult<Array<Bill>> {
+function getAllBills(activityId: string): IResponseResult<Array<Bill>> {
   return http.get('/bill', {
+    params: { activityId },
+  })
+}
+
+/**
+ * 查询关于我的所有账单
+ * @param activityId 活动ID
+ * @returns List
+ */
+function getAboutMeBills(activityId: string): IResponseResult<Array<Bill>> {
+  return http.get('/bill/aboutMe', {
     params: { activityId },
   })
 }
@@ -72,7 +83,8 @@ function getCreatedBills(activityId: string): IResponseResult<Array<Bill>> {
 
 export default {
   createBill,
-  getBillList,
+  getAboutMeBills,
+  getAllBills,
   getTotalMoney,
   checkout,
   queryBills,
