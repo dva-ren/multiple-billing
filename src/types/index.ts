@@ -69,4 +69,5 @@ export interface Bill extends CommonField {
   participant: Array<BillParticipants>
   activityId: string
   description: string
+  type: 'INCOME' | 'EXPEND'
 }

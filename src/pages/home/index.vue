@@ -158,20 +158,7 @@ onShow(() => {
         Recent Split
       </view>
       <view text-gray-800>
-        <view v-if="bills.created.length">
-          <view class="pre-border">
-            我创建的
-          </view>
-          <BillItem v-for="i in bills.created.slice(0, 5)" :key="i.id" :data="i" />
-        </view>
-        <view v-if="bills.abouteMe.length">
-          <view class="pre-border">
-            关于我的
-          </view>
-          <BillItem v-for="i in bills.abouteMe.slice(0, 5)" :key="i.id" :data="i" />
-        </view>
-        <p>---------</p>
-        <BillItem v-for="i in billList" :key="i.id" :data="i" />
+        <BillItem v-for="i in billList" :key="i.id" :data="i" show-amount />
         <Empty v-if="!bills.created.length && !bills.abouteMe.length" text="暂无数据" />
       </view>
     </view>

@@ -11,7 +11,7 @@ const instance = axios.create({
   // #endif
   // #ifndef H5
   // @ts-expect-error
-  baseURL: 'http://localhost:5000',
+  baseURL: 'https://bill.dvaren.xyz',
   // #endif
   adapter(config) {
     const { url, method, data, params, headers, baseURL, paramsSerializer }
@@ -74,7 +74,8 @@ instance.interceptors.response.use((v) => {
   if (v.data?.code === 401) {
     uni.removeStorageSync('access_token')
     uni.showToast({
-      title: '登录过期,即将跳转登录页...',
+      title: '登录失效',
+      icon: 'error',
     })
     // setTimeout(redirectHome, 1500)
     return v.data

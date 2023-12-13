@@ -52,7 +52,7 @@ const useStore = defineStore('main', {
             else if (res.code === 400) {
               uni.showToast({
                 icon: 'error',
-                title: '登录失效，请重新登录',
+                title: '登录失效',
               })
               this.CLEAR_STATE()
               uni.removeStorageSync('access_token')

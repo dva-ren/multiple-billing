@@ -18,7 +18,6 @@ const participant = computed(() => {
 
 <template>
   <view
-    bg-white
     p-3
     my-2
     flex
@@ -27,6 +26,8 @@ const participant = computed(() => {
     justify-between
     rounded-xl
     class="bill-item"
+    bg-white
+    :class="{ income: props.data.type === 'INCOME' }"
   >
     <CategoryIcon :category="props.data.category" />
     <view flex-1>
@@ -83,5 +84,17 @@ const participant = computed(() => {
   0px 6.6px 6px -6px rgba(0, 0, 0, 0.023),
   0px 16px 14.5px -6px rgba(0, 0, 0, 0.028),
   0px 53px 48px -6px rgba(0, 0, 0, 0.04);
+}
+.income{
+  position: relative;
+}
+.income::after{
+  content: '';
+  position: absolute;
+  width: 6px;
+  height: 14px;
+  background-color: #eba0b3;
+  left: 3px;
+  border-radius: 4px;
 }
 </style>
