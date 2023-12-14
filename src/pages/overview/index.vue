@@ -74,7 +74,7 @@ onPullDownRefresh(async () => {
       支出
     </view>
     <view>
-      <Card v-for="i, idx in data?.data.expend" :key="idx" :data="i" @on-button-click="handleCheckout(i)" />
+      <Card v-for="i, idx in data?.data.expend" :key="idx" :data="i" :show-button="false" />
     </view>
     <view v-if="!data?.data.expend.length" text-center p-10>
       已结清

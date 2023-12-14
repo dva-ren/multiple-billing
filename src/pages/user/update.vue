@@ -13,7 +13,6 @@ const form = reactive({
 const inputRef = ref()
 
 async function handleSubmit() {
-  console.log(inputRef.value)
   if (form.nickname.length < 2) {
     uni.showToast({
       icon: 'error',
@@ -51,12 +50,15 @@ async function onChooseAvatar(e: any) {
     mask: true,
   })
   const res = await uni.uploadFile({
-    url: 'https://vn0nty.laf.run/upload-avatar',
+    url: 'https://bill.dvaren.xyz/upload',
     filePath: e.detail.avatarUrl,
     name: 'file',
+    header: {
+      access_token: uni.getStorageSync('access_token'),
+    },
   })
   if (res.statusCode === 200) {
-    form.avatar = JSON.parse(res.data).data
+    form.avatar = JSON.parse(res.data).data.url
     uni.hideLoading()
   }
   else {

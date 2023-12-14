@@ -30,12 +30,12 @@ function updateUserInfo(data: { nickName?: string; avatar?: string }): IResponse
   return http.put('/user', data)
 }
 
-/** TODO: 暂不可用
+/**
  * 上传头像
  * @param data 新的信息
  */
-function uploadAvatar(data: any): IResponseResult<string> {
-  return http.post('/upload-avatar', data)
+function uploadAvatar(data: FormData): IResponseResult<string> {
+  return http.post('/upload', data)
 }
 
 export default {
