@@ -7,9 +7,7 @@ import Empty from '@/components/Empty.vue'
 
 const mainStore = useStore()
 const userInfo = computed(() => mainStore.userInfo)
-const bills = computed(() => mainStore.bills)
 const isLogin = computed(() => mainStore.isLogin)
-const activities = computed(() => mainStore.activeties)
 const activity = computed(() => mainStore.activity)
 const totalMoney = computed(() => mainStore.totalMoney)
 const billList = computed(() => mainStore.billList)
@@ -53,22 +51,7 @@ onShow(() => {
       </view>
     </view>
     <view class="card" w-full mt-4 p6 text-white rounded-xl>
-      <view v-if="!activities.length" min-h-360 flex-center>
-        <navigator
-          v-if="isLogin"
-          url="/pages/activities/index"
-          open-type="navigate"
-          hover-class="navigator-hover"
-          class="add-btn"
-          rounded
-        >
-          创建/加入活动
-        </navigator>
-        <navigator v-else class="add-btn" rounded url="/pages/user/index" open-type="navigate">
-          去登陆
-        </navigator>
-      </view>
-      <view v-if="activities.length" z-2>
+      <view z-2>
         <view flex>
           <navigator
             flex-1
@@ -153,13 +136,13 @@ onShow(() => {
         </view>
       </view>
     </view>
-    <view v-if="activities.length" mt-6>
+    <view mt-6>
       <view text-xl font-bold mb-4>
         Recent Split
       </view>
       <view text-gray-800>
         <BillItem v-for="i in billList" :key="i.id" :data="i" show-amount />
-        <Empty v-if="!bills.created.length && !bills.abouteMe.length" text="暂无数据" />
+        <Empty v-if="!billList.length" text="暂无数据" />
       </view>
     </view>
   </view>

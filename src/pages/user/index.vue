@@ -32,8 +32,7 @@ async function onLogin() {
         if (res.code === 200) {
           uni.setStorageSync('access_token', res.data.access_token)
           mainStore.INIT_STORE()
-          // eslint-disable-next-line no-console
-          console.log('登陆成功')
+
           uni.hideLoading()
         }
         else {

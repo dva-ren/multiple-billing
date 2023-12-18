@@ -10,10 +10,6 @@ const useStore = defineStore('main', {
       nickname: '',
       avatar: '',
     } as IUser,
-    bills: {
-      created: [] as Bill[],
-      abouteMe: [] as Bill[],
-    },
     billIds: [] as string[],
     activeties: [] as Array<Activity>,
     activity: undefined as Activity | undefined,
@@ -29,10 +25,6 @@ const useStore = defineStore('main', {
       this.userInfo.id = ''
       this.userInfo.nickname = ''
       this.userInfo.avatar = ''
-      this.bills = {
-        abouteMe: [],
-        created: [],
-      }
       this.billIds = []
       this.activeties = []
       this.activity = undefined
@@ -45,7 +37,7 @@ const useStore = defineStore('main', {
       return new Promise((resolve, reject) => {
         const access_token = uni.getStorageSync('access_token')
         if (access_token) {
-          const p1 = userApi.getUserInfo().then((res) => {
+          userApi.getUserInfo().then((res) => {
             if (res.code === 200) {
               this.SET_USER_INFO(res.data)
             }
@@ -56,18 +48,13 @@ const useStore = defineStore('main', {
               })
               this.CLEAR_STATE()
               uni.removeStorageSync('access_token')
+              reject(new Error('登录失效'))
             }
           })
-          const p2 = activitiesApi.getAllActivities().then((res) => {
+          activitiesApi.getAllActivities().then((res) => {
             if (res.code === 200) {
               if (res.data.length === 0)
                 return
-              billApi.getAboutMeBills(res.data[0].id).then((r) => {
-                this.bills.abouteMe = r.data
-              })
-              billApi.getCreatedBills(res.data[0].id).then((r) => {
-                this.bills.created = r.data
-              })
               billApi.totalMoney(res.data[0].id).then((res) => {
                 if (res.code === 200) {
                   this.totalMoney.income = res.data.income
@@ -81,11 +68,9 @@ const useStore = defineStore('main', {
               this.activity = res.data[0]
             }
           })
-          Promise.all([p1, p2]).then(resolve).catch(reject)
         }
         else {
-          reject(new Error('未知错误'))
-          this.CLEAR_STATE()
+          reject(new Error('当前未登录'))
         }
       })
     },
