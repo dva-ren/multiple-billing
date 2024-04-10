@@ -41,13 +41,19 @@
     {
       "path": "pages/bill/index",
       "style": {
-        "navigationBarTitleText": "账单详情"
+        "navigationBarTitleText": "账单明细"
       }
     },
     {
       "path": "pages/user/update",
       "style": {
         "navigationBarTitleText": "修改资料"
+      }
+    },
+    {
+      "path": "pages/detail/index",
+      "style": {
+        "navigationBarTitleText": "账单详情"
       }
     }
   ],

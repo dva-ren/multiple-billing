@@ -63,13 +63,12 @@ function checkout(ids: string[]): IResponseResult {
 function queryBills(ids: string[]): IResponseResult<Array<Bill>> {
   return http.get(`/bill/query?ids=${ids}`)
 }
-/**
- * 批量查询账单信息
- * @param ids 账单id数组
- * @returns 账单数据
- */
+
 function totalMoney(activityId: string): IResponseResult<{ expend: number; income: number }> {
   return http.get(`/bill/totalMoney?activityId=${activityId}`)
+}
+function queryBill(id: string): IResponseResult<Bill> {
+  return http.get(`/bill/${id}`)
 }
 
 /**
@@ -81,6 +80,10 @@ function getCreatedBills(activityId: string): IResponseResult<Array<Bill>> {
   return http.get(`/bill/created?activityId=${activityId}`)
 }
 
+function deleteBill(id: string): IResponseResult {
+  return http.post(`/bill/delete/${id}`)
+}
+
 export default {
   createBill,
   getAboutMeBills,
@@ -90,4 +93,5 @@ export default {
   queryBills,
   totalMoney,
   getCreatedBills,
+  deleteBill,
 }

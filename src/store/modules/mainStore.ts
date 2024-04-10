@@ -18,6 +18,7 @@ const useStore = defineStore('main', {
       income: 0,
     },
     billList: [] as Bill[],
+    billUser: '',
   }),
   actions: {
     CLEAR_STATE() {
@@ -32,6 +33,7 @@ const useStore = defineStore('main', {
         expend: 0,
         income: 0,
       }
+      this.billUser = ''
     },
     INIT_STORE() {
       return new Promise((resolve, reject) => {

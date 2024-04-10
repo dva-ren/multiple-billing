@@ -10,6 +10,7 @@ const mainStore = useMainStore()
 
 function handleClick() {
   mainStore.billIds = props.data.bills.map(i => i.id)
+  mainStore.billUser = props.data.user.id
 }
 </script>
 

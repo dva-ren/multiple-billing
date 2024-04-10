@@ -29,6 +29,12 @@ onPullDownRefresh(async () => {
 onShow(() => {
   mainStore.INIT_STORE()
 })
+
+function handleClick(id: string) {
+  uni.navigateTo({
+    url: `/pages/detail/index?id=${id}`,
+  })
+}
 </script>
 
 <template>
@@ -141,7 +147,7 @@ onShow(() => {
         Recent Split
       </view>
       <view text-gray-800>
-        <BillItem v-for="i in billList" :key="i.id" :data="i" show-amount />
+        <BillItem v-for="i in billList" :key="i.id" :data="i" show-amount @click="handleClick(i.id)" />
         <Empty v-if="!billList.length" text="暂无数据" />
       </view>
     </view>

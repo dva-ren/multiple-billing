@@ -1,8 +1,8 @@
 <script lang="ts" setup>
-import { onPullDownRefresh } from '@dcloudio/uni-app'
-import { computed } from 'vue'
+import { onLaunch, onPullDownRefresh, onShow } from '@dcloudio/uni-app'
+import { computed, ref } from 'vue'
 import { billApi } from '@/api'
-import { useData } from '@/hooks'
+import { useCheckout, useData } from '@/hooks'
 import Card from '@/components/Card.vue'
 import { useMainStore } from '@/store'
 import type { IBillInfo } from '@/types'
@@ -10,42 +10,12 @@ import type { IBillInfo } from '@/types'
 const activity = computed(() => useMainStore().activeties[0])
 
 const { data, loading, refresh } = useData(() => billApi.getTotalMoney(activity.value.id))
-async function checkout(ids: string[]) {
-  uni.showLoading({
-    title: '结算中',
-    mask: true,
-  })
-  try {
-    const res = await billApi.checkout(ids)
-    if (res.code === 200) {
-      uni.showToast({
-        icon: 'success',
-        title: res.msg,
-      })
-      refresh()
-      useMainStore().INIT_STORE()
-    }
-    else {
-      uni.showToast({
-        icon: 'error',
-        title: res.msg,
-      })
-    }
-  }
-  catch (error) {
-    console.error(error)
-    uni.showToast({
-      icon: 'error',
-      title: '服务器错误',
-    })
-  }
-}
 
 async function handleCheckout(info: IBillInfo) {
   uni.showModal({
     showCancel: true,
     title: '确定结算？',
-    success: ({ confirm }) => {
+    success: async ({ confirm }) => {
       if (confirm) {
         const ids: string[] = []
         info.bills.forEach((bill) => {
@@ -54,7 +24,7 @@ async function handleCheckout(info: IBillInfo) {
               ids.push(p.id)
           })
         })
-        checkout(ids)
+        useCheckout(ids).then(refresh)
       }
     },
   })
@@ -62,6 +32,15 @@ async function handleCheckout(info: IBillInfo) {
 onPullDownRefresh(async () => {
   await refresh()
   uni.stopPullDownRefresh()
+})
+onLaunch(refresh)
+const isFirst = ref(true)
+onShow(() => {
+  if (!isFirst.value) {
+    refresh()
+    return
+  }
+  isFirst.value = false
 })
 </script>
 

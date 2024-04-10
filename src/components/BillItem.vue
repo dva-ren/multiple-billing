@@ -8,7 +8,9 @@ import { formatToDate } from '@/utils/date'
 const props = defineProps<{
   data: Bill
   showAmount?: boolean
+  checked?: boolean
 }>()
+const emits = defineEmits(['click'])
 const participant = computed(() => {
   return props.data.participant.filter((item) => {
     return item.userId !== props.data.creatorId
@@ -25,9 +27,11 @@ const participant = computed(() => {
     items-center
     justify-between
     rounded-xl
-    class="bill-item"
+    class="bill-item border"
     bg-white
-    :class="{ income: props.data.type === 'INCOME' }"
+    relative
+    :class="{ 'income': props.data.type === 'INCOME', 'border-transparent': !props.checked, 'border-green-300': props.checked }"
+    @click="emits('click')"
   >
     <CategoryIcon :category="props.data.category" />
     <view flex-1>
