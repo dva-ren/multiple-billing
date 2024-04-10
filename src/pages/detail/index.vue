@@ -4,7 +4,9 @@ import { ref } from 'vue'
 import type { Bill, BillParticipants } from '@/types'
 import { billApi } from '@/api'
 import categores from '@/data/category.json'
+import { useMainStore } from '@/store'
 
+const mainStore = useMainStore()
 const bill = ref<Bill>()
 onLoad((options: any) => {
   billApi.queryBills([options.id]).then((res) => {
@@ -53,36 +55,45 @@ function handleDelete(id: string) {
     <view text-sm mt-10>
       <view flex gap-8 py-1>
         <view text-zinc w-160>
-          参与人员
+          创建者
         </view>
         <view>
-          <view>{{ participantsToString(bill.participant) }}</view>
+          <view>{{ bill.creator.nickname }}</view>
         </view>
       </view>
-    </view>
-    <view flex gap-8 py-1>
-      <view text-zinc w-160>
-        分类
+      <view text-sm>
+        <view flex gap-8 py-1>
+          <view text-zinc w-160>
+            参与人员
+          </view>
+          <view>
+            <view>{{ participantsToString(bill.participant) }}</view>
+          </view>
+        </view>
       </view>
-      <view>{{ categores[bill.category].name }}</view>
-    </view>
-    <view flex gap-8 py-1>
-      <view text-zinc w-160>
-        消费时间
+      <view flex gap-8 py-1>
+        <view text-zinc w-160>
+          分类
+        </view>
+        <view>{{ categores[bill.category].name }}</view>
       </view>
-      <view>{{ bill.date }}</view>
-    </view>
-    <view flex gap-8 py-1>
-      <view text-zinc w-160>
-        创建时间
+      <view flex gap-8 py-1>
+        <view text-zinc w-160>
+          消费时间
+        </view>
+        <view>{{ bill.date }}</view>
       </view>
-      <view>{{ bill.createTime }}</view>
-    </view>
-
-    <view>
-      <button text-sm py-2 mt-10 text-red @click="handleDelete(bill.id)">
-        删除账单
-      </button>
+      <view flex gap-8 py-1>
+        <view text-zinc w-160>
+          创建时间
+        </view>
+        <view>{{ bill.createTime }}</view>
+      </view>
+      <view v-if="mainStore.userInfo.id === bill.creator.id">
+        <button text-sm py-2 mt-10 text-red @click="handleDelete(bill.id)">
+          删除账单
+        </button>
+      </view>
     </view>
   </view>
 </template>

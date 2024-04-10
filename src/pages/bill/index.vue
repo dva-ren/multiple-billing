@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import { useMainStore } from '@/store'
 import { useCheckout, useData } from '@/hooks'
 import { billApi } from '@/api'
@@ -16,6 +16,7 @@ const { data, refresh } = useData(async () => {
   checkedBills.value = [...res.data]
   return res
 })
+const allowAction = computed(() => data.value?.data[0]?.creatorId === mainStore.userInfo.id)
 
 async function handleCheckout() {
   uni.showModal({
@@ -41,6 +42,8 @@ async function handleCheckout() {
 }
 
 function handleClick(bill: Bill) {
+  if (!allowAction.value)
+    return
   const index = checkedBills.value.indexOf(bill)
   if (index === -1)
     checkedBills.value.push(bill)
@@ -52,18 +55,21 @@ function handleClick(bill: Bill) {
 <template>
   <view class="main">
     <view v-if="data?.data">
-      <BillItem
-        v-for="i in data.data"
-        :key="i.id" :data="i"
-        show-amount
-        :checked="checkedBills.includes(i)"
-        @click="handleClick(i)"
-      />
-      <view v-if="!data?.data.length" text-center p-10>
-        已结清
+      <view pb-20>
+        <BillItem
+          v-for="i in data.data"
+          :key="i.id" :data="i"
+          show-amount
+          :checked="allowAction && checkedBills.includes(i)"
+          @click="handleClick(i)"
+        />
+        <view v-if="!data?.data.length" text-center p-10>
+          已结清
+        </view>
       </view>
       <view w-full>
         <button
+          v-if="allowAction"
           m-4
           py-1
           bg-black
@@ -71,8 +77,8 @@ function handleClick(bill: Bill) {
           transition
           text-white
           rounded-xl
-          absolute
-          bottom-10
+          fixed
+          bottom-2
           right-0
           left-0
           :disabled="!checkedBills.length"
