@@ -50,7 +50,10 @@ function handleClick() {
       <view text-2xl>
         ¥ {{ props.data.totalAmount }}
       </view>
-      <div class="button" text-base p-2 w-200 shadow bg="white" bg-op-30 backdrop-filter text-center rounded-full @click="emits('onButtonClick')">
+      <div
+        v-if="props.showButton" class="button text-base p-2 w-200 shadow bg-white bg-op-30 backdrop-filter text-center rounded-full"
+        @click="emits('onButtonClick')"
+      >
         结算
       </div>
     </view>

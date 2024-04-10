@@ -67,7 +67,14 @@ function handleClick(bill: Bill) {
           已结清
         </view>
       </view>
-      <view w-full>
+      <view
+        w-full
+        fixed
+        bottom-0
+        right-0
+        left-0
+        bg-white
+      >
         <button
           v-if="allowAction"
           m-4
@@ -77,10 +84,6 @@ function handleClick(bill: Bill) {
           transition
           text-white
           rounded-xl
-          fixed
-          bottom-2
-          right-0
-          left-0
           :disabled="!checkedBills.length"
           @click="handleCheckout"
         >
