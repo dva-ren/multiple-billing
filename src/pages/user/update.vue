@@ -50,7 +50,7 @@ async function onChooseAvatar(e: any) {
     mask: true,
   })
   const res = await uni.uploadFile({
-    url: 'https://bill.dvaren.xyz/upload',
+    url: 'https://api.dvaren.cn/upload',
     filePath: e.detail.avatarUrl,
     name: 'file',
     header: {

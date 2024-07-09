@@ -11,7 +11,7 @@ const instance = axios.create({
   // #endif
   // #ifndef H5
   // @ts-expect-error
-  baseURL: 'https://bill.dvaren.xyz',
+  baseURL: 'https://api.dvaren.cn/bill',
   // #endif
   adapter(config) {
     const { url, method, data, params, headers, baseURL, paramsSerializer }
