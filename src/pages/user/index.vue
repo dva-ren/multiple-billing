@@ -90,7 +90,7 @@ function scanQrCode() {
           {{ userInfo.nickname }}
         </view>
       </view>
-      <view v-else text-center @click="onLogin">
+      <view v-else text-center my-8 @click="onLogin">
         <u-avatar size="large" />
         <view text-center>
           <view text-blue>

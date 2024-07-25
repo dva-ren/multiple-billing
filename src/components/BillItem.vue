@@ -30,7 +30,7 @@ const participant = computed(() => {
     class="bill-item border"
     bg-white
     relative
-    :class="{ 'income': props.data.type === 'INCOME', 'border-transparent': !props.checked, 'border-green-300': props.checked }"
+    :class="{ 'income': props.data.type === 'INCOME', 'border-transparent': !props.checked, 'border-red-300': props.checked }"
     @click="emits('click')"
   >
     <CategoryIcon :category="props.data.category" />
