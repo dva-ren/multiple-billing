@@ -17,6 +17,7 @@ const { data, refresh } = useData(async () => {
   return res
 })
 const allowAction = computed(() => data.value?.data[0]?.creatorId === mainStore.userInfo.id)
+const totalAmount = computed(() => checkedBills.value.reduce((sum, bill) => sum + bill.money, 0))
 
 async function handleCheckout() {
   uni.showModal({
@@ -87,7 +88,8 @@ function handleClick(bill: Bill) {
           :disabled="!checkedBills.length"
           @click="handleCheckout"
         >
-          结算 {{ checkedBills.length }}/{{ mainStore.billIds.length }}
+          <span>结算 {{ checkedBills.length }}/{{ mainStore.billIds.length }}</span>
+          <span ml-2>{{ totalAmount }}元</span>
         </button>
       </view>
     </view>
