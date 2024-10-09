@@ -17,7 +17,7 @@ const { data, refresh } = useData(async () => {
   return res
 })
 const allowAction = computed(() => data.value?.data[0]?.creatorId === mainStore.userInfo.id)
-const totalAmount = computed(() => checkedBills.value.reduce((sum, bill) => sum + bill.money, 0))
+const totalAmount = computed(() => checkedBills.value.reduce((sum, bill) => sum + bill.participant.find(i => i.userId === mainStore.billUser)!.splitMoney, 0))
 
 async function handleCheckout() {
   uni.showModal({
